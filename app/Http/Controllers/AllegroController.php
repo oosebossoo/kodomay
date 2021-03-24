@@ -24,7 +24,7 @@ class AllegroController extends Controller
         $authUrl = "https://allegro.pl.allegrosandbox.pl/auth/oauth/authorize?"
             ."response_type=code&"
             ."client_id=$this->clientId&"
-            ."redirect_uri=https://localhost:8000/get_token";
+            ."redirect_uri=https://kodomat.herokuapp.com/get_token";
 
         return redirect($authUrl);
     }
@@ -40,7 +40,7 @@ class AllegroController extends Controller
         $resource = "https://allegro.pl.allegrosandbox.pl/auth/oauth/token?"
             ."grant_type=authorization_code&"
             ."code=$request->code&"
-            ."redirect_uri=https://localhost:8000";
+            ."redirect_uri=https://kodomat.herokuapp.com";
 
         $headers = array();
         $data = array();
