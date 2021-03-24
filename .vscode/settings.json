@@ -1,0 +1,18 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "sebastiankasprzak.database.windows.net",
+            "port": 1433,
+            "askForPassword": true,
+            "driver": "MySQL",
+            "name": "Conn 1",
+            "group": "Conn 1",
+            "database": "gallery",
+            "username": "spacja"
+        }
+    ]
+}
