@@ -59,13 +59,14 @@ class AllegroController extends Controller
                 'ignore_errors' => true
             )
         );
+        
         $response = json_decode(file_get_contents(
             (stristr($resource, 'http') !== false 
                 ? $resource 
                 : $this->getUrl() . '/' . ltrim($resource, '/')
             ), 
             false, 
-            stream_context_create($options)
+            stream_context_create($options),
         ));
         dd($response);
 
