@@ -56,7 +56,7 @@ class AllegroController extends Controller
             'http' => array(
                 'method'  => strtoupper('POST'),
                 'header'  => $this->parseHeaders($requestHeaders = array_replace(array(
-                    'User-Agent'      => 'AsocialMedia/AllegroApi/v3.1.0 (+https://asocial.media)',
+                    'User-Agent'      => 'Kodomat',
                     'Authorization'   => 'Basic ' . base64_encode($this->clientId.":".$this->clientSecret),
                     'Content-Type'    => 'application/vnd.allegro.public.v1+json',
                     'Accept'          => 'application/vnd.allegro.public.v1+json',
@@ -142,9 +142,8 @@ class AllegroController extends Controller
     public function me()
     {
         // $userData = UserData::where('user_id', Auth::user()->id)->get();
-        $restApi = new AllegroRestApi(/*$userData->access_token*/ "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTcyMzMzNjMsInVzZXJfbmFtZSI6IjkzOTc5MDc2IiwianRpIjoiYjkxYjVkYjItYjhhNS00NDEzLTkxZjItMTZkNDgzZTc4MTM4IiwiY2xpZW50X2lkIjoiMTg0MmY0ZTAzZDEzNDdkNDgxMjI0NmY3NDM5YmFhYTEiLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnByb2ZpbGU6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOm9mZmVyczp3cml0ZSIsImFsbGVncm86YXBpOmJpbGxpbmc6cmVhZCIsImFsbGVncm86YXBpOmNhbXBhaWducyIsImFsbGVncm86YXBpOmRpc3B1dGVzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOmJpZHMiLCJhbGxlZ3JvOmFwaTpvcmRlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTphZHMiLCJhbGxlZ3JvOmFwaTpwYXltZW50czp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6d3JpdGUiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOnJlYWQiLCJhbGxlZ3JvOmFwaTpyYXRpbmdzIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczpyZWFkIiwiYWxsZWdybzphcGk6cGF5bWVudHM6cmVhZCJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZX0.n_CmfF7pk9kdjbk2SEhFMcYm1cr7Nrzr9WZxZZ3QfmGEITWBf8VL6joN55hBz8ztlvDcud_IAVlAMKDcvFgj10q5O9FkqTORPIGOlZ9sMtzpNNuc6uO3ZKIP2oeP7WfBBMdWJ6kp5HiI2swlqAI28J1keo0GKLpHSni3-g8jJ0MmC0pTvvNAqWOo0gaqNDk5UoJZbjz-KM__CX9fVOe2pzFN_LIzku-ja2TWHEMKyhk5NlYKYV7J-OQAGQu4iAG_--sweC6KvDJ4N-TZDkq0YydMY-E68dNWXRogsH3_alRxWfURjOzdJVRq1cr48lC4PTIpPSBFHo_0dI0F-R2L6B9gmm9CVksZF_W_DU_XO8zfFq5yT6efxBu3PRICjTFnfFuNq6foTYQjcBcbXvU7d7R1ruhgE0GjkOQpVX3qoxQBuBRKoIOJv_zU8_RoKyPZ-m3znh9szOzb6cINj6WDoo46Zru3uB7r8VFsAvYhO3yChVhHOqyA1BNlbe75TXuRCxOVUbo98ZNcd5sXDHw6PWSXE1e0bipuLV9TqO7y8AliDrciRy_TzuLqzdfAZlvNdFiZlGIFrrk0HRW4w4Klu7RqNcax3PUa5WuYYPWMxXdfIX9Mb40owmdmo1BQn4Is2NxOceUoJjP5g2HGHVH3mg_EzJDungyKMMM_MzQLoGo");
-        $response = $restApi->get('/me');
-        dd($response);
+        $restApi = new AllegroRestApi('eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTcyMzQ2MjgsInVzZXJfbmFtZSI6IjkzOTc5MDc2IiwianRpIjoiYTJkYTkzNDgtNGQ0MC00OTk1LTk2ZDQtYzEzYjU0OWUwZTBmIiwiY2xpZW50X2lkIjoiMTg0MmY0ZTAzZDEzNDdkNDgxMjI0NmY3NDM5YmFhYTEiLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnByb2ZpbGU6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOm9mZmVyczp3cml0ZSIsImFsbGVncm86YXBpOmJpbGxpbmc6cmVhZCIsImFsbGVncm86YXBpOmNhbXBhaWducyIsImFsbGVncm86YXBpOmRpc3B1dGVzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOmJpZHMiLCJhbGxlZ3JvOmFwaTpvcmRlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTphZHMiLCJhbGxlZ3JvOmFwaTpwYXltZW50czp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6d3JpdGUiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOnJlYWQiLCJhbGxlZ3JvOmFwaTpyYXRpbmdzIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczpyZWFkIiwiYWxsZWdybzphcGk6cGF5bWVudHM6cmVhZCJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZX0.pyMO0rdgYi91RIUMHl5220ctFVtZQnOHPGPgOfoKS7_L9rnCRC2guxHYQfyowGJv-GXD3Z6OZLvxNFx8dEpqfISR0rXX7Ptms5jMnzYi4PR48TBEDSmv7QYnE9hU0s3WNNswbX1nAUQZjRRkvkc7gwm0scad8zro7spgsKKG2SIh6-T0CuJZ-4YDJvNjzmt8KAuamxP9VPNar3mxwMKUg9dr-xTW-U4Q3hTucmBOcWWq52bayo7aA8mn2inyFrwPFnT_AYRqv-G-viBZypS-om_btFj4Z9lwgzaS-cMRfmUA0A7sWLPp1KaryDZPiOkjIYalRSGesEfc6h9Glg_MizfxUfvsoVXj3zU7Qasxs8HFIgAVhCq0mE-r4CaMjBkOmge4OvnPyp9_s2oOVtO1UT3Al5OQrEVJs7DiWCjf4CPauYHoIu_H_7KqPPiTTXc2eR1xwA-ZYGci8qF9CxEZY1XZhZHbin_P09VM1D3ZdgPKO66QwBL9a1ciqH_5kdigfVTws_awyOa6lk-HH5Srg-Lf_3zPfvXSbmJYl7Kqpe4S5yzpC1uSkuguI4ZE-1T46D_Qas2bmZztrKX8r17gCZEUD4nRhdwGzltPBXRgNPkEXhkzSPCuRM6jtlVWh20wXzKEy1XYM_kHU21T8m-XMPBvuWZjCCe8W_vH-lpc5zc');
+        dd($restApi->get('/me'));
     }
 
     // --- ---
