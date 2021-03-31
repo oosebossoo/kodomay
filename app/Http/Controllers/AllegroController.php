@@ -154,7 +154,7 @@ class AllegroController extends Controller
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         $html = curl_exec($curl);   
         curl_close($curl);
-        return json_decode($html);
+        dd($html);
     }
 
     // --- ---
