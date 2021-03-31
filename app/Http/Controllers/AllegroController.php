@@ -146,7 +146,7 @@ class AllegroController extends Controller
             "Accept: application/vnd.allegro.public.v1+json;charset=UTF-8", 
             "Content-Type: application/vnd.allegro.public.v1+json", 
             "Authorization: Bearer $token", 
-            "Api-Key: $clientId", 
+            "Api-Key: $this->clientId", 
             "Accept-Language: PL" ];
 
         $curl = curl_init("https://allegro.pl.allegrosandbox.pl/me");
