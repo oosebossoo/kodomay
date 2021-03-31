@@ -141,9 +141,10 @@ class AllegroController extends Controller
 
     public function me()
     {
-        $userData = UserData::where('user_id', Auth::user()->id)->get();
-        $restApi = new AllegroRestApi($userData->access_token);
+        // $userData = UserData::where('user_id', Auth::user()->id)->get();
+        $restApi = new AllegroRestApi(/*$userData->access_token*/ "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTcyMzMzNjMsInVzZXJfbmFtZSI6IjkzOTc5MDc2IiwianRpIjoiYjkxYjVkYjItYjhhNS00NDEzLTkxZjItMTZkNDgzZTc4MTM4IiwiY2xpZW50X2lkIjoiMTg0MmY0ZTAzZDEzNDdkNDgxMjI0NmY3NDM5YmFhYTEiLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnByb2ZpbGU6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOm9mZmVyczp3cml0ZSIsImFsbGVncm86YXBpOmJpbGxpbmc6cmVhZCIsImFsbGVncm86YXBpOmNhbXBhaWducyIsImFsbGVncm86YXBpOmRpc3B1dGVzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOmJpZHMiLCJhbGxlZ3JvOmFwaTpvcmRlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTphZHMiLCJhbGxlZ3JvOmFwaTpwYXltZW50czp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6d3JpdGUiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOnJlYWQiLCJhbGxlZ3JvOmFwaTpyYXRpbmdzIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczpyZWFkIiwiYWxsZWdybzphcGk6cGF5bWVudHM6cmVhZCJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZX0.n_CmfF7pk9kdjbk2SEhFMcYm1cr7Nrzr9WZxZZ3QfmGEITWBf8VL6joN55hBz8ztlvDcud_IAVlAMKDcvFgj10q5O9FkqTORPIGOlZ9sMtzpNNuc6uO3ZKIP2oeP7WfBBMdWJ6kp5HiI2swlqAI28J1keo0GKLpHSni3-g8jJ0MmC0pTvvNAqWOo0gaqNDk5UoJZbjz-KM__CX9fVOe2pzFN_LIzku-ja2TWHEMKyhk5NlYKYV7J-OQAGQu4iAG_--sweC6KvDJ4N-TZDkq0YydMY-E68dNWXRogsH3_alRxWfURjOzdJVRq1cr48lC4PTIpPSBFHo_0dI0F-R2L6B9gmm9CVksZF_W_DU_XO8zfFq5yT6efxBu3PRICjTFnfFuNq6foTYQjcBcbXvU7d7R1ruhgE0GjkOQpVX3qoxQBuBRKoIOJv_zU8_RoKyPZ-m3znh9szOzb6cINj6WDoo46Zru3uB7r8VFsAvYhO3yChVhHOqyA1BNlbe75TXuRCxOVUbo98ZNcd5sXDHw6PWSXE1e0bipuLV9TqO7y8AliDrciRy_TzuLqzdfAZlvNdFiZlGIFrrk0HRW4w4Klu7RqNcax3PUa5WuYYPWMxXdfIX9Mb40owmdmo1BQn4Is2NxOceUoJjP5g2HGHVH3mg_EzJDungyKMMM_MzQLoGo");
         $response = $restApi->get('/me');
+        dd($response);
     }
 
     // --- ---
