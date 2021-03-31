@@ -9,7 +9,7 @@ use App\Models\UserData;
 
 use Auth;
 
-class AllegroRepo extends 
+class AllegroRepo
 {
     // new_user_auth()
 
