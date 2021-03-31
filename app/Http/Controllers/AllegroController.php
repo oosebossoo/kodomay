@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use AsocialMedia\AllegroApi\AllegroRestApi;
+use App\Repos\AllegroRepo;
 
 use App\Models\UserData;
 
@@ -18,6 +19,11 @@ class AllegroController extends Controller
     protected $clientId = '1842f4e03d1347d4812246f7439baaa1';
     protected $clientSecret = 'JvRLfxOdGmLBNRooPqnxQJOKFnwZ7XW1bW5m7tPCNb1LPaw5ttje2g7Fcz0OS6ri';
 
+    // public function __construct(AllegroReop $allegroRepo)
+    // {
+    //     $this->allegroRepo = $allegroRepo;
+    // }
+
     public function getAuth()
     {
 
@@ -29,6 +35,7 @@ class AllegroController extends Controller
         return redirect($authUrl);
     }
 
+
     public function getToken(Request $request)
     {
         // $response = $restApi->get('/sale/user-ratings?user.id=' . $yourUserId)
@@ -37,7 +44,7 @@ class AllegroController extends Controller
         // sendRequest($resource, $method,  $data = array(),    array $headers = array(), $json = true)
         $json = true;
 
-        $resource = "https://www.allegro.pl.allegrosandbox.pl/auth/oauth/token?"
+        $resource = "https://allegro.pl.allegrosandbox.pl/auth/oauth/token?"
             ."grant_type=authorization_code&"
             ."code=$request->code&"
             ."redirect_uri=https://kodomat.herokuapp.com/get_token";
@@ -59,7 +66,55 @@ class AllegroController extends Controller
                 'ignore_errors' => true
             )
         );
-        
+
+        $response = json_decode(file_get_contents(
+            (stristr($resource, 'http') !== false 
+                ? $resource 
+                : $this->getUrl() . '/' . ltrim($resource, '/')
+            ), 
+            false, 
+            stream_context_create($options),
+        ));
+        dd($response);
+
+        // $userData = new UserData();
+        // $userData->user_id = Auth::user()->id;
+        // $userData->access_token = $response->access_token;
+        // $userData->token_type = $response->token_type;
+        // $userData->refresh_token = $response->refresh_token;
+        // $userData->expires_in = $response->expires_in;
+        // $userData->scope = $response->scope;
+        // $userData->allegro_api = $response->allegro_api;
+        // $userData->jti = $response->jti;
+        // $userData->save();
+
+        return $response;
+    }
+
+    public function getOrderEvents()
+    {
+        $json = true;
+        $token = "token";
+
+        $resource = "https://allegro.pl.allegrosandbox.pl/order/events";
+
+        $headers = array();
+        $data = array();
+
+        $options = array(
+            'http' => array(
+                'method'  => strtoupper('POST'),
+                'header'  => $this->parseHeaders($requestHeaders = array_replace(array(
+                    'Authorization'   => 'Bearer  ' . $token,
+                    'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+                    'Accept'          => 'application/vnd.allegro.public.v1+json',
+                    'Accept-Language' => 'pl-PL'
+                ))),
+                'content' => ($json ? json_encode($data) : $data),
+                'ignore_errors' => true
+            )
+        );
+
         $response = json_decode(file_get_contents(
             (stristr($resource, 'http') !== false 
                 ? $resource 
@@ -90,6 +145,12 @@ class AllegroController extends Controller
         $restApi = new AllegroRestApi($userData->access_token);
         $response = $restApi->get('/me');
     }
+
+    // --- ---
+    // --- ---
+    // --- ---
+    // --- ---
+    // --- ---
 
     public function parseHeaders(array $headers)
     {
