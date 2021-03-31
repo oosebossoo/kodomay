@@ -176,6 +176,8 @@ class AllegroController extends Controller
             false, 
             stream_context_create($options)
         ));
+
+        dd($response);
         
         // We have found an error in response
         if (isset($response->errors) || isset($response->error_description)) {
