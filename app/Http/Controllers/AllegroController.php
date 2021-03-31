@@ -141,65 +141,19 @@ class AllegroController extends Controller
 
     public function me()
     {
-        // $userData = UserData::where('user_id', Auth::user()->id)->get();
-        $token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTcyMzQ2MjgsInVzZXJfbmFtZSI6IjkzOTc5MDc2IiwianRpIjoiYTJkYTkzNDgtNGQ0MC00OTk1LTk2ZDQtYzEzYjU0OWUwZTBmIiwiY2xpZW50X2lkIjoiMTg0MmY0ZTAzZDEzNDdkNDgxMjI0NmY3NDM5YmFhYTEiLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnByb2ZpbGU6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOm9mZmVyczp3cml0ZSIsImFsbGVncm86YXBpOmJpbGxpbmc6cmVhZCIsImFsbGVncm86YXBpOmNhbXBhaWducyIsImFsbGVncm86YXBpOmRpc3B1dGVzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOmJpZHMiLCJhbGxlZ3JvOmFwaTpvcmRlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTphZHMiLCJhbGxlZ3JvOmFwaTpwYXltZW50czp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6d3JpdGUiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOnJlYWQiLCJhbGxlZ3JvOmFwaTpyYXRpbmdzIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczpyZWFkIiwiYWxsZWdybzphcGk6cGF5bWVudHM6cmVhZCJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZX0.pyMO0rdgYi91RIUMHl5220ctFVtZQnOHPGPgOfoKS7_L9rnCRC2guxHYQfyowGJv-GXD3Z6OZLvxNFx8dEpqfISR0rXX7Ptms5jMnzYi4PR48TBEDSmv7QYnE9hU0s3WNNswbX1nAUQZjRRkvkc7gwm0scad8zro7spgsKKG2SIh6-T0CuJZ-4YDJvNjzmt8KAuamxP9VPNar3mxwMKUg9dr-xTW-U4Q3hTucmBOcWWq52bayo7aA8mn2inyFrwPFnT_AYRqv-G-viBZypS-om_btFj4Z9lwgzaS-cMRfmUA0A7sWLPp1KaryDZPiOkjIYalRSGesEfc6h9Glg_MizfxUfvsoVXj3zU7Qasxs8HFIgAVhCq0mE-r4CaMjBkOmge4OvnPyp9_s2oOVtO1UT3Al5OQrEVJs7DiWCjf4CPauYHoIu_H_7KqPPiTTXc2eR1xwA-ZYGci8qF9CxEZY1XZhZHbin_P09VM1D3ZdgPKO66QwBL9a1ciqH_5kdigfVTws_awyOa6lk-HH5Srg-Lf_3zPfvXSbmJYl7Kqpe4S5yzpC1uSkuguI4ZE-1T46D_Qas2bmZztrKX8r17gCZEUD4nRhdwGzltPBXRgNPkEXhkzSPCuRM6jtlVWh20wXzKEy1XYM_kHU21T8m-XMPBvuWZjCCe8W_vH-lpc5zc';
-        // $restApi->get('/me');
-        $json = true;
+        $token =  'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTcyMzQ2MjgsInVzZXJfbmFtZSI6IjkzOTc5MDc2IiwianRpIjoiYTJkYTkzNDgtNGQ0MC00OTk1LTk2ZDQtYzEzYjU0OWUwZTBmIiwiY2xpZW50X2lkIjoiMTg0MmY0ZTAzZDEzNDdkNDgxMjI0NmY3NDM5YmFhYTEiLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnByb2ZpbGU6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOm9mZmVyczp3cml0ZSIsImFsbGVncm86YXBpOmJpbGxpbmc6cmVhZCIsImFsbGVncm86YXBpOmNhbXBhaWducyIsImFsbGVncm86YXBpOmRpc3B1dGVzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOmJpZHMiLCJhbGxlZ3JvOmFwaTpvcmRlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTphZHMiLCJhbGxlZ3JvOmFwaTpwYXltZW50czp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6d3JpdGUiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOnJlYWQiLCJhbGxlZ3JvOmFwaTpyYXRpbmdzIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczpyZWFkIiwiYWxsZWdybzphcGk6cGF5bWVudHM6cmVhZCJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZX0.pyMO0rdgYi91RIUMHl5220ctFVtZQnOHPGPgOfoKS7_L9rnCRC2guxHYQfyowGJv-GXD3Z6OZLvxNFx8dEpqfISR0rXX7Ptms5jMnzYi4PR48TBEDSmv7QYnE9hU0s3WNNswbX1nAUQZjRRkvkc7gwm0scad8zro7spgsKKG2SIh6-T0CuJZ-4YDJvNjzmt8KAuamxP9VPNar3mxwMKUg9dr-xTW-U4Q3hTucmBOcWWq52bayo7aA8mn2inyFrwPFnT_AYRqv-G-viBZypS-om_btFj4Z9lwgzaS-cMRfmUA0A7sWLPp1KaryDZPiOkjIYalRSGesEfc6h9Glg_MizfxUfvsoVXj3zU7Qasxs8HFIgAVhCq0mE-r4CaMjBkOmge4OvnPyp9_s2oOVtO1UT3Al5OQrEVJs7DiWCjf4CPauYHoIu_H_7KqPPiTTXc2eR1xwA-ZYGci8qF9CxEZY1XZhZHbin_P09VM1D3ZdgPKO66QwBL9a1ciqH_5kdigfVTws_awyOa6lk-HH5Srg-Lf_3zPfvXSbmJYl7Kqpe4S5yzpC1uSkuguI4ZE-1T46D_Qas2bmZztrKX8r17gCZEUD4nRhdwGzltPBXRgNPkEXhkzSPCuRM6jtlVWh20wXzKEy1XYM_kHU21T8m-XMPBvuWZjCCe8W_vH-lpc5zc';
+        $headers = [ 
+            "Accept: application/vnd.allegro.public.v1+json;charset=UTF-8", 
+            "Content-Type: application/vnd.allegro.public.v1+json", 
+            "Authorization: Bearer $token", 
+            "Api-Key: $clientId", 
+            "Accept-Language: PL" ];
 
-        $headers = array();
-        $data = array();
+        $curl = curl_init("https://allegro.pl.allegrosandbox.pl/me");
 
-        $resource = "https://allegro.pl.allegrosandbox.pl/me";
-
-        // Setting request options
-        $options = array(
-            'http' => array(
-                'method'  => strtoupper('GET'),
-                'header'  => $this->parseHeaders($requestHeaders = array_replace(array(
-                    /*'User-Agent'      => 'Kodomat',*/
-                    'Authorization'   => 'Bearer '. $token,
-                    'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-                    'Accept'          => 'application/vnd.allegro.public.v1+json',
-                    'Accept-Language' => 'pl-PL'
-                ), $headers)),
-                'content' => ($json ? json_encode($data) : $data),
-                'ignore_errors' => true
-            )
-        );
-
-        // Getting result from API
-        $response = json_decode(file_get_contents(
-            $resource, 
-            false, 
-            stream_context_create($options)
-        ));
-
-        // dd($response);
-        
-        // We have found an error in response
-        if (isset($response->errors) || isset($response->error_description)) {
-
-            // Throwing an exception
-            throw new RuntimeException(
-                'An error has occurred: ' . print_r($response, true),
-                $this->getResponseCode($http_response_header)
-            );
-        }
-        
-        // Checking if our response is a valid object
-        if (!is_object($response)) {
-            
-            // Creating an instance of stdClass
-            $response = new \stdClass();
-        }
-        
-        // Saving response and request headers
-        $response->request_headers  = $requestHeaders;
-        $response->response_headers = $http_response_header;
-        
-        // Returning response
-        dd($response);
-        // return response()->json($response);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $html = curl_exec($curl);   
+        echo $html;
     }
 
     // --- ---
