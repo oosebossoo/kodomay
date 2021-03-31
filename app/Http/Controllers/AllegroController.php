@@ -174,7 +174,7 @@ class AllegroController extends Controller
             stream_context_create($options)
         ));
 
-        dd($response);
+        // dd($response);
         
         // We have found an error in response
         if (isset($response->errors) || isset($response->error_description)) {
@@ -199,7 +199,7 @@ class AllegroController extends Controller
         
         // Returning response
         dd($response);
-        return response()->json($response);
+        // return response()->json($response);
     }
 
     // --- ---
