@@ -199,7 +199,7 @@ class AllegroController extends Controller
         $response->response_headers = $http_response_header;
         
         // Returning response
-        // return $response;
+        dd($response);
         return response()->json($response);
     }
 
