@@ -101,7 +101,7 @@ class AllegroController extends Controller
 
         $headers = [ 
             "Accept: application/vnd.allegro.public.v1+json", 
-            "Authorization: Basic" . base64_encode($this->clientSecret)
+            "Authorization: Basic " . base64_encode($this->clientId.":".$this->clientSecret)
         ];
 
         $post = [
