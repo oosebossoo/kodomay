@@ -95,7 +95,8 @@ class AllegroController extends Controller
 
     public function refreshToken()
     {
-        $token = UserData::where('user_id', 7)->get()[0];
+        //$token = UserData::where('user_id', 7)->get()[0];
+        $refresh_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiI5Mzk3OTA3NiIsInNjb3BlIjpbImFsbGVncm86YXBpOm9yZGVyczpyZWFkIiwiYWxsZWdybzphcGk6cHJvZmlsZTp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6b2ZmZXJzOndyaXRlIiwiYWxsZWdybzphcGk6YmlsbGluZzpyZWFkIiwiYWxsZWdybzphcGk6Y2FtcGFpZ25zIiwiYWxsZWdybzphcGk6ZGlzcHV0ZXMiLCJhbGxlZ3JvOmFwaTpiaWRzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOm9yZGVyczp3cml0ZSIsImFsbGVncm86YXBpOmFkcyIsImFsbGVncm86YXBpOnBheW1lbnRzOndyaXRlIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczp3cml0ZSIsImFsbGVncm86YXBpOnByb2ZpbGU6cmVhZCIsImFsbGVncm86YXBpOnJhdGluZ3MiLCJhbGxlZ3JvOmFwaTpzYWxlOnNldHRpbmdzOnJlYWQiLCJhbGxlZ3JvOmFwaTpwYXltZW50czpyZWFkIl0sImFsbGVncm9fYXBpIjp0cnVlLCJhdGkiOiIxYTE1ZTFmYy1hZjcyLTRhYzEtOTU1NS1kYzI0MjU4ZTc4ZjUiLCJleHAiOjE2MjUxMzQ2NjQsImp0aSI6IjFlMzY4MzkxLTBhYWMtNDAxMy05OGZlLTU1NDlmYzg3ZDA2ZCIsImNsaWVudF9pZCI6IjE4NDJmNGUwM2QxMzQ3ZDQ4MTIyNDZmNzQzOWJhYWExIn0.fNuV06k_qlEDDv97jYEDRX_13QSViI6tX5NgDwCDqOSHfEfvb0Ywet9kkZE3uvuLqmjn_AJbuSPn4MCaScaQUvt5jAhZo1lguzK1K1UcSjUP7pUxN5Ia55RgJPsWZ_3wpe1LhIqnnpUrhGjVOS1rJxa_T-oGdj1CVmATW5ghllm4boS8HHTIKdKCAEGQECf0USUdtgESsjfNOyENJq9zfg8yN_7VU-vqZSmPpWJ0sXDBc8PGoD3KzyLmdzCXQDMslnjxmZsGod_UCr10ldbuHwI9oejthtkbo2PYbJFROSz5LYdUBJoBy3ukPZA5Btp2Euk-OBesKf8aMEp308Gx6VtUj8CQXeMjYabhtcZk4dK2Hc3-8zIEAnFoHTyI61n-uCjXppNtR-R5rsi9Jf5SNJMExwFN_Mjk0JMfe7XYSul6gdjdpBgCj2mcIXEOVA1PoRT0id4j8zdUKMuOKfgexefhrl3m0t3xh5yuZhRuHbdSU0orgqAJeA8sEzGR-jCIp4-0AjhvdOiO-4PQvYIIgwWulaNTWBpeA03ti5_n0921DXId-KUpoVyehOUzhEbfIIrcf9P-gZV4xRVSfl7Jmf_WdWmtbbF76cUR2fqcrbkfnbSLCul-E50lNvgIb-gk3UWkWm4b9XT0Zjog90FGvtDbWyYpC2YwmqZcCtxFJbo';
         // $token = UserData::where('user_id', Auth::user()->id)->get()[0];
 
         $headers = [ 
@@ -105,7 +106,7 @@ class AllegroController extends Controller
 
         $post = [
             'grant_type' => 'refresh_token',
-            'refresh_token' => $token->refresh_token,
+            'refresh_token' => $refresh_token,
             'redirect_uri' => 'https://kodomat.herokuapp.com/get_token'
         ];
 
