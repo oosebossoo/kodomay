@@ -100,8 +100,8 @@ class AllegroController extends Controller
         // $token = UserData::where('user_id', Auth::user()->id)->get()[0];
 
         $headers = [ 
-            "Accept: application/vnd.allegro.public.v1+json", 
-            "Authorization: Basic " . base64_encode($this->clientId.":".$this->clientSecret)
+            "Accept" => "application/vnd.allegro.public.v1+json", 
+            "Authorization" => "Basic " . base64_encode("$this->clientId:$this->clientSecret")
         ];
 
         $post = [
