@@ -18,10 +18,11 @@ Route::get('/', function () {
 
 Route::get('/get_auth', [AllegroController::class, 'getAuth']);
 Route::get('/get_token', [AllegroController::class, 'getToken']);
+Route::get('/refresh_token', [AllegroController::class, 'refreshToken']);
 
 Route::get('/me', [AllegroController::class, 'me']);
 Route::get('/ord_events', [AllegroController::class, 'getOrderEvents']);
-//Route::get('/get_order_events', AllegroController::class, 'getOrderEvents');
+Route::get('/test', [AllegroController::class, 'checkoutForms']);
 
 Route::get('send_mail',[MailController::class, 'sendEmail']);
 
