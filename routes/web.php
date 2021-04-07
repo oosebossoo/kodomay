@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 Route::get('/get_auth', [AllegroController::class, 'getAuth']);
-Route::get('/get_token', [AllegroController::class, 'getToken']);
+Route::get('/get_token', [AllegroController::class, 'refreshToken']);
 Route::get('/refresh_token', [AllegroController::class, 'refreshToken']);
 
 Route::get('/me', [AllegroController::class, 'me']);
