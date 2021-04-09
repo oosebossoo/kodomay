@@ -175,13 +175,17 @@ class AllegroController extends Controller
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-        $response = curl_exec($curl); 
+        $response = curl_exec($curl);
+        
+        $res = substr($response, 0, -1);
 
         curl_close($curl);
 
-        runEmail($response->email);
+        return response()->json($res);
 
-        return response()->json($response);
+        // runEmail($response->email);
+
+        // return response()->json($response);
     }
 
     public function runEmail($email)
