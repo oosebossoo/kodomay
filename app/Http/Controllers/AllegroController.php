@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use AsocialMedia\AllegroApi\AllegroRestApi;
 use App\Repos\AllegroRepo;
 
+use App\Http\Controllers\MailController;
+
 use App\Models\UserData;
 
 use Auth;
@@ -40,10 +42,6 @@ class AllegroController extends Controller
 
     public function getToken(Request $request)
     {
-        // $response = $restApi->get('/sale/user-ratings?user.id=' . $yourUserId)
-        // post($resource, $data, array $headers = array(), $json = true)
-        // sendRequest($resource, 'POST', $data, $headers, $json);
-        // sendRequest($resource, $method,  $data = array(),    array $headers = array(), $json = true)
         $json = true;
 
         $resource = "https://allegro.pl.allegrosandbox.pl/auth/oauth/token?"
@@ -100,8 +98,8 @@ class AllegroController extends Controller
         // $token = UserData::where('user_id', Auth::user()->id)->get()[0];
 
         $headers = [ 
-            "Accept" => "application/vnd.allegro.public.v1+json", 
-            "Authorization" => "Basic " . base64_encode("$this->clientId:$this->clientSecret")
+            "Accept: application/vnd.allegro.public.v1+json", 
+            "Authorization: Basic " . base64_encode("$this->clientId:$this->clientSecret")
         ];
 
         $post = [
@@ -113,6 +111,7 @@ class AllegroController extends Controller
         $curl = curl_init("https://allegro.pl/auth/oauth/token");
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl,CURLOPT_POST,true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
         $response = curl_exec($curl);   
         curl_close($curl);
@@ -129,14 +128,20 @@ class AllegroController extends Controller
             "Authorization: Bearer $token->access_token"
         ];
 
-        $curl = curl_init("https://api.allegro.pl.allegrosandbox.pl/order/events");
+        $curl = curl_init("https://api.allegro.pl.allegrosandbox.pl/order/events?type=READY_FOR_PROCESSING");
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         $response = curl_exec($curl);   
         curl_close($curl);
+        
+        if (isset($response))
+        {
+            $this->checkoutForms($response->checkoutFormId);
+        }
+
         return response()->json($response);
     }
 
-    public function checkoutForms()
+    public function getLastOrderEvents()
     {
         $token = UserData::where('user_id', 7)->get()[0];
         // $token = UserData::where('user_id', Auth::user()->id)->get()[0];
@@ -146,7 +151,27 @@ class AllegroController extends Controller
             "Authorization: Bearer $token->access_token"
         ];
 
-        $curl = curl_init("https://api.allegro.pl.allegrosandbox.pl/order/checkout-forms/81818531-93a8-11eb-b68b-59dfcd1e885f");
+        $curl = curl_init("https://api.allegro.pl.allegrosandbox.pl/order/event-stats");
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return response()->json($response);
+    }
+
+    public function checkoutForms()
+    // public function checkoutForms($checkoutFormId)
+    {
+        $token = UserData::where('user_id', 7)->get()[0];
+        // $token = UserData::where('user_id', Auth::user()->id)->get()[0];
+
+        $headers = [ 
+            "Accept: application/vnd.allegro.public.v1+json", 
+            "Authorization: Bearer $token->access_token"
+        ];
+
+        $curl = curl_init("https://api.allegro.pl.allegrosandbox.pl/order/checkout-forms/66b231c0-9789-11eb-80ab-8b7eefbb1428");
+
+        // $curl = curl_init("https://api.allegro.pl.allegrosandbox.pl/order/checkout-forms/$checkoutFormId");
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
@@ -154,24 +179,38 @@ class AllegroController extends Controller
 
         curl_close($curl);
 
+        runEmail($response->email);
+
         return response()->json($response);
     }
 
-    public function me()
+    public function runEmail($email)
     {
-        $token = UserData::where('user_id', 7)->get()[0];
+        
+    }
+
+    public function getAllegroUsers()
+    {
+        $users = array();
+        $tokens = UserData::where('user_id', 7)->get();
         // $token = UserData::where('user_id', Auth::user()->id)->get()[0];
 
-        $headers = [ 
-            "Accept: application/vnd.allegro.public.v1+json", 
-            "Authorization: Bearer $token->access_token"
-        ];
+        foreach ($tokens as $token)
+        {
+            // dd($token->access_token);
+            $headers = [ 
+                "Accept: application/vnd.allegro.public.v1+json", 
+                "Authorization: Bearer $token->access_token"
+            ];
 
-        $curl = curl_init("https://api.allegro.pl.allegrosandbox.pl/me");
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $response = curl_exec($curl);   
-        curl_close($curl);
-        return response()->json($response);
+            $curl = curl_init("https://api.allegro.pl.allegrosandbox.pl/me");
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            $response = curl_exec($curl);   
+            curl_close($curl);
+            $user[] = json_encode($response);
+        }
+        dd($user);
+        return $user;
     }
 
     // --- ---

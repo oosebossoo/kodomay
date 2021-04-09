@@ -26,7 +26,6 @@ class AllegroRepo
 
     // get_status_of_ofert(id) 
     // -> /order/event
-    // -> /sale/offer-evets
 
     public function getOrderEvents()
     {

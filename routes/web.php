@@ -17,14 +17,15 @@ Route::get('/', function () {
 });
 
 Route::get('/get_auth', [AllegroController::class, 'getAuth']);
-Route::get('/get_token', [AllegroController::class, 'refreshToken']);
+Route::get('/get_token', [AllegroController::class, 'getToken']);
 Route::get('/refresh_token', [AllegroController::class, 'refreshToken']);
 
-Route::get('/me', [AllegroController::class, 'me']);
+Route::get('/me', [AllegroController::class, 'getAllegroUsers']);
 Route::get('/ord_events', [AllegroController::class, 'getOrderEvents']);
+Route::get('/lst_ord_events', [AllegroController::class, 'getLastOrderEvents']);
 Route::get('/test', [AllegroController::class, 'checkoutForms']);
 
-Route::get('send_mail',[MailController::class, 'sendEmail']);
+Route::get('send_mail',[MailController::class, 'sendCode']);
 
 Route::get('/get_code', [ CodesController::class, 'getCode']);
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);

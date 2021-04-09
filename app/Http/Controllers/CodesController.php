@@ -75,28 +75,27 @@ class CodesController extends Controller
         return $result;
     }
 
-    public function getAllCode(Request $request)
+    public function getAllCode()
     {
-        $result = Code::all();
+        $result = Code::where('user_id', Auth::user()->id)->get();
 
         return $result;
     }
 
-    public function getSellableCode(Request $request)
+    public static function getSellableCode()
     {
-        $result = Code::where('status', 1)->first();
+        $result = Code::where('status', 1)->where('user_id', Auth::user()->id)->first();
         return response()->json($result);
     }
 
     public function getSoldCodes(Request $request)
     {
-        $result = Code::where('status', 0)->get();
+        $result = Code::where('status', 0)->where('user_id', Auth::user()->id)->get();
         return response()->json($result);
     }
 
-    public function changeStatusOfCode(Request $request)
+    public static function changeStatusOfCode($id)
     {
-        $id = $request->id;
         $code = Code::where('id', $id)->get();
 
         if($code[0]->status == 1)

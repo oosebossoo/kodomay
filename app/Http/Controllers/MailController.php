@@ -8,20 +8,42 @@ use Auth;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CodesController;
+use App\Models\Code;
 
 class MailController extends Controller
 {
-   public function sendEmail(Request $request) 
+   public function sendCode(Request $request) 
    {
-      $data = array('name'=> $request->customerName, 'code' => $request->code);
+
+      $code = CodesController::getSellableCode();
+      $codeId = json_decode($code->original->id);
+
+      CodesController::changeStatusOfCode($codeId);
+
+      $data = array('name'=> $request->customerName, 'code' => $code->original->code);
     
-      Mail::send(['text'=>'mail'], $data, function($message) {
-         $message->to($request->mail, $request->customerName)->subject
-            ('Order no. '.$request->subject);
-         $message->from('answerEmail@gmail.com','answerEmail');
-      });
+      // Mail::send(['text'=>'mail'], $data, function($message) {
+      //    $message->to($request->mail, $request->customerName)->subject
+      //       ('Order no. '.$request->subject);
+      //    $message->from('noreplay@kodo.mat','Kodomat');
+      // });
+
+      return Code::where('id', $codeId)->get()[0];
         
    }
+
+   // public function sendEmail(Request $request) 
+   // {
+   //    $data = array('name'=> $request->customerName, 'code' => $request->code);
+    
+   //    Mail::send(['text'=>'mail'], $data, function($message) {
+   //       $message->to("vyjpq3e2u1+1ee2043b8@user.allegrogroup.pl", "Sebastian")->subject
+   //          ('Order no. 1234567890');
+   //       $message->from('noreplay@kodo.mat','Kodomat');
+   //    });
+        
+   // }
 
    public function activate()
    {
