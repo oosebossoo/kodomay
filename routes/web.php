@@ -13,7 +13,7 @@ use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\AllegroController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json("1" => "jeden");
 });
 
 Route::get('/get_auth', [AllegroController::class, 'getAuth']);
