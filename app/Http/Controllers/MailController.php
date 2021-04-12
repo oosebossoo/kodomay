@@ -13,24 +13,24 @@ use App\Models\Code;
 
 class MailController extends Controller
 {
-   public function sendCode(Request $request) 
+   public static function sendCode($request) 
    {
+      $mail = $request["mail"];
+      $customerName = $request["customerName"];
 
       $code = CodesController::getSellableCode();
       $codeId = json_decode($code->original->id);
 
+      $data = array('name'=> $request["customerName"], 'code' => $code->original->code, 'email' => $request["mail"]);
+
       CodesController::changeStatusOfCode($codeId);
 
-      $data = array('name'=> $request->customerName, 'code' => $code->original->code);
-    
-      // Mail::send(['text'=>'mail'], $data, function($message) {
-      //    $message->to($request->mail, $request->customerName)->subject
-      //       ('Order no. '.$request->subject);
-      //    $message->from('noreplay@kodo.mat','Kodomat');
-      // });
-
-      return Code::where('id', $codeId)->get()[0];
-        
+      Mail::send(['text'=>'mail'], $data, function($message) use ($request) {
+         $message->to($request["mail"], $request["customerName"])->subject
+            ('Order no. '.$request["subject"]);
+         $message->from('noreplay@kodo.mat','Kodomat');
+      });
+      return true;
    }
 
    // public function sendEmail(Request $request) 

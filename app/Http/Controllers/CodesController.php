@@ -84,7 +84,8 @@ class CodesController extends Controller
 
     public static function getSellableCode()
     {
-        $result = Code::where('status', 1)->where('user_id', Auth::user()->id)->first();
+        // $result = Code::where('status', 1)->where('user_id', Auth::user()->id)->first();
+        $result = Code::where('status', 1)->where('user_id', 7)->first();
         return response()->json($result);
     }
 

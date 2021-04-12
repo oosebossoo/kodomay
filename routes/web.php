@@ -24,6 +24,7 @@ Route::get('/me', [AllegroController::class, 'getAllegroUsers']);
 Route::get('/ord_events', [AllegroController::class, 'getOrderEvents']);
 Route::get('/lst_ord_events', [AllegroController::class, 'getLastOrderEvents']);
 Route::get('/test', [AllegroController::class, 'checkoutForms']);
+Route::get('/run_email', [AllegroController::class, 'runEmail']);
 
 Route::get('send_mail',[MailController::class, 'sendCode']);
 
