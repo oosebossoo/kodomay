@@ -71,7 +71,7 @@ class CodesController extends Controller
     public function getCode(Request $request)
     {
         $result = Code::find($request->id);
-
+        dd($result);
         return $result;
     }
 
