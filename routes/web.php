@@ -34,6 +34,7 @@ Route::get('/get_sellable_code', [ CodesController::class, 'getSellableCode']);
 Route::get('/get_sold_codes', [ CodesController::class, 'getSoldCodes']);
 
 Route::post('/change_status_of_code', [ CodesController::class, 'changeStatusOfCode']);
+Route::get('/add_codes_form_file', [ CodesController::class, 'addCodesFormFile']);
 Route::get('/add_codes_form_text_box', [ CodesController::class, 'addCodesFormTextBox']);
 
 Route::get('/login', [AccountController::class, 'create']);

@@ -119,10 +119,12 @@ class AllegroController extends Controller
         return response()->json($response);
     }
 
-    public function getOrderEvents()
+    public function getOrderEvents(Request $request)
     {
-        $tokens = UserData::where('user_id', 7)->get();
+        return $request;
+        $tokens = UserData::where('user_id', $request->user_id)->get();
         // $token = UserData::where('user_id', Auth::user()->id)->get()[0];
+        return response()->json($tokens[0]->jti);
         foreach ($tokens as $token)
         {
             $response = Http::withHeaders([

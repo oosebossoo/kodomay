@@ -43,7 +43,6 @@ class AccountController extends Controller
 
     public function activation(Request $request)
     {
-        //dd($request->activate_code);
         User::where('activate_code', $request->activate_code)->update(['activate' => 1,'activate_code' => ""]);
 
         return redirect('/activation_success');
