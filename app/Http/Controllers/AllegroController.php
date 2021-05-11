@@ -182,7 +182,7 @@ class AllegroController extends Controller
                         // $orderTmp["quantity"] = $order["order"]["lineItems"]["orginalPrice"]["quantity"];
                         // $orderTmp["order_price"] = $order["order"]["lineItems"]["price"]["amount"];
                         
-                        dd($order["order"], $orderTmp);
+                        // dd($order["order"], $orderTmp);
                         dd($order["order"]);
                         $buyer = $detailsInfo["buyer"];
 
