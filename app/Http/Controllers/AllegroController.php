@@ -176,13 +176,13 @@ class AllegroController extends Controller
                         // $buyer = $order["order"]["buyer"];
                         $detailsInfo = $this->checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
                         // dd($detailsInfo);
-                        // $orderTmp["offer_id"] = $order["order"]["lineItems"]["offert"]["id"];
+                        $orderTmp["offer_id"] = $order["order"]["lineItems"][0]["offer"]["id"];
                         // $orderTmp["offer_name"] = $order["order"]["lineItems"]["offer"]["name"];
                         // $orderTmp["offer_price"] = $order["order"]["lineItems"]["orginalPrice"]["amount"];
                         // $orderTmp["quantity"] = $order["order"]["lineItems"]["orginalPrice"]["quantity"];
                         // $orderTmp["order_price"] = $order["order"]["lineItems"]["price"]["amount"];
                         
-                        // dd($order["order"], $orderTmp);
+                        dd($order["order"], $orderTmp);
                         dd($order["order"]);
                         $buyer = $detailsInfo["buyer"];
 
