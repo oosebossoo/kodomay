@@ -33,17 +33,17 @@ class MailController extends Controller
       return true;
    }
 
-   // public function sendEmail(Request $request) 
-   // {
-   //    $data = array('name'=> $request->customerName, 'code' => $request->code);
+   public function sendEmail(Request $request) 
+   {
+      $data = array('name'=> $request->customerName, 'code' => $request->code);
     
-   //    Mail::send(['text'=>'mail'], $data, function($message) {
-   //       $message->to("vyjpq3e2u1+1ee2043b8@user.allegrogroup.pl", "Sebastian")->subject
-   //          ('Order no. 1234567890');
-   //       $message->from('noreplay@kodo.mat','Kodomat');
-   //    });
+      Mail::send(['text'=>'mail'], $data, function($message) {
+         $message->to("vyjpq3e2u1+1ee2043b8@user.allegrogroup.pl", "Sebastian")->subject
+            ('Order no. 1234567890');
+         $message->from('noreplay@kodo.mat','Kodomat');
+      });
         
-   // }
+   }
 
    public function activate()
    {

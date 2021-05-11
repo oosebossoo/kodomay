@@ -20,7 +20,7 @@ class AccountController extends Controller
     {
         $this->validate($request, [
             'email'   => 'required|email',
-            'password'  => 'required|alphaNum'
+            'password'  => 'required'
         ]);
 
         $user_data = array(

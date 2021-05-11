@@ -18,6 +18,7 @@ class UserData extends Model
         'expires_in',
         'scope',
         'allegro_api',
-        'jti'
+        'jti',
+        'last_event'
     ];
 }
