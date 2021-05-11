@@ -16,6 +16,13 @@ Route::get('/', function () {
     return ["1" => "jeden", "2" => "dwa"];
 });
 
+Route::get('/home', function () {
+    if (isset(Auth::user()->id)) {
+        return ["name" => Auth::user()->name, "email" => Auth::user()->email];
+    }
+    return ["status" => "logout", "desc" => "please login"];
+});
+
 Route::get('/get_auth', [AllegroController::class, 'getAuth']);
 Route::get('/get_token', [AllegroController::class, 'getToken']);
 Route::get('/refresh_token', [AllegroController::class, 'refreshToken']);
