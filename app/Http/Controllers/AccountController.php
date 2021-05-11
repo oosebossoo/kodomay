@@ -29,7 +29,7 @@ class AccountController extends Controller
         );
 
         if(Auth::attempt($user_data)) {
-            return 'Zalogowano';
+            return redirect('/home');
         } else {
             return 'Zle informacje';
         }

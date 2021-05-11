@@ -246,7 +246,6 @@ class AllegroController extends Controller
                 $this->refreshTokenRepo($userData->refresh_token);
                 $user[] = json_decode($response);
             }  
-            $user[] = json_decode($response);
         }
 
         // --- DEV TEST ---
