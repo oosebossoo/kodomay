@@ -152,6 +152,7 @@ class AllegroController extends Controller
         $userDatas = UserData::where('user_id', $request->user_id)->get();
         foreach ($userDatas as $userData)
         {
+            dd($userData->access_token);
             // --- PRODUKCJA ---
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
@@ -179,10 +180,10 @@ class AllegroController extends Controller
                         // $buyer = $order["buyer"];
 
                         $orderTmp["offer_id"] = $order["order"]["lineItems"][0]["offer"]["id"];
-                        $orderTmp["offer_name"] = $order["order"]["lineItems"]["offer"]["name"];
-                        $orderTmp["offer_price"] = $order["order"]["lineItems"]["orginalPrice"]["amount"];
-                        $orderTmp["quantity"] = $order["order"]["lineItems"]["orginalPrice"]["quantity"];
-                        $orderTmp["order_price"] = $order["order"]["lineItems"]["price"]["amount"];
+                        $orderTmp["offer_name"] = $order["order"]["lineItems"][0]["offer"]["name"];
+                        $orderTmp["offer_price"] = $order["order"]["lineItems"][0]["orginalPrice"]["amount"];
+                        $orderTmp["quantity"] = $order["order"]["lineItems"][0]["orginalPrice"]["quantity"];
+                        $orderTmp["order_price"] = $order["order"]["lineItems"][0]["price"]["amount"];
                         
                         dd($order["order"], $orderTmp, $buyer);
                         // $this->changeStatus($order["order"]["checkoutForm"]["id"], $userData->access_token, "PROCESSING");
