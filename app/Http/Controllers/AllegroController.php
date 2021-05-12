@@ -294,7 +294,7 @@ class AllegroController extends Controller
         //         $user[] = json_decode($response);
         //     }
         // }
-        return response()->json($user);
+        return response()->json($user[0]);
     }
 
     // --- ---
