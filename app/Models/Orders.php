@@ -19,5 +19,6 @@ class Orders extends Model
         'quantity',
         'order_price',
         'order_currency',
+        'customer_id',
     ];
 }

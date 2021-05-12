@@ -150,7 +150,7 @@ class AllegroController extends Controller
 
         $userDatas = UserData::where('user_id', $request->user_id)->get();
 
-        dd($userDatas);
+        // dd($userDatas);
         foreach ($userDatas as $userData)
         {
             // --- PRODUKCJA ---
@@ -182,6 +182,7 @@ class AllegroController extends Controller
                         $customer = new Customer;
 
 
+
                         $orderModel = new Orders;
                         $orderModel->offer_id = $detailsInfo->lineItems[0]["offer"]["id"];
                         // $orderModel->offer_name = $detailsInfo->lineItems[0]["offer"]["name"];
@@ -190,6 +191,7 @@ class AllegroController extends Controller
                         // $orderModel->quantity = $detailsInfo->lineItems[0]["quantity"];
                         // $orderModel->order_price = $detailsInfo->lineItems[0]["price"]["amount"];
                         // $orderModel->order_currency = $detailsInfo->lineItems[0]["price"]["currency"];
+                        $orderModel->customer_id = $detailsInfo->lineItems[0]["price"]["currency"];
                         $orderModel->save();
 
                         dd($orderModel);
