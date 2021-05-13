@@ -14,8 +14,7 @@ class AccountController extends Controller
 {
     public function create()
     {
-        // return view('login');
-        return "zalogowano";
+        return view('login');
     }
 
     public function store(Request $request)
@@ -31,7 +30,8 @@ class AccountController extends Controller
         );
 
         if(Auth::attempt($user_data)) {
-            return redirect('/home');
+            return "zalogowano";
+            // return redirect('/home');
         } else {
             return 'Zle informacje';
         }
