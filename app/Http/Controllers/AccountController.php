@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\MainController;
 
 use App\Models\User;
 
@@ -13,8 +14,8 @@ class AccountController extends Controller
 {
     public function create()
     {
-        MainController::csrfToken();
-        return view('login',[ $token ]);
+        // MainController::csrfToken();
+        return view('login');
     }
 
     public function store(Request $request)

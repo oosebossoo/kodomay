@@ -9,7 +9,7 @@ use AsocialMedia\AllegroApi\AllegroApi;
 
 class MainController extends Controller
 {
-    public function csrf_token()
+    public static function csrfToken(Request $request)
     {   
         $token = $request->session()->token();
 
