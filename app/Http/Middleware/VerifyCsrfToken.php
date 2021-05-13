@@ -13,8 +13,5 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/register',
-        '/login',
-        'https://kodomat.herokuapp.com/',
-        'https://kodomat.herokuapp.com/*',
     ];
 }

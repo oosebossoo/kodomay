@@ -14,7 +14,6 @@ class AccountController extends Controller
 {
     public function create()
     {
-        // MainController::csrfToken();
         return view('login');
     }
 
