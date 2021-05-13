@@ -217,7 +217,7 @@ class AllegroController extends Controller
                         else {
                             $log[] = "old order: ".$order["id"];
                         }
-                        dd([$details, $log]);
+                        // dd([$details, $log]);
                     }
                     $userData->last_event = $lastEvent;
                     $userData->save();
@@ -308,6 +308,13 @@ class AllegroController extends Controller
         //     }
         // }
         return response()->json($user);
+    }
+
+    public function getOrders()
+    {
+        $orders = Orders::select('id','offer_id', 'offer_name', 'order_price', 'order_currency', 'customer_id', 'order_date')->where('order_currency', "PLN")->orderBy('order_date', 'desc')->get();
+
+        return $orders;
     }
 
     // --- ---
