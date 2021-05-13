@@ -37,7 +37,7 @@
    @endif
 
    <form method="post" action="{{ url('/login') }}">
-    {{ csrf_field() }}
+    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
     <div class="form-group">
      <label>Enter Email</label>
      <input type="email" name="email" class="form-control" />

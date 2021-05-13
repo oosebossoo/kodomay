@@ -13,7 +13,8 @@ class AccountController extends Controller
 {
     public function create()
     {
-        return view('login');
+        MainController::csrfToken();
+        return view('login',[ $token ]);
     }
 
     public function store(Request $request)
