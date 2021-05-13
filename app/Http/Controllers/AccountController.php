@@ -14,7 +14,8 @@ class AccountController extends Controller
 {
     public function create()
     {
-        return view('login');
+        // return view('login');
+        return "zalogowano";
     }
 
     public function store(Request $request)
