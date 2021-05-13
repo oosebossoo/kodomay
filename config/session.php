@@ -145,7 +145,7 @@ return [
     'path' => '/',
 
     'secure' => env('SESSION_SECURE_COOKIE', true),
-    'same_site' => 'none',
+    'same_site' => 'lax',
 
     /*
     |--------------------------------------------------------------------------
