@@ -150,22 +150,13 @@ class AllegroController extends Controller
 
         $userDatas = UserData::where('user_id', $request->user_id)->get();
 
-        // dd($userDatas);
         foreach ($userDatas as $userData)
         {
             // --- PRODUKCJA ---
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&limit=100");
-
-
-            // --- DEV TEST --- 
-            // $response = Http::withHeaders([
-            //     "Accept" => "application/vnd.allegro.public.v1+json",
-            //     "Authorization" => "Bearer $userData->access_token"
-            // ])->get("https://api.allegro.pl.allegrosandbox.pl/order/events?type=READY_FOR_PROCESSING");
-            // --- DEV TEST --- 
+            ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING");
 
             if(isset($response["events"])) {
                 $res = $response["events"];
@@ -225,6 +216,7 @@ class AllegroController extends Controller
                     $desc = "Oh yhee.. some new orders :) ";
                 }
                 else{
+                    $log[] = "last order: ".$lastEvent;
                     $status = 0;
                     $desc = "Please... give me some orders :( ";
                 }
@@ -238,12 +230,21 @@ class AllegroController extends Controller
         }
         return ["status" => $status, "desc" => $desc, $log];
     }
-    public static function getLastEvent()
+
+    public function getLastEvent(Request $request)
+    {
+        $userData = UserData::where('user_id', $request->user_id)->get();
+        // dd($userData[0]["access_token"]);
+        return $this->getLastEventRepo($userData[0]["access_token"]);
+    }
+
+    public static function getLastEventRepo($userData)
     {
         $response = Http::withHeaders([
             "Accept" => "application/vnd.allegro.public.v1+json",
-            "Authorization" => "Bearer $token->access_token"
-        ])->get("https://api.allegro.pl.allegrosandbox.pl/order/events?/order/event-stats ");
+            "Authorization" => "Bearer $userData"
+        ])->get("https://api.allegro.pl/order/event-stats");
+        return $response["latestEvent"]["id"];
     }
 
     public static function changeStatus($checkOutFormId, $token, $status)
