@@ -30,8 +30,8 @@ class AccountController extends Controller
         );
 
         if(Auth::attempt($user_data)) {
-            return "zalogowano";
-            // return redirect('/home');
+            // return "zalogowano";
+            return redirect('/home');
         } else {
             return 'Zle informacje';
         }
