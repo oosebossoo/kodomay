@@ -20,7 +20,8 @@ Route::get('/home', function () {
     if (Auth::check()) {
         return ["name" => Auth::user()->name, "email" => Auth::user()->email];
     }
-    return redirect('/login');
+    return "nie działa logowanie";
+    //return redirect('/login');
 });
 
 Route::get('/get_auth', [AllegroController::class, 'getAuth']);
