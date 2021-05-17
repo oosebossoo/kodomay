@@ -19,6 +19,9 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
+        if(Auth::check()) {
+            return redirect('/home');
+        }
         $this->validate($request, [
             'email'   => 'required|email',
             'password'  => 'required'
