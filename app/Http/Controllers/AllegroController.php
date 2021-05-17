@@ -271,10 +271,10 @@ class AllegroController extends Controller
 
     public function getAllegroUsers()
     {
-        $users = array();
-
         // --- PRODUKCJA --- 
         $userDatas = UserData::where('user_id',Auth::user()->id)->get();
+
+        $users = array();
         foreach ($userDatas as $userData)
         {
             // dd($token);
