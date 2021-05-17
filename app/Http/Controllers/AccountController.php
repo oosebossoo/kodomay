@@ -30,6 +30,7 @@ class AccountController extends Controller
         );
 
         if(Auth::attempt($user_data)) {
+            return redirect('/home');
             if (Auth::check()) {
                 return ["name" => Auth::user()->name, "email" => Auth::user()->email];
             }
