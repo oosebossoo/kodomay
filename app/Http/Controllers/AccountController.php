@@ -30,8 +30,10 @@ class AccountController extends Controller
         );
 
         if(Auth::attempt($user_data)) {
-            return redirect('/home');
-            return ["status" => "login", "desc" => ["id" => Auth::user()->id, "name" => Auth::user()->name]];
+            if (Auth::check()) {
+                return ["name" => Auth::user()->name, "email" => Auth::user()->email];
+            }
+            return ["status" => "logout", "desc" => "please login"];
         } else {
             return 'Zle informacje';
         }
