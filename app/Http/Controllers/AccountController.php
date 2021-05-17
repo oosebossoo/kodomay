@@ -14,6 +14,9 @@ class AccountController extends Controller
 {
     public function create()
     {
+        if(Auth::check()) {
+            return redirect('/home');
+        }
         return view('login');
     }
 
