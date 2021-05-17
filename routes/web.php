@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    if (isset(Auth::user()->id)) {
+    if (Auth::check()) {
         return ["name" => Auth::user()->name, "email" => Auth::user()->email];
     }
     return ["status" => "logout", "desc" => "please login"];
