@@ -20,7 +20,7 @@ Route::get('/home', function () {
     if (Auth::check()) {
         return ["name" => Auth::user()->name, "email" => Auth::user()->email];
     }
-    return ["status" => "logout", "desc" => "please login"];
+    return redirect('/login');
 });
 
 Route::get('/get_auth', [AllegroController::class, 'getAuth']);
