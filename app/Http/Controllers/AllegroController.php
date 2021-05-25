@@ -149,6 +149,11 @@ class AllegroController extends Controller
         return response()->json($response);
     }
 
+    public function endOfGettingToken(Request $request)
+    {
+        return $request;
+    }
+
     public function getOffer()
     {
         $userData = UserData::where('user_id', Auth::user()->id)->get()[0];
