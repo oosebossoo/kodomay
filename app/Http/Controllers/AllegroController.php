@@ -113,27 +113,27 @@ class AllegroController extends Controller
     {
         $clientId = '1842f4e03d1347d4812246f7439baaa1';
         $clientSecret = 'JvRLfxOdGmLBNRooPqnxQJOKFnwZ7XW1bW5m7tPCNb1LPaw5ttje2g7Fcz0OS6ri';
-        $token = UserData::where('user_id', 7)->get()[1];
+        // $token = UserData::where('user_id', 7)->get()[1];
         // $refresh_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiI5Mzk3OTA3NiIsInNjb3BlIjpbImFsbGVncm86YXBpOm9yZGVyczpyZWFkIiwiYWxsZWdybzphcGk6cHJvZmlsZTp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6b2ZmZXJzOndyaXRlIiwiYWxsZWdybzphcGk6YmlsbGluZzpyZWFkIiwiYWxsZWdybzphcGk6Y2FtcGFpZ25zIiwiYWxsZWdybzphcGk6ZGlzcHV0ZXMiLCJhbGxlZ3JvOmFwaTpiaWRzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOm9yZGVyczp3cml0ZSIsImFsbGVncm86YXBpOmFkcyIsImFsbGVncm86YXBpOnBheW1lbnRzOndyaXRlIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczp3cml0ZSIsImFsbGVncm86YXBpOnByb2ZpbGU6cmVhZCIsImFsbGVncm86YXBpOnJhdGluZ3MiLCJhbGxlZ3JvOmFwaTpzYWxlOnNldHRpbmdzOnJlYWQiLCJhbGxlZ3JvOmFwaTpwYXltZW50czpyZWFkIl0sImFsbGVncm9fYXBpIjp0cnVlLCJhdGkiOiIxMjUyNjIxNy1iZDI4LTQ2MTAtOTg5YS0xZWRhODZjMDc2NzMiLCJleHAiOjE2MjU1NjIwOTQsImp0aSI6IjVjN2ViNzE3LTQ3YmUtNDAwYS04ZjhiLTM3YzZiMjU4MmY2YyIsImNsaWVudF9pZCI6IjE4NDJmNGUwM2QxMzQ3ZDQ4MTIyNDZmNzQzOWJhYWExIn0.TJah9nT8ZXLDRoUGyovgUM9suoldaNDeJAqjMfa6yZOzWrHPRfWaTluhTC0---XUh48_B6YC7mpXerqEnwcBoNa__LiastBu5rhzI3Jw_UwQF_BFYH7VD4QLIBrc2YWYe4wdyuIcRkq4wg2LumThAvJgsma0kAs518TJ5UCbsFpUYc3UcnNtrIdMgtVRAY0xxe-slMzDWhFIZ5It_JcAm_aRCZ31NlLXdFnx9UpP4ZgbKnYHo19kT0fGmNw4RDucVhKRwG19WpdKmbbM-Lr8958-48mYpCV0B1IAXnoNGQTL7MI8MKf-DK1I7hHhB_5NZdwuUzE3jOPyjPkqonai5xiC5b-QOySFYgibSohtlBxNp7bDaCq8tqt-8dpvfaVuB-rdW73L9pfrwwwpOEW7P7sIbmT9EPoivPFVgKVAWHXLPA2INk5o7wSKvpdazYCxpVZf7sBDVDhZOk5I9mwI1S6tfkBj0wVZz-gzaJuOYChjCqlFfT4ZJA2tPaH25jN-YpnlabcJYE_w-3T__9IeFixVc4GoIAjKUGYK2USULREiPNRu7d_HI4Uy-Odnpg8pdHyFzBWSbnSrBFdkYDGNemKa6Df9SN3Q4tEli9_aEkOZL7Xj15amz2W4nrGl8J74TgNwYxm-Uhtn73zYeuMMx_YulxX5m7kuup64uip4Kec';
-        $token = UserData::where('user_id', Auth::user()->id)->get()[0];
-        $headers = [ 
-            "Accept: application/vnd.allegro.public.v1+json", 
-            "Authorization: Basic " . base64_encode("$this->clientId:$$this->clientSecret")
-        ];
+        // $token = UserData::where('user_id', Auth::user()->id)->get()[0];
+        // $headers = [ 
+        //     "Accept: application/vnd.allegro.public.v1+json", 
+        //     "Authorization: Basic " . base64_encode("$this->clientId:$$this->clientSecret")
+        // ];
 
-        $post = [
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $token->refresh_token,
-            'redirect_uri' => 'https://kodomat.herokuapp.com/get_token'
-        ];
+        // $post = [
+        //     'grant_type' => 'refresh_token',
+        //     'refresh_token' => $token->refresh_token,
+        //     'redirect_uri' => 'https://kodomat.herokuapp.com/get_token'
+        // ];
 
-        $curl = curl_init("https://allegro.pl/auth/oauth/token");
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl,CURLOPT_POST,true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
-        $response = curl_exec($curl);   
-        curl_close($curl);
+        // $curl = curl_init("https://allegro.pl/auth/oauth/token");
+        // curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($curl,CURLOPT_POST,true);
+        // curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
+        // $response = curl_exec($curl);   
+        // curl_close($curl);
 
         // ----------------------------------------------------------------------------
         // ----------------------------+------------------+----------------------------
@@ -141,12 +141,44 @@ class AllegroController extends Controller
         // ----------------------------+--------|---------+----------------------------
         // -------------------------------------V--------------------------------------
 
+        $response = Http::withHeaders([
+            "Accept" => "application/vnd.allegro.public.v1+json",
+            "Authorization" => "Basic " . base64_encode("$this->clientId:$$this->clientSecret")
+        ])->get("https://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$token->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
+
         return response()->json($response);
+    }
+
+    public function getOffer()
+    {
+        $userData = UserData::where('user_id', Auth::user()->id)->get()[0];
+
+        $response = Http::withHeaders([
+            "Accept" => "application/vnd.allegro.public.v1+json",
+            "Authorization" => "Bearer $userData->access_token"
+        ])->get("https://api.allegro.pl/sale/offers");
+
+        return $response['offers'];
+    }
+
+    public function getCustomer(Request $request)
+    {
+        if(isset($request->sort))
+        {
+            return Customer::where('seller_id', Auth::user()->id)->get();
+        }
+    }
+
+    public function cancelOrder(Request $request)
+    {
+        return Order::where('id', $request->id)->update(['status' => "canceled"]);
     }
 
     public function mainFunction(Request $request)
     {
         $details = array();
+
+        $log[] = "";
 
         $userDatas = UserData::where('user_id', $request->user_id)->get();
 
@@ -156,9 +188,13 @@ class AllegroController extends Controller
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING");
+            ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
-            if(isset($response["events"])) {
+            if(isset($response['error']))
+            {
+                // Do somethink();
+            }
+            if($response["events"] != []) {
                 $res = $response["events"];
                 $lastEvent = $res[0]["id"];
                 if($res[0]["id"] != $userData->last_event) 
@@ -174,9 +210,6 @@ class AllegroController extends Controller
                             
                             $buyer = $order["order"]["buyer"];
 
-                            // $customer = new Customer;
-                            // ...
-
                             $orderModel = new Orders;
                             $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
                             $orderModel->order_id = $order["id"];
@@ -187,8 +220,26 @@ class AllegroController extends Controller
                             $orderModel->order_price = $detailsInfo->lineItems[0]->price->amount;
                             $orderModel->order_currency = $detailsInfo->lineItems[0]->price->currency;
                             $orderModel->customer_id = $buyer["id"];
+                            $orderModel->seller_id = $request->user_id;
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             $orderModel->save();
+
+                            if(Customer::where('customer_id', $buyer["id"])->exists())
+                            {
+                                Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
+                            }
+                            else 
+                            {
+                                $customer = new Customer;
+                                $customer->customer_id = $buyer["id"];
+                                $customer->login = $buyer["login"];
+                                $customer->email = $buyer["email"];
+                                $customer->first_name = '';
+                                $customer->last_name = '';
+                                $customer->guest = $buyer["guest"];
+                                $customer->orders = 1;
+                                $customer->save();
+                            }
 
                             // $this->changeStatus($order["order"]["checkoutForm"]["id"], $userData->access_token, "PROCESSING");
                             // $this->changeStatus("66b231c0-9789-11eb-80ab-8b7eefbb1428", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiI5Mzk3OTA3NiIsInNjb3BlIjpbImFsbGVncm86YXBpOm9yZGVyczpyZWFkIiwiYWxsZWdybzphcGk6cHJvZmlsZTp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6b2ZmZXJzOndyaXRlIiwiYWxsZWdybzphcGk6YmlsbGluZzpyZWFkIiwiYWxsZWdybzphcGk6Y2FtcGFpZ25zIiwiYWxsZWdybzphcGk6ZGlzcHV0ZXMiLCJhbGxlZ3JvOmFwaTpiaWRzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOm9yZGVyczp3cml0ZSIsImFsbGVncm86YXBpOmFkcyIsImFsbGVncm86YXBpOnBheW1lbnRzOndyaXRlIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczp3cml0ZSIsImFsbGVncm86YXBpOnByb2ZpbGU6cmVhZCIsImFsbGVncm86YXBpOnJhdGluZ3MiLCJhbGxlZ3JvOmFwaTpzYWxlOnNldHRpbmdzOnJlYWQiLCJhbGxlZ3JvOmFwaTpwYXltZW50czpyZWFkIl0sImFsbGVncm9fYXBpIjp0cnVlLCJhdGkiOiJjZDZkZDg1Yi1jYjA3LTQ5ODgtYjA2Zi00ODZjZGU4ZDFiOGEiLCJleHAiOjE2Mjg0MDMwMTcsImp0aSI6IjQ3ODg4YjcyLWFlMzgtNDQxMy1hMjU5LWM2NTdmMjRhNTEyZiIsImNsaWVudF9pZCI6IjE4NDJmNGUwM2QxMzQ3ZDQ4MTIyNDZmNzQzOWJhYWExIn0.dGV6yg4BWAzWy65q4j-Q_Zkzt3d7aviCBCGvzY5HJEu_Vdmn22Dg8ZeGPK895HRQDjS5DAy8CQVmVqPz4b8lFIMQy_69hAaHO3-JEyPNk8IleGAUn9tYGJLJ7giUjnFZaBWfARMgirG1jgCjW1Dc32_5B2wtu_TddABlkrE1qRw4pC0lLoQpPB1tOq777wZMXr7VEnWrK_Rsqq6bQv99WnacJvedQ2OPePluYmyjJUEOqn-MuEqw6AWmJGej7s4b0tQARw5WkXPYUWsH2XoUYIaCa_zPdFVMLiPtXhJf3eZDLWG3ZK7vqLNjrioOB37SXBTuz5OQe-vJATNLXhWmtjEytRzbwiijcGCzZ-IdzxlMM7ZpMfbYMzTyiu88QgnW8L0lcm7exkvRelFQY1f8-VFsq26M-9ETiALN-V8w_Jcu5yXGH2kIhRv1ss6UboBFH_LZ6A90etAqI_BDIjHJh96cNfn8coNrRLb_Wt49PA209r6ChzQPIrtyrZdtjdamkTGq-PPPbdN6sTlRONoeI5jhb4c3NJsM7saULZnDPE73CzkoIVOhHvpcO13MNo5V_YxWpkOvfDulClFqi9iokJgTutmx3pOHOD5UR6dxYZH_Md9Fti8hega-WQuIR255WAb55kseYKguIQy3nhax7zfd8XS3XVxe4k224xBwFC0", "PROCESSING");
@@ -202,16 +253,15 @@ class AllegroController extends Controller
                             // return $temp;
                             // $this->changeStatus($order["order"]["checkoutForm"]["id"], $userData->access_token, "SENT");
                             // $this->checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
-                            
+                            $lastEvent = $order["id"];
                             $details[] = $orderModel;
                         }
                         else {
+                            $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
                         }
                         // dd([$details, $log]);
                     }
-                    $userData->last_event = $lastEvent;
-                    $userData->save();
                     $status = 0;
                     $desc = "Oh yhee.. some new orders :) ";
                 }
@@ -220,21 +270,27 @@ class AllegroController extends Controller
                     $status = 0;
                     $desc = "Please... give me some orders :( ";
                 }
+                $userData->last_event = $lastEvent;
+                $userData->save();
                 // zmiana w badzie danych ostatniego eventu
             }
             else {
-                $status = 1;
-                $desc = "Och no, i cant see any allegro account... :( ";
+                $status = 0;
+                $desc = "Please... give me some orders :( ";
             }     
             unset($res);
         }
-        return ["status" => $status, "desc" => $desc, $log];
+        return [date("Y-m-d") .'/'. date("H:i:s") => ["status" => $status, "desc" => $desc, $log]];
     }
+
+    // public function manualCheckOut(Request $request)
+    // {
+    //     $this->changeStatus($request->checkoutFormId, $request->access_token, "SENT");
+    // }
 
     public function getLastEvent(Request $request)
     {
         $userData = UserData::where('user_id', $request->user_id)->get();
-        // dd($userData[0]["access_token"]);
         return $this->getLastEventRepo($userData[0]["access_token"]);
     }
 
@@ -244,7 +300,7 @@ class AllegroController extends Controller
             "Accept" => "application/vnd.allegro.public.v1+json",
             "Authorization" => "Bearer $userData"
         ])->get("https://api.allegro.pl/order/event-stats");
-        return $response["latestEvent"]["id"];
+        return $response["latestEvent"];
     }
 
     public static function changeStatus($checkOutFormId, $token, $status)
