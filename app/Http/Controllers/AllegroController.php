@@ -345,7 +345,6 @@ class AllegroController extends Controller
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/me"); 
             if(!isset($response["error"])) {   
-                return $response["error"];
                 $user[] = json_decode($response);
                 return $user;
             }
