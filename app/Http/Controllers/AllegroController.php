@@ -342,37 +342,19 @@ class AllegroController extends Controller
         $users = array();
         foreach ($userDatas as $userData)
         {
-            // dd($token);
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/me"); 
             if(!isset($response["error"])) {   
                 $user[] = json_decode($response);
+                return $user;
             }
             else {
                 $this->refreshTokenRepo($userData->refresh_token);
                 $user[] = json_decode($response);
             }  
         }
-
-        // --- DEV TEST ---
-        // $tokens = UserData::where('user_id', 7)->get();
-        // foreach ($tokens as $token)
-        // {
-        //     $response = Http::withHeaders([
-        //         "Accept" => "application/vnd.allegro.public.v1+json",
-        //         "Authorization" => "Bearer $token->access_token"
-        //     ])->get("https://api.allegro.pl.allegrosandbox.pl/me");
-        //     if(!isset($response["error"])) {   
-        //         // refresh 
-        //         $user[] = json_decode($response);
-        //     }
-        //     else {
-        //         redirect("/get_auth?refresh_token=$token->refresh_token");
-        //         $user[] = json_decode($response);
-        //     }
-        // }
         return response()->json($user);
     }
 

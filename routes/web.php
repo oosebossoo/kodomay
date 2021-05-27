@@ -27,7 +27,6 @@ Route::get('/home', function () {
 Route::get('/get_auth', [AllegroController::class, 'getAuth']);
 Route::get('/get_token', [AllegroController::class, 'getToken']);
 Route::get('/refresh_token', [AllegroController::class, 'refreshToken']);
-Route::get('/endOfGettingToken', [AllegroController::class, 'endOfGettingToken']);
 
 Route::get('/me', [AllegroController::class, 'getAllegroUsers']);
 Route::get('/main_function', [AllegroController::class, 'mainFunction']);
