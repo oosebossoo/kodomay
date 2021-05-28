@@ -156,9 +156,17 @@ class AllegroController extends Controller
         return $request;
     }
 
-    public function getOffer()
+    public function getOffer(Request $request)
     {
-        $userData = UserData::where('user_id', Auth::user()->id)->get()[0];
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+        $userData = UserData::where('user_id', $user_id)->get()[0];
 
         $response = Http::withHeaders([
             "Accept" => "application/vnd.allegro.public.v1+json",
@@ -170,10 +178,16 @@ class AllegroController extends Controller
 
     public function getCustomer(Request $request)
     {
-        if(isset($request->sort))
+        if(isset($request->dev))
         {
-            return Customer::where('seller_id', Auth::user()->id)->get();
+            $user_id = 14;
         }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+
+        return Customer::where('seller_id', $user_id)->get();
     }
 
     public function cancelOrder(Request $request)
@@ -239,6 +253,7 @@ class AllegroController extends Controller
                             {
                                 $customer = new Customer;
                                 $customer->customer_id = $buyer["id"];
+                                $customer->seller_id = $request->user_id;
                                 $customer->login = $buyer["login"];
                                 $customer->email = $buyer["email"];
                                 $customer->first_name = '';
@@ -355,9 +370,64 @@ class AllegroController extends Controller
         return response()->json($user);
     }
 
-    public function getOrders()
+    public function getOrders(Request $request)
     {
-        $orders = Orders::select('id','offer_id', 'offer_name', 'order_price', 'order_currency', 'customer_id', 'order_date')->where('order_currency', "PLN")->orderBy('order_date', 'desc')->get();
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+
+        $oderBy = 'desc';
+        $limit = 100;
+        $offerId = ['sing' => '!=', 'id' => ''];
+        $from = date('2000-01-01');
+        $to = date('3000-01-01');
+
+        if(isset($request->oderBy))
+        {
+            if($request->oderBy == 'desc')
+            {
+                $oderBy = 'desc';
+            }
+            elseif($request->oderBy == 'asc')
+            {
+                $oderBy = 'asc';
+            }
+        }
+
+        if(isset($request->limit))
+        {
+            if(is_numeric($request->limit))
+            {
+                $limit = $request->limit;
+            }
+            else
+            {
+                return ['error' => 'wrong number... :('];
+            }
+        }
+
+        if(isset($request->offer_id))
+        {
+            $offerId['sing'] = '=';
+            $offerId['id'] = $request->offer_id;
+        }
+
+        if(isset($request->from))
+        {
+            $from = date($request->from);
+        }
+
+        if(isset($request->to))
+        {
+            $to = date($request->to);
+        }
+
+        $orders = Orders::where('seller_id', $user_id)->where('offer_id', $offerId['sing'], $offerId['id'])->whereBetween('order_date', [$from, $to])->orderBy('order_date', $oderBy)->limit($limit)->get();
 
         return $orders;
     }
