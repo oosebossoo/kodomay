@@ -33,7 +33,7 @@ Route::get('/main_function', [AllegroController::class, 'mainFunction']);
 Route::get('/lst_ord_events', [AllegroController::class, 'getLastEvent']);
 Route::get('/get_orders', [AllegroController::class, 'getOrders']);
 Route::get('/get_customers', [AllegroController::class, 'getCustomer']);
-Route::get('/get_offer', [AllegroController::class, 'getOffer']);
+Route::get('/get_offers', [AllegroController::class, 'getOffer']);
 Route::get('/set_offer', [AllegroController::class, 'setOffer']);
 Route::get('/test', [AllegroController::class, 'checkoutForms']);
 Route::get('/run_email', [AllegroController::class, 'runEmail']);
