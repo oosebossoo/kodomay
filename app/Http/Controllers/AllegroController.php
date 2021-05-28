@@ -176,7 +176,7 @@ class AllegroController extends Controller
         return $response['offers'];
     }
 
-    public function getCustomer(Request $request)
+    public function getCustomers(Request $request)
     {
         if(isset($request->dev))
         {
@@ -189,9 +189,7 @@ class AllegroController extends Controller
 
         $oderBy = 'desc';
         $limit = 100;
-        $offerId = ['sing' => '!=', 'id' => ''];
-        $from = date('2000-01-01');
-        $to = date('3000-01-01');
+        $customerId = ['sing' => '!=', 'id' => ''];
 
         if(isset($request->oderBy))
         {
@@ -217,23 +215,22 @@ class AllegroController extends Controller
             }
         }
 
-        if(isset($request->offer_id))
+        if(isset($request->customer_id))
         {
-            $offerId['sing'] = '=';
-            $offerId['id'] = $request->offer_id;
+            $customerId['sing'] = '=';
+            $customerId['id'] = $request->customer_id;
         }
 
-        if(isset($request->from))
+        if(isset($request->date))
         {
-            $from = date($request->from);
+            
+            $from = date($request->date . " 00:00:00");
+            $to = date($request->date . " 23:59:59");
+            // dd([$from, $to]);
+            return Customer::where('seller_id', $user_id)->whereBetween('created_at', [$from, $to])->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
         }
 
-        if(isset($request->to))
-        {
-            $to = date($request->to);
-        }
-
-        return Customer::where('seller_id', $user_id)->limit($limit)->get();
+        return Customer::where('seller_id', $user_id)->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
     }
 
     public function cancelOrder(Request $request)
