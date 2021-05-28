@@ -187,7 +187,53 @@ class AllegroController extends Controller
             $user_id = Auth::user()->id;
         }
 
-        return Customer::where('seller_id', $user_id)->get();
+        $oderBy = 'desc';
+        $limit = 100;
+        $offerId = ['sing' => '!=', 'id' => ''];
+        $from = date('2000-01-01');
+        $to = date('3000-01-01');
+
+        if(isset($request->oderBy))
+        {
+            if($request->oderBy == 'desc')
+            {
+                $oderBy = 'desc';
+            }
+            elseif($request->oderBy == 'asc')
+            {
+                $oderBy = 'asc';
+            }
+        }
+
+        if(isset($request->limit))
+        {
+            if(is_numeric($request->limit))
+            {
+                $limit = $request->limit;
+            }
+            else
+            {
+                return ['error' => 'wrong number... :('];
+            }
+        }
+
+        if(isset($request->offer_id))
+        {
+            $offerId['sing'] = '=';
+            $offerId['id'] = $request->offer_id;
+        }
+
+        if(isset($request->from))
+        {
+            $from = date($request->from);
+        }
+
+        if(isset($request->to))
+        {
+            $to = date($request->to);
+        }
+
+        return Customer::where('seller_id', $user_id)->orderBy('order_date', $oderBy)->limit($limit)->get();
     }
 
     public function cancelOrder(Request $request)
