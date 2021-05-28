@@ -233,7 +233,7 @@ class AllegroController extends Controller
             $to = date($request->to);
         }
 
-        return Customer::where('seller_id', $user_id)->orderBy('order_date', $oderBy)->limit($limit)->get();
+        return Customer::where('seller_id', $user_id)->limit($limit)->get();
     }
 
     public function cancelOrder(Request $request)
