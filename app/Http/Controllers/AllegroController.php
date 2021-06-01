@@ -15,6 +15,7 @@ use App\Http\Controllers\MailController;
 use App\Models\Customer;
 use App\Models\UserData;
 use App\Models\Orders;
+use App\Models\Offers;
 
 use Auth;
 
@@ -173,7 +174,51 @@ class AllegroController extends Controller
             "Authorization" => "Bearer $userData->access_token"
         ])->get("https://api.allegro.pl/sale/offers");
 
-        return $response['offers'];
+        // return $response['offers'];
+        foreach($response['offers'] as $offer)
+        {
+            $ending[] = $offer;
+            $existOffer = Offers::where('offer_id', $offer['id'])->get();
+            if(!isset($existOffer[0]["id"]))
+            {
+                $offerDB = new Offers();
+                $offerDB->offer_id = $offer['id'];
+                $offerDB->offer_name = $offer['name'];
+                $offerDB->stock = [
+                    'available' => $offer['stock']['available'], 
+                    'sold' => $offer['stock']['sold']
+                ];
+                $offerDB->price = [
+                    'amount' => $offer['sellingMode']['price']['amount'],
+                    'currency' => $offer['sellingMode']['price']['currency'],
+                ];
+                $offerDB->publication = [
+                    'status-allegro' =>$offer['publication']['status'], 
+                    'startedAt' => $offer['publication']['startedAt']
+                ];
+                $offerDB->status_kodomat = 'ACTIVE';
+                $offerDB->save();
+            }
+
+            // return [
+            //     'offer_id' => $offer['id'], 
+            //     'offer_name' => $offer['name'], 
+            //     'stock' => [
+            //         'available' => $offer['stock']['available'], 
+            //         'sold' => $offer['stock']['sold']
+            //     ], 
+            //     'price' => [
+            //         'amount' => $offer['sellingMode']['price']['amount'],
+            //         'currency' => $offer['sellingMode']['price']['currency'],
+            //     ],
+            //     'publication' => [
+            //         'status-allegro' =>$offer['publication']['status'], 
+            //         'startedAt' => $offer['publication']['startedAt']
+            //     ],
+            //     'status_kodomat' =>'ACTIVE',
+            // ];
+        }
+        return $ending;
     }
 
     public function getCustomers(Request $request)
@@ -256,7 +301,7 @@ class AllegroController extends Controller
 
             if(isset($response['error']))
             {
-                // Do somethink();
+                // refreshToken($userData->refresh_token);
             }
             if($response["events"] != []) {
                 $res = $response["events"];
