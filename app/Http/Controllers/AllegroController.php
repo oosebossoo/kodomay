@@ -184,18 +184,18 @@ class AllegroController extends Controller
                 $offerDB = new Offers();
                 $offerDB->offer_id = $offer['id'];
                 $offerDB->offer_name = $offer['name'];
-                $offerDB->stock = [
-                    'available' => $offer['stock']['available'], 
-                    'sold' => $offer['stock']['sold']
-                ];
-                $offerDB->price = [
-                    'amount' => $offer['sellingMode']['price']['amount'],
-                    'currency' => $offer['sellingMode']['price']['currency'],
-                ];
-                $offerDB->publication = [
-                    'status-allegro' =>$offer['publication']['status'], 
-                    'startedAt' => $offer['publication']['startedAt']
-                ];
+                $offerDB->stock = '[
+                    "available" => '.$offer["stock"]["available"].', 
+                    "sold" => '.$offer['stock']['sold'].'
+                ]';
+                $offerDB->price = '[
+                    "amount" => '.$offer['sellingMode']['price']['amount'].',
+                    "currency" => '.$offer['sellingMode']['price']['currency'].',
+                ]';
+                $offerDB->publication = '[
+                    "status-allegro" => '.$offer['publication']['status'].', 
+                    "startedAt" => '.$offer['publication']['startedAt'].'
+                ]';
                 $offerDB->status_kodomat = 'ACTIVE';
                 $offerDB->save();
             }
