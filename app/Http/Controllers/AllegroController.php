@@ -169,54 +169,36 @@ class AllegroController extends Controller
         }
         $userData = UserData::where('user_id', $user_id)->get()[0];
 
-        $response = Http::withHeaders([
-            "Accept" => "application/vnd.allegro.public.v1+json",
-            "Authorization" => "Bearer $userData->access_token"
-        ])->get("https://api.allegro.pl/sale/offers");
 
-        // return $response['offers'];
-        foreach($response['offers'] as $offer)
+        if(isset($request->refresh))
         {
-            $ending[] = $offer;
-            $existOffer = Offers::where('offer_id', $offer['id'])->get();
-            if(!isset($existOffer[0]["id"]))
-            {
-                $offerDB = new Offers();
-                $offerDB->offer_id = $offer['id'];
-                $offerDB->offer_name = $offer['name'];
-                $offerDB->stock = '[
-                    "available" => '.$offer["stock"]["available"].', 
-                    "sold" => '.$offer['stock']['sold'].'
-                ]';
-                $offerDB->price = '[
-                    "amount" => '.$offer['sellingMode']['price']['amount'].',
-                    "currency" => '.$offer['sellingMode']['price']['currency'].',
-                ]';
-                $offerDB->publication = '[
-                    "status-allegro" => '.$offer['publication']['status'].', 
-                    "startedAt" => '.$offer['publication']['startedAt'].'
-                ]';
-                $offerDB->is_active = 'ACTIVE';
-                $offerDB->save();
-            }
+            $response = Http::withHeaders([
+                "Accept" => "application/vnd.allegro.public.v1+json",
+                "Authorization" => "Bearer $userData->access_token"
+            ])->get("https://api.allegro.pl/sale/offers");
 
-            // return [
-            //     'offer_id' => $offer['id'], 
-            //     'offer_name' => $offer['name'], 
-            //     'stock' => [
-            //         'available' => $offer['stock']['available'], 
-            //         'sold' => $offer['stock']['sold']
-            //     ], 
-            //     'price' => [
-            //         'amount' => $offer['sellingMode']['price']['amount'],
-            //         'currency' => $offer['sellingMode']['price']['currency'],
-            //     ],
-            //     'publication' => [
-            //         'status-allegro' =>$offer['publication']['status'], 
-            //         'startedAt' => $offer['publication']['startedAt']
-            //     ],
-            //     'status_kodomat' =>'ACTIVE',
-            // ];
+            // return $response['offers'];
+            foreach($response['offers'] as $offer)
+            {
+                $ending[] = $offer;
+                $existOffer = Offers::where('offer_id', $offer['id'])->get();
+                if(!isset($existOffer[0]["id"]))
+                {
+                    $offerDB = new Offers();
+                    $offerDB->seller_id = $user_id;
+                    $offerDB->offer_id = $offer['id'];
+                    $offerDB->offer_name = $offer['name'];
+                    $offerDB->stock = '["available" => '.$offer["stock"]["available"].',"sold" => '.$offer['stock']['sold'].']';
+                    $offerDB->price = '["amount" => '.$offer['sellingMode']['price']['amount'].',"currency" => '.$offer['sellingMode']['price']['currency'].',]';
+                    $offerDB->publication = '["status-allegro" => '.$offer['publication']['status'].', "startedAt" => '.$offer['publication']['startedAt'].']';
+                    $offerDB->is_active = 'ACTIVE';
+                    $offerDB->save();
+                }
+            }
+        }
+        else
+        {
+            return Offers::where('seller_id', $user_id)->all();
         }
         return $ending;
     }
