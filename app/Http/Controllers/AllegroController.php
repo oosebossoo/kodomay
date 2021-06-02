@@ -192,7 +192,8 @@ class AllegroController extends Controller
                     $offerDB->stock_sold = $offer['stock']['sold'];
                     $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
                     $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
-                    $offerDB->publication = '["status-allegro"=>'.$offer['publication']['status'].',"startedAt" =>'.$offer['publication']['startedAt'].']';
+                    $offerDB->status_allegro = $offer['publication']['status'];
+                    $offerDB->startedAt = $offer['publication']['startedAt'];
                     $offerDB->is_active = 'ACTIVE';
                     $offerDB->save();
                 }
