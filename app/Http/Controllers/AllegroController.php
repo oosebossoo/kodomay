@@ -200,7 +200,7 @@ class AllegroController extends Controller
         {
             return Offers::where('seller_id', $user_id)->get();
         }
-        return $ending;
+        return Offers::where('seller_id', $user_id)->get();
     }
 
     public function getCustomers(Request $request)

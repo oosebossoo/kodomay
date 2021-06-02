@@ -71,13 +71,20 @@ class CodesController extends Controller
     public function getCode(Request $request)
     {
         $result = Code::find($request->id);
-        dd($result);
         return $result;
     }
 
-    public function getAllCode()
+    public function getAllCode(Request $request)
     {
-        $result = Code::where('user_id', Auth::user()->id)->get();
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+        $result = Code::where('user_id', $user_id)->get();
 
         return $result;
     }
