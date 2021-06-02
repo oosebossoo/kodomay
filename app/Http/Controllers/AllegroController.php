@@ -196,7 +196,7 @@ class AllegroController extends Controller
                     "status-allegro" => '.$offer['publication']['status'].', 
                     "startedAt" => '.$offer['publication']['startedAt'].'
                 ]';
-                $offerDB->status_kodomat = 'ACTIVE';
+                $offerDB->is_active = 'ACTIVE';
                 $offerDB->save();
             }
 
