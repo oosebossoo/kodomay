@@ -350,6 +350,7 @@ class AllegroController extends Controller
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
+            dd($response);
             if(isset($response['error']))
             {
                 // refreshToken($userData->refresh_token);
@@ -368,7 +369,7 @@ class AllegroController extends Controller
                         // dd($existOrder);
                         // dd($detailsInfo);
                         // dd($isActive);
-                        if(!isset($existOrder[0]["id"]) && $isActive == "ACTIVE") 
+                        if(!isset($existOrder[0]["id"]) && $isActive == "YES") 
                         {
                             $log[] = "new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
