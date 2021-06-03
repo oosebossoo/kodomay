@@ -208,7 +208,6 @@ class AllegroController extends Controller
             // return $response['offers'];
             foreach($response['offers'] as $offer)
             {
-                dd($offer);
                 $ending[] = $offer;
                 $existOffer = Offers::where('offer_id', $offer['id'])->get();
                 if(!isset($existOffer[0]["id"]))
@@ -227,6 +226,7 @@ class AllegroController extends Controller
                     $offerDB->save();
                 }
             }
+            dd($ending);
         }
         else
         {
