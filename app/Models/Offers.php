@@ -19,6 +19,7 @@ class Offers extends Model
         'price_currency',
         'status_allegro',
         'startedAt',
+        'endingAt',
         'is_active',
     ];
 }
