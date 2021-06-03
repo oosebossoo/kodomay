@@ -366,7 +366,7 @@ class AllegroController extends Controller
                         $detailsInfo = $this->checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
                         $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first();
                         // dd($existOrder);
-                        dd($detailsInfo);
+                        // dd($detailsInfo);
                         // dd($isActive);
                         if(!isset($existOrder[0]["id"]) && $isActive == "ACTIVE") 
                         {

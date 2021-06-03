@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Response;
 use Auth;
 
@@ -10,39 +11,62 @@ use App\Models\Code;
 
 class CodesController extends Controller
 {
-
-    public function addCodesFormFile(Request $request) 
+    public function addCodes(Request $request) 
     {
-        $codes = $request->file('file')->store('file');
-        $fp = @fopen("C:/Users/Sebastian/Documents/Praca/allegro/account-module/storage/app/".$codes, 'r'); 
-        if ($fp) {
-            $array = explode("\n", fread($fp, filesize("C:/Users/Sebastian/Documents/Praca/allegro/account-module/storage/app/".$codes)));
+        // dd($request->db_type[0]);
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
         }
 
-        foreach($array as $line)
+        if($request->db_type[0] == 0)
         {
-            if($this->isExistCode($line)) {
-                $exist[] = $line;
-            } else {
-                $code = new Code();
-                $code->code = $line; 
-                $code->type = "";
-                $code->status = 1;
-                $code->user_id = Auth::user()->id;
-                $code->save();
+            // baza zwykła
+            $dbName = $request->db_name[0];
+            $dbType = $request->db_type[0];
+            $offerId = $request->offer_id[0];
+            foreach ($request->codes as $code)
+            {
+                dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
+                $cddb = new Code();
+                $cddb->db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
+                $cddb->db_type = $dbType;
+                $cddb->db_name = $dbName;
+                $cddb->code = $code;
+                $cddb->seller_id = $user_id;
+                $cddb->offer_id = $offerId;
+                $cddb->save();
             }
         }
-        return [
-            'codes' => $exist, 
-            'delete_status' => $this->deleteFile("C:/Users/Sebastian/Documents/Praca/allegro/account-module/storage/app/".$codes)
-        ];
-    }
+        elseif($request->db_type[0] == 1)
+        {
+            // baza rek.
+            $dbName = $request->db_name[0];
+            $dbType = $request->db_type[0];
+            $offerId = $request->offer_id[0];
+            foreach ($request->codes as $code)
+            {
+                dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
+                $cddb = new Code();
+                $cddb->db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
+                $cddb->db_type = $dbType;
+                $cddb->db_name = $dbName;
+                $cddb->code = $code;
+                $cddb->seller_id = $user_id;
+                $cddb->offer_id = $offerId;
+                $cddb->save();
+            }
+        }
+        else
+        {
+            return ['status' => 'choose type of db... im not a clairvoyant ^-^'];
+        }
 
-    public function addCodesFormTextBox(Request $request) 
-    {
-        return $request->codes;
 
-        
         $codes = "\"".$request->codes."\""; 
         $array = explode ('\n', $codes);    
         foreach($array as $line)
@@ -95,6 +119,12 @@ class CodesController extends Controller
     public static function getSellableCode()
     {
         $result = Code::where('status', 1)->where('user_id', Auth::user()->id)->first();
+        return response()->json($result);
+    }
+
+    public static function getSellableCodes()
+    {
+        $result = Code::where('status', 1)->where('user_id', Auth::user()->id)->get();
         return response()->json($result);
     }
 
