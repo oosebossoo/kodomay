@@ -222,8 +222,15 @@ class AllegroController extends Controller
                     $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
                     $offerDB->status_allegro = $offer['publication']['status'];
                     $offerDB->startedAt = $offer['publication']['startedAt'];
-                    $offerDB->endingAt = $offer['publication']['endingAt'];
-                    $offerDB->is_active = 'NO';
+                    if(isset($offer['publication']['endingAt']))
+                    {
+                        $offerDB->endingAt = $offer['publication']['endingAt'];
+                    }
+                    else
+                    {
+                        $offerDB->endingAt = "Neverending offer... :)";
+                    }
+                    $offerDB->is_active = 'YES';
                     $offerDB->save();
                 }
             }
