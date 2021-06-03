@@ -399,16 +399,28 @@ class AllegroController extends Controller
                             if(Customer::where('customer_id', $buyer["id"])->exists())
                             {
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
+
+                                if(OrderTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->exists())
+                                {
+                                    OrderTable::where('customer_id', $buyer["id"])
+                                        ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
+                                        ->update([
+                                            'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
+                                        ]);
+                                }
+                                else
+                                {
+                                    $order_table = new OrderTable;
+                                    $order_table->seller_id = $request->user_id;
+                                    $order_table->customer_id = $buyer["id"];
+                                    $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->count = 1;
+                                    $order_table->save();
+                                }
                             }
                             else 
                             {
-                                $order_table = new OrderTable;
-                                $order_table->seller_id = $request->user_id;
-                                $order_table->customer_id = $buyer["id"];
-                                $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
-                                $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
-                                $order_table->save();
-
                                 $customer = new Customer;
                                 $customer->customer_id = $buyer["id"];
                                 $customer->seller_id = $request->user_id;
@@ -444,7 +456,7 @@ class AllegroController extends Controller
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
                         }
-                        // dd([$details, $log]);
+                        dd([$details, $log]);
                     }
                     $status = 0;
                     $desc = "Oh yhee.. some new orders :) ";
