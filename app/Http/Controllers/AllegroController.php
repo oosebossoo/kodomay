@@ -15,6 +15,7 @@ use App\Http\Controllers\MailController;
 use App\Models\Customer;
 use App\Models\UserData;
 use App\Models\Orders;
+use App\Models\OrdersTable;
 use App\Models\Offers;
 
 use Auth;
@@ -157,6 +158,33 @@ class AllegroController extends Controller
         return $request;
     }
 
+    public function setOffer(Request $request)
+    {
+        $offer = Offers::where('offer_id', $request->offer_id)->first();
+
+        if($offer->is_active == 'NO')
+        {
+            //dd(Offers::where('offer_id', $request->offer_id)->first());
+            Offers::where('offer_id', $request->offer_id)->update([ 'is_active' => 'YES' ]);
+            $status = ['is_active' => 'YES'];
+        }
+
+        if($offer->is_active == 'YES')
+        {
+            Offers::where('offer_id', $request->offer_id)->update([ 'is_active' => 'NO' ]);
+            $status = ['is_active' => 'NO'];
+        }
+
+        if(isset($status))
+        {
+            return $status;
+        }
+        else
+        {
+            return ['some goes wrong... :('];
+        }
+    }
+
     public function getOffer(Request $request)
     {
         if(isset($request->dev))
@@ -194,7 +222,7 @@ class AllegroController extends Controller
                     $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
                     $offerDB->status_allegro = $offer['publication']['status'];
                     $offerDB->startedAt = $offer['publication']['startedAt'];
-                    $offerDB->is_active = 'ACTIVE';
+                    $offerDB->is_active = 'NO';
                     $offerDB->save();
                 }
             }
@@ -256,11 +284,49 @@ class AllegroController extends Controller
             
             $from = date($request->date . " 00:00:00");
             $to = date($request->date . " 23:59:59");
-            // dd([$from, $to]);
-            return Customer::where('seller_id', $user_id)->whereBetween('created_at', [$from, $to])->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
+            $customers = Customer::where('seller_id', $user_id)->whereBetween('created_at', [$from, $to])->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
         }
 
-        return Customer::where('seller_id', $user_id)->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
+        $customers = Customer::where('seller_id', $user_id)->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
+
+        foreach($customers as $customer)
+        {
+            $response[] = [ 
+                'customer' => $customer, 
+                'customer_orders' => $this->getCustomerOrders($customer->customer_id, $request->dev)
+            ];
+        }
+
+        return $response;
+    }
+
+    public function getCustomerOrders($customer_id, $dev)
+    {
+        if(isset($dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+        $orders_table = OrdersTable::where('customer_id', $customer_id)->where('seller_id', $user_id)->get();
+        foreach($orders_table as $order_table)
+        {
+            $response[] = ["name" => $order_table->offer_id, "link" => $order_table->offer_link  ,"count" => $order_table->count];
+        }
+        if(isset($response))
+        {
+            return $response;
+        }
+        return [
+            'status' => 'no data in db... sorry :('
+        ];
+    }
+
+    public static function createCustomerOffer(Request $request)
+    {
+
     }
 
     public function cancelOrder(Request $request)
@@ -297,11 +363,14 @@ class AllegroController extends Controller
                     foreach ($res as $order) 
                     {
                         $existOrder = Orders::where('order_id', $order["id"])->get();
-                        if(!isset($existOrder[0]["id"])) 
+                        $detailsInfo = $this->checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
+                        $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first();
+                        // dd($existOrder);
+                        dd($detailsInfo);
+                        // dd($isActive);
+                        if(!isset($existOrder[0]["id"]) && $isActive == "ACTIVE") 
                         {
                             $log[] = "new order: ".$order["id"];
-                            $detailsInfo = $this->checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
-                            
                             $buyer = $order["order"]["buyer"];
 
                             $orderModel = new Orders;
@@ -324,13 +393,24 @@ class AllegroController extends Controller
                             }
                             else 
                             {
+                                $order_table = new OrderTable;
+                                $order_table->seller_id = $request->user_id;
+                                $order_table->customer_id = $buyer["id"];
+                                $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                                $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
+                                $order_table->save();
+
                                 $customer = new Customer;
                                 $customer->customer_id = $buyer["id"];
                                 $customer->seller_id = $request->user_id;
                                 $customer->login = $buyer["login"];
                                 $customer->email = $buyer["email"];
-                                $customer->first_name = '';
-                                $customer->last_name = '';
+                                $customer->first_name = $detailsInfo->buyer->firstName;
+                                $customer->last_name = $detailsInfo->buyer->lastName;
+                                $customer->adress = $detailsInfo->buyer->address->street;
+                                $customer->city = $detailsInfo->buyer->address->city;
+                                $customer->no_tel = $detailsInfo->buyer->phoneNumber;
+                                $customer->office = $detailsInfo->buyer->companyName;
                                 $customer->guest = $buyer["guest"];
                                 $customer->orders = 1;
                                 $customer->save();
@@ -382,6 +462,14 @@ class AllegroController extends Controller
     // {
     //     $this->changeStatus($request->checkoutFormId, $request->access_token, "SENT");
     // }
+    public static function getOfferLink($offerId, $token)
+    {
+        $response = Http::withHeaders([
+            "Accept" => "application/vnd.allegro.public.v1+json",
+            "Authorization" => "Bearer $token"
+        ])->get("https://api.allegro.pl/sale/offers?offer.id=$offerId");
+        return json_decode($response);
+    }
 
     public function getLastEvent(Request $request)
     {
@@ -500,9 +588,15 @@ class AllegroController extends Controller
             $to = date($request->to);
         }
 
-        $orders = Orders::where('seller_id', $user_id)->where('offer_id', $offerId['sing'], $offerId['id'])->whereBetween('order_date', [$from, $to])->orderBy('order_date', $oderBy)->limit($limit)->get();
+        $orders = Orders::where('seller_id', $user_id)->where('offer_id', $offerId['sing'], $offerId['id'])->whereBetween('order_date', [$from, $to])->orderBy('order_date', $oderBy)->limit($limit)->chunk(100, function ($ords){
+            foreach ($ords as $ord)
+            {
+                return $ord;
+                $result[] = $ord;
+            }
+        });
 
-        return $orders;
+        return $result;
     }
 
     // --- ---

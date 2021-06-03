@@ -40,6 +40,9 @@ class CodesController extends Controller
 
     public function addCodesFormTextBox(Request $request) 
     {
+        return $request->codes;
+
+        
         $codes = "\"".$request->codes."\""; 
         $array = explode ('\n', $codes);    
         foreach($array as $line)

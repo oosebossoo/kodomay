@@ -13,9 +13,12 @@ class Offers extends Model
     protected $fillable = [
         'offer_id',
         'offer_name',
-        'stock',
-        'price',
-        'publication',
+        'stock_available',
+        'stock_sold',
+        'price_amount',
+        'price_currency',
+        'status_allegro',
+        'startedAt',
         'is_active',
     ];
 }
