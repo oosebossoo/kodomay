@@ -209,22 +209,23 @@ class AllegroController extends Controller
             foreach($response['offers'] as $offer)
             {
                 $ending[] = $offer;
-                $existOffer = Offers::where('offer_id', $offer['id'])->get();
-                if(!isset($existOffer[0]["id"]))
-                {
-                    $offerDB = new Offers();
-                    $offerDB->seller_id = $user_id;
-                    $offerDB->offer_id = $offer['id'];
-                    $offerDB->offer_name = $offer['name'];
-                    $offerDB->stock_available = $offer["stock"]["available"];
-                    $offerDB->stock_sold = $offer['stock']['sold'];
-                    $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
-                    $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
-                    $offerDB->status_allegro = $offer['publication']['status'];
-                    $offerDB->startedAt = $offer['publication']['startedAt'];
-                    $offerDB->is_active = 'NO';
-                    $offerDB->save();
-                }
+                // $existOffer = Offers::where('offer_id', $offer['id'])->get();
+                // if(!isset($existOffer[0]["id"]))
+                // {
+                //     $offerDB = new Offers();
+                //     $offerDB->seller_id = $user_id;
+                //     $offerDB->offer_id = $offer['id'];
+                //     $offerDB->offer_name = $offer['name'];
+                //     $offerDB->stock_available = $offer["stock"]["available"];
+                //     $offerDB->stock_sold = $offer['stock']['sold'];
+                //     $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
+                //     $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
+                //     $offerDB->status_allegro = $offer['publication']['status'];
+                //     $offerDB->startedAt = $offer['publication']['startedAt'];
+                //     $offerDB->endingAt = $offer['publication']['endingAt'];
+                //     $offerDB->is_active = 'NO';
+                //     $offerDB->save();
+                // }
             }
             dd($ending);
         }
