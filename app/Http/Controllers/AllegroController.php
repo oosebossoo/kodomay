@@ -591,13 +591,7 @@ class AllegroController extends Controller
             $to = date($request->to);
         }
 
-        $orders = Orders::where('seller_id', $user_id)->where('offer_id', $offerId['sing'], $offerId['id'])->whereBetween('order_date', [$from, $to])->orderBy('order_date', $oderBy)->limit($limit)->chunk(100, function ($ords){
-            foreach ($ords as $ord)
-            {
-                return $ord;
-                $result[] = $ord;
-            }
-        });
+        $orders = Orders::where('seller_id', $user_id)->where('offer_id', $offerId['sing'], $offerId['id'])->whereBetween('order_date', [$from, $to])->orderBy('order_date', $oderBy)->limit($limit)->get();
 
         return $result;
     }
