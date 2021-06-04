@@ -251,7 +251,7 @@ class AllegroController extends Controller
                     {
                         $offerDB->endingAt = "Neverending offer... :)";
                     }
-                    
+
                     if(isset($offer['publication']['endedAt']))
                     {
                         $offerDB->endingAt = $offer['publication']['endedAt'];
@@ -265,7 +265,6 @@ class AllegroController extends Controller
                     $offerDB->save();
                 }
             }
-            dd($ending);
         }
         else
         {
