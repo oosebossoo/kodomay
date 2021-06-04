@@ -40,7 +40,6 @@ class AllegroController extends Controller
             UserData::where('user_id', Auth::user()->id)->update([
                 'refresh' => true
             ]);
-            $this->getTokenRepo('code');
         }
         return $this->getAuthRepo();
     }
