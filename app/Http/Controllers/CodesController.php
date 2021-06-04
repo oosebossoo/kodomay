@@ -31,7 +31,7 @@ class CodesController extends Controller
             $offerId = $request->offer_id[0];
             foreach ($request->codes as $code)
             {
-                dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
+                // dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
                 $cddb = new Code();
                 $cddb->db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
                 $cddb->db_type = $dbType;
@@ -50,7 +50,7 @@ class CodesController extends Controller
             $offerId = $request->offer_id[0];
             foreach ($request->codes as $code)
             {
-                dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
+                // dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
                 $cddb = new Code();
                 $cddb->db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
                 $cddb->db_type = $dbType;
@@ -66,33 +66,7 @@ class CodesController extends Controller
             return ['status' => 'choose type of db... im not a clairvoyant ^-^'];
         }
 
-
-        $codes = "\"".$request->codes."\""; 
-        $array = explode ('\n', $codes);    
-        foreach($array as $line)
-        {
-            $char = strpos($line, "\"");
-            if($char === false) {
-                if($this->isExistCode($line)) {
-                    $exist[] = $line;
-                } else {
-                    $code = new Code();
-                    $code->code = $line;
-                    $code->type = "";
-                    $code->status = 1;
-                    $code->user_id = Auth::user()->id;
-                    $code->save();
-                }
-            } else {
-                $code = new Code();
-                $code->code = str_replace("\"", "", $line);
-                $code->type = "";
-                $code->status = 1;
-                $code->user_id = Auth::user()->id;
-                $code->save();
-            }
-        }
-        return $exist;
+        return ['status' => 'neeew, i like it ^-^'];
     }
 
     public function getCode(Request $request)
