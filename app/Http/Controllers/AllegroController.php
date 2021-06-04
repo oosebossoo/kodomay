@@ -408,12 +408,12 @@ class AllegroController extends Controller
                         $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first();
                         // dd($existOrder);
                         // dd($detailsInfo);
-                        dd($isActive, $detailsInfo->lineItems[0]->offer->id);
-                        if(!isset($existOrder[0]["id"]) && $isActive == "YES") 
+                        // dd($isActive['is_active'], $detailsInfo->lineItems[0]->offer->id);
+                        if(!isset($existOrder[0]["id"]) && $isActive['is_active'] == "YES") 
                         {
                             $log[] = "new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
-
+                            // dd("yesy");
                             $orderModel = new Orders;
                             $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
                             $orderModel->order_id = $order["id"];
@@ -431,7 +431,6 @@ class AllegroController extends Controller
                             if(Customer::where('customer_id', $buyer["id"])->exists())
                             {
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
-
                                 if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
                                 {
                                     OrdersTable::where('customer_id', $buyer["id"])
@@ -453,13 +452,24 @@ class AllegroController extends Controller
                             }
                             else 
                             {
-                                $order_table = new OrdersTable;
-                                $order_table->seller_id = $request->user_id;
-                                $order_table->customer_id = $buyer["id"];
-                                $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
-                                $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
-                                $order_table->count = 1;
-                                $order_table->save();
+                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
+                                {
+                                    OrdersTable::where('customer_id', $buyer["id"])
+                                        ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
+                                        ->update([
+                                            'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
+                                        ]);
+                                }
+                                else
+                                {
+                                    $order_table = new OrdersTable;
+                                    $order_table->seller_id = $request->user_id;
+                                    $order_table->customer_id = $buyer["id"];
+                                    $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->count = 1;
+                                    $order_table->save();
+                                }
 
                                 $customer = new Customer;
                                 $customer->customer_id = $buyer["id"];
@@ -496,7 +506,7 @@ class AllegroController extends Controller
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
                         }
-                        dd(['details' => $details, 'log' => $log]);
+                        // dd(['details' => $details, 'log' => $log, $detailsInfo->lineItems[0]->offer->id, $isActive['is_active']]);
                     }
                     $status = 0;
                     $desc = "Oh yhee.. some new orders :) ";
