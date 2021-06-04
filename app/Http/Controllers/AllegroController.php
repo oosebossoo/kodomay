@@ -406,7 +406,7 @@ class AllegroController extends Controller
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
-            dd($response['error']);
+            dd($response->error);
 
             if($response['error'] == 'invalid_token')
             {
