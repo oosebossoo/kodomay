@@ -32,9 +32,14 @@ class AllegroController extends Controller
     const SANDBOX_URL = 'https://api.allegro.pl.';
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
+    protected $opt;
 
-    public function getAuth()
+    public function getAuth(Request $request)
     {
+        if(isset($request->opt))
+        {
+            $opt = $request->opt;
+        }
         return $this->getAuthRepo();
     }
 
@@ -61,6 +66,10 @@ class AllegroController extends Controller
 
     public function getTokenRepo($request)
     {
+        if($opt == "refresh")
+        {
+            // update bazy danych
+        }
         if(!isset($request->code))
         {
             return $this->endOfGettingToken($request);
@@ -187,6 +196,11 @@ class AllegroController extends Controller
 
     public function getOffer(Request $request)
     {
+        $limit = 100;
+        if(isset($request->limit))
+        {
+            $limit = $request->limit;
+        }
         if(isset($request->dev))
         {
             $user_id = 14;
@@ -197,13 +211,13 @@ class AllegroController extends Controller
         }
         $userData = UserData::where('user_id', $user_id)->get()[0];
 
-
-        if(isset($request->refresh))
+        // dd($request->refresh);
+        if($request->refresh == "set")
         {
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/sale/offers");
+            ])->get("https://api.allegro.pl/sale/offers?limit=100");
 
             // return $response['offers'];
             foreach($response['offers'] as $offer)
@@ -218,9 +232,16 @@ class AllegroController extends Controller
                     $offerDB->offer_name = $offer['name'];
                     $offerDB->stock_available = $offer["stock"]["available"];
                     $offerDB->stock_sold = $offer['stock']['sold'];
+
+                    $d=strtotime("-1 Months");
+                    $date = date("Y-m-d h:i:s", $d);
+                    $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
+                    $offerDB->sold_last_30d = $soldInTrD;
+
                     $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
                     $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
-                    $offerDB->status_allegro = $offer['publication']['status'];
+                    $offerDB->platform = "Allegro";
+                    $offerDB->status_platform = $offer['publication']['status'];
                     $offerDB->startedAt = $offer['publication']['startedAt'];
                     if(isset($offer['publication']['endingAt']))
                     {
@@ -230,16 +251,28 @@ class AllegroController extends Controller
                     {
                         $offerDB->endingAt = "Neverending offer... :)";
                     }
+                    
+                    if(isset($offer['publication']['endedAt']))
+                    {
+                        $offerDB->endingAt = $offer['publication']['endedAt'];
+                    }
+                    else
+                    {
+                        $offerDB->endingAt = "Neverended offer... :)";
+                    }
+
                     $offerDB->is_active = 'YES';
                     $offerDB->save();
                 }
             }
+            dd($ending);
         }
         else
         {
-            return Offers::where('seller_id', $user_id)->get();
+            return Offers::where('seller_id', $user_id)->count();
         }
-        return Offers::where('seller_id', $user_id)->get();
+        return Offers::where('seller_id', $user_id)->count();
+
     }
 
     public function getCustomers(Request $request)
@@ -376,7 +409,7 @@ class AllegroController extends Controller
                         $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first();
                         // dd($existOrder);
                         // dd($detailsInfo);
-                        // dd($isActive);
+                        dd($isActive, $detailsInfo->lineItems[0]->offer->id);
                         if(!isset($existOrder[0]["id"]) && $isActive == "YES") 
                         {
                             $log[] = "new order: ".$order["id"];
@@ -400,9 +433,9 @@ class AllegroController extends Controller
                             {
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
 
-                                if(OrderTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->exists())
+                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
                                 {
-                                    OrderTable::where('customer_id', $buyer["id"])
+                                    OrdersTable::where('customer_id', $buyer["id"])
                                         ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
                                         ->update([
                                             'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
@@ -410,7 +443,7 @@ class AllegroController extends Controller
                                 }
                                 else
                                 {
-                                    $order_table = new OrderTable;
+                                    $order_table = new OrdersTable;
                                     $order_table->seller_id = $request->user_id;
                                     $order_table->customer_id = $buyer["id"];
                                     $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
@@ -421,6 +454,14 @@ class AllegroController extends Controller
                             }
                             else 
                             {
+                                $order_table = new OrdersTable;
+                                $order_table->seller_id = $request->user_id;
+                                $order_table->customer_id = $buyer["id"];
+                                $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                                $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
+                                $order_table->count = 1;
+                                $order_table->save();
+
                                 $customer = new Customer;
                                 $customer->customer_id = $buyer["id"];
                                 $customer->seller_id = $request->user_id;
@@ -456,7 +497,7 @@ class AllegroController extends Controller
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
                         }
-                        dd([$details, $log]);
+                        dd(['details' => $details, 'log' => $log]);
                     }
                     $status = 0;
                     $desc = "Oh yhee.. some new orders :) ";
