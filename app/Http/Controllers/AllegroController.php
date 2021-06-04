@@ -268,9 +268,9 @@ class AllegroController extends Controller
         }
         else
         {
-            return Offers::where('seller_id', $user_id)->count();
+            return Offers::where('seller_id', $user_id)->get();
         }
-        return Offers::where('seller_id', $user_id)->count();
+        return Offers::where('seller_id', $user_id)->get();
 
     }
 
