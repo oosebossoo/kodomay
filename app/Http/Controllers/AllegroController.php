@@ -37,8 +37,10 @@ class AllegroController extends Controller
     {
         if(isset($request->opt))
         {
-            $GLOBALS['opt'] = $request->opt;
-            // dd($this->opt);
+            UserData::where('user_id', Auth::user()->id)->update([
+                'refresh' => true
+            ]);
+            $this->getTokenRepo('code');
         }
         return $this->getAuthRepo();
     }
@@ -104,13 +106,13 @@ class AllegroController extends Controller
             stream_context_create($options),
         ));
 
-        if($GLOBALS['opt'] == "refresh")
+        if(UserData::select('refresh')->where('user_id', Auth::user()->id)->get())
         {
-            dd("refresh");
             UserData::where('user_id', Auth::user()->id)->update([
                 'access_token' => $response->access_token, 
                 'refresh_token' => $response->refresh_token,
-                'jti' => $response->jti
+                'jti' => $response->jti,
+                'refresh' => 0
             ]);
         }
         else
@@ -124,6 +126,7 @@ class AllegroController extends Controller
             $userData->scope = $response->scope;
             $userData->allegro_api = $response->allegro_api;
             $userData->jti = $response->jti;
+            $userData->refresh = 0;
             $userData->save();
         }
 

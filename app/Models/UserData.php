@@ -19,6 +19,7 @@ class UserData extends Model
         'scope',
         'allegro_api',
         'jti',
-        'last_event'
+        'last_event',
+        'refresh'
     ];
 }
