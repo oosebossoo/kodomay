@@ -405,7 +405,8 @@ class AllegroController extends Controller
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
-            return $response;
+
+            dd($response);
 
             if(isset($response['error']))
             {
