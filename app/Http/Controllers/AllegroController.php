@@ -72,7 +72,6 @@ class AllegroController extends Controller
 
     public function getTokenRepo($request)
     {
-        dd($GLOBALS['id']);
         if(!isset($request->code))
         {
             return $this->endOfGettingToken($request);
