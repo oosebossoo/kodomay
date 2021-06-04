@@ -33,6 +33,11 @@ class AllegroController extends Controller
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
+    function test()
+    {
+        return $GLOBALS['id'];
+    }
+
     public function getAuth(Request $request)
     {
         if(isset($request->opt))
@@ -67,10 +72,12 @@ class AllegroController extends Controller
 
     public function getTokenRepo($request)
     {
+        dd($GLOBALS['id']);
         if(!isset($request->code))
         {
             return $this->endOfGettingToken($request);
         }
+
         $json = true;
 
         $resource = "https://allegro.pl/auth/oauth/token?"
@@ -105,14 +112,15 @@ class AllegroController extends Controller
             stream_context_create($options),
         ));
 
-        if(UserData::select('refresh')->where('user_id', Auth::user()->id)->get())
+        if(UserData::select('refresh')->where('user_id', $GLOBALS['id'])->get())
         {
-            UserData::where('user_id', Auth::user()->id)->update([
+            UserData::where('user_id', $GLOBALS['id'])->update([
                 'access_token' => $response->access_token, 
                 'refresh_token' => $response->refresh_token,
                 'jti' => $response->jti,
                 'refresh' => 0
             ]);
+            return ['status' => 'updated account'];
         }
         else
         {
@@ -127,11 +135,8 @@ class AllegroController extends Controller
             $userData->jti = $response->jti;
             $userData->refresh = 0;
             $userData->save();
+            return ['status' => 'added new account'];
         }
-
-        dd($response);
-
-        return $response;
     }
 
     
@@ -396,16 +401,18 @@ class AllegroController extends Controller
 
         foreach ($userDatas as $userData)
         {
-            // --- PRODUKCJA ---
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
-            // dd($response);
             if(isset($response['error']))
             {
-                // refreshToken($userData->refresh_token);
+                UserData::where('user_id', $request->user_id)->update([
+                    'refresh' => true
+                ]);
+                $GLOBALS['id'] = $request->user_id;
+                return $this->getAuthRepo();
             }
             if($response["events"] != []) {
                 $res = $response["events"];
