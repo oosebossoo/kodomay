@@ -69,13 +69,34 @@ class CodesController extends Controller
         return ['status' => 'neeew codes, i like it ^-^'];
     }
 
-    public function getCode(Request $request)
+    public function getAllCode(Request $request)
     {
-        $result = Code::find($request->id);
+        $limit = 100;
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+
+        if(isset($request->limit))
+        {
+            $limit = $request->limit;
+        }
+
+        if(isset($request->db_name))
+        {
+            return Code::where('seller_id', $user_id)->where('db_name', $request->db_name)->limit($limit)->get();
+        }
+
+        $result = Code::where('seller_id', $user_id)->where('offer_id', $request->offer_id)->limit($limit)->get();
+
         return $result;
     }
 
-    public function getAllCode(Request $request)
+    public static function getSellableCode(Request $request)
     {
         if(isset($request->dev))
         {
@@ -85,26 +106,49 @@ class CodesController extends Controller
         {
             $user_id = Auth::user()->id;
         }
-        $result = Code::where('user_id', $user_id)->get();
 
-        return $result;
-    }
-
-    public static function getSellableCode()
-    {
-        $result = Code::where('status', 1)->where('user_id', Auth::user()->id)->first();
+        $result = Code::where('status', 1)->where('user_id', $user_id)->first();
         return response()->json($result);
     }
 
-    public static function getSellableCodes()
+    public static function getSellableCodes(Request $request)
     {
-        $result = Code::where('status', 1)->where('user_id', Auth::user()->id)->get();
+        $limit = 100;
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+
+        if(isset($request->limit))
+        {
+            $limit = $request->limit;
+        }
+
+        $result = Code::where('status', 1)->where('user_id', $user_id)->limit($limit)->get();
         return response()->json($result);
     }
 
     public function getSoldCodes(Request $request)
     {
-        $result = Code::where('status', 0)->where('user_id', Auth::user()->id)->get();
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+
+        if(isset($request->count))
+        {
+            Code::where('status', 0)->where('user_id', $user_id)->count();
+        }
+
+        $result = Code::where('status', 0)->where('user_id', $user_id)->get();
         return response()->json($result);
     }
 

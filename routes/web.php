@@ -41,9 +41,9 @@ Route::get('/run_email', [AllegroController::class, 'runEmail']);
 
 Route::get('send_mail',[MailController::class, 'sendEmail']);
 
-Route::get('/get_code', [ CodesController::class, 'getCode']);
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 Route::get('/get_sellable_code', [ CodesController::class, 'getSellableCode']);
+Route::get('/get_sellable_codes', [ CodesController::class, 'getSellableCodes']);
 Route::get('/get_sold_codes', [ CodesController::class, 'getSoldCodes']);
 
 Route::post('/change_status_of_code', [ CodesController::class, 'changeStatusOfCode']);
