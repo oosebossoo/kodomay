@@ -112,15 +112,20 @@ class AllegroController extends Controller
             stream_context_create($options),
         ));
 
-        if(UserData::select('refresh')->where('user_id', $GLOBALS['id'])->get())
+        if(UserData::select('refresh')->where('refresh', 1)->get())
         {
-            UserData::where('user_id', $GLOBALS['id'])->update([
-                'access_token' => $response->access_token, 
-                'refresh_token' => $response->refresh_token,
-                'jti' => $response->jti,
-                'refresh' => 0
-            ]);
-            return ['status' => 'updated account'];
+            $updates = UserData::where('refresh', 1)->get();
+            foreach($updates as $update)
+            {
+                UserData::where('user_id', $update->user_id)->update([
+                    'access_token' => $response->access_token, 
+                    'refresh_token' => $response->refresh_token,
+                    'jti' => $response->jti,
+                    'refresh' => 0
+                ]);
+                $log[] = ['id' => 'update'];
+            }
+            return [$log];
         }
         else
         {
