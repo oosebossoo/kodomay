@@ -90,10 +90,12 @@ class CodesController extends Controller
         {
             return Code::where('seller_id', $user_id)->where('db_name', $request->db_name)->limit($limit)->get();
         }
+        if(isset($request->offer_id))
+        {
+            return Code::where('seller_id', $user_id)->where('offer_id', $request->offer_id)->limit($limit)->get();
+        }
 
-        $result = Code::where('seller_id', $user_id)->where('offer_id', $request->offer_id)->limit($limit)->get();
-
-        return $result;
+        return Code::where('seller_id', $user_id)->limit($limit)->get();
     }
 
     public static function getSellableCode(Request $request)
