@@ -406,8 +406,6 @@ class AllegroController extends Controller
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
-            dd($response);
-
             if(isset($response['error']))
             {
                 UserData::where('user_id', $request->user_id)->update([
