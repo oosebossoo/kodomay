@@ -23,12 +23,12 @@ class CodesController extends Controller
             $user_id = Auth::user()->id;
         }
 
-        if($request->db_type[0] == 0)
+        if($request->db_type == 0)
         {
             // baza zwykła
-            $dbName = $request->db_name[0];
-            $dbType = $request->db_type[0];
-            $offerId = $request->offer_id[0];
+            $dbName = $request->db_name;
+            $dbType = $request->db_type;
+            $offerId = $request->offer_id;
             foreach ($request->codes as $code)
             {
                 // dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
@@ -42,12 +42,12 @@ class CodesController extends Controller
                 $cddb->save();
             }
         }
-        elseif($request->db_type[0] == 1)
+        elseif($request->db_type == 1)
         {
             // baza rek.
-            $dbName = $request->db_name[0];
-            $dbType = $request->db_type[0];
-            $offerId = $request->offer_id[0];
+            $dbName = $request->db_name;
+            $dbType = $request->db_type;
+            $offerId = $request->offer_id;
             foreach ($request->codes as $code)
             {
                 // dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
@@ -66,7 +66,7 @@ class CodesController extends Controller
             return ['status' => 'choose type of db... im not a clairvoyant ^-^'];
         }
 
-        return ['status' => 'neeew, i like it ^-^'];
+        return ['status' => 'neeew codes, i like it ^-^'];
     }
 
     public function getCode(Request $request)
