@@ -408,7 +408,6 @@ class AllegroController extends Controller
 
             if($response->failed() || $response->clientError())
             {
-                return "failed";
                 UserData::where('user_id', $request->user_id)->update([
                     'refresh' => true
                 ]);
