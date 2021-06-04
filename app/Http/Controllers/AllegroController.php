@@ -32,13 +32,13 @@ class AllegroController extends Controller
     const SANDBOX_URL = 'https://api.allegro.pl.';
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
-    protected $opt;
 
     public function getAuth(Request $request)
     {
         if(isset($request->opt))
         {
-            $opt = $request->opt;
+            $GLOBALS['opt'] = $request->opt;
+            // dd($this->opt);
         }
         return $this->getAuthRepo();
     }
@@ -66,10 +66,6 @@ class AllegroController extends Controller
 
     public function getTokenRepo($request)
     {
-        if($opt == "refresh")
-        {
-            // update bazy danych
-        }
         if(!isset($request->code))
         {
             return $this->endOfGettingToken($request);
@@ -108,17 +104,31 @@ class AllegroController extends Controller
             stream_context_create($options),
         ));
 
-        $userData = new UserData();
-        $userData->user_id = Auth::user()->id;
-        $userData->access_token = $response->access_token;
-        $userData->token_type = $response->token_type;
-        $userData->refresh_token = $response->refresh_token;
-        $userData->expires_in = $response->expires_in;
-        $userData->scope = $response->scope;
-        $userData->allegro_api = $response->allegro_api;
-        $userData->jti = $response->jti;
-        $userData->save();
+        if($GLOBALS['opt'] == "refresh")
+        {
+            dd("refresh");
+            UserData::where('user_id', Auth::user()->id)->update([
+                'access_token' => $response->access_token, 
+                'refresh_token' => $response->refresh_token,
+                'jti' => $response->jti
+            ]);
+        }
+        else
+        {
+            $userData = new UserData();
+            $userData->user_id = Auth::user()->id;
+            $userData->access_token = $response->access_token;
+            $userData->token_type = $response->token_type;
+            $userData->refresh_token = $response->refresh_token;
+            $userData->expires_in = $response->expires_in;
+            $userData->scope = $response->scope;
+            $userData->allegro_api = $response->allegro_api;
+            $userData->jti = $response->jti;
+            $userData->save();
+        }
+
         dd($response);
+
         return $response;
     }
 
