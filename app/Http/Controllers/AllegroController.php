@@ -1,5 +1,4 @@
 <?php
-
 // --- [SANDBOX] PRODUKT DO TESTÓW
 // https://allegro.pl.allegrosandbox.pl/oferta/uun2-8gb-srebrny-usb2-0-7680166142
 
@@ -19,7 +18,7 @@ use App\Models\OrdersTable;
 use App\Models\Offers;
 
 use Auth;
-
+ini_set('max_execution_time', 60000);
 class AllegroController extends Controller
 {
     // --- SANDBOX ---
