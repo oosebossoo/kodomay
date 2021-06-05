@@ -114,6 +114,7 @@ class AllegroController extends Controller
         if(UserData::select('refresh')->where('refresh', 1)->get())
         {
             $updates = UserData::where('refresh', 1)->get();
+            $log[] = 'start updating';
             foreach($updates as $update)
             {
                 UserData::where('user_id', $update->user_id)->update([
@@ -122,7 +123,7 @@ class AllegroController extends Controller
                     'jti' => $response->jti,
                     'refresh' => 0
                 ]);
-                $log[] = ['id' => 'update'];
+                $log[] = ['id' => $update->user_id];
             }
             return [$log];
         }

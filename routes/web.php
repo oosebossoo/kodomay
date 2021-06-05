@@ -11,6 +11,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\AllegroController;
+use App\Http\Controllers\StatisticsController;
 
 Route::get('/', function () {
     return ["1" => "jeden", "2" => "dwa"];
@@ -38,6 +39,12 @@ Route::get('/get_offers', [AllegroController::class, 'getOffer']);
 Route::get('/set_offer', [AllegroController::class, 'setOffer']);
 Route::get('/test', [AllegroController::class, 'checkoutForms']);
 Route::get('/run_email', [AllegroController::class, 'runEmail']);
+
+// Statystyki
+Route::get('/stat/orders/today/count', [StatisticsController::class, 'ordersTodayCount']);
+Route::get('/stat/offers/active/count', [StatisticsController::class, 'offersActiveCount']);
+Route::get('/stat/cash/allegro', [StatisticsController::class, 'cashAllegro']);
+Route::get('/stat/orders/today/count', [StatisticsController::class, 'ordersTodayCount']);
 
 Route::get('send_mail',[MailController::class, 'sendEmail']);
 
