@@ -421,7 +421,7 @@ class AllegroController extends Controller
             }
             if($response["events"] != []) {
                 $res = $response["events"];
-                dd($res);
+                
                 $lastEvent = $res[0]["id"];
                 if($res[0]["id"] != $userData->last_event) 
                 {
