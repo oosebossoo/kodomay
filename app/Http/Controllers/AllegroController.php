@@ -421,10 +421,11 @@ class AllegroController extends Controller
             }
             if($response["events"] != []) {
                 $res = $response["events"];
-                
+                $tests[] = "pobrane zamówienia";
                 $lastEvent = $res[0]["id"];
                 if($res[0]["id"] != $userData->last_event) 
                 {
+                    $tests[] = "nowe zamówienia";
                     $log[] = "new events: ".$res[0]["id"];
                     foreach ($res as $order) 
                     {
