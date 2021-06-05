@@ -550,7 +550,7 @@ class AllegroController extends Controller
                             $log[] = "old order: ".$order["id"];
                         }
                         // dd(['details' => $details, 'log' => $log, $detailsInfo->lineItems[0]->offer->id, $isActive['is_active']]);
-                        dd(['debug' => $tests]);
+                        // dd(['debug' => $tests]);
                     }
                     $status = 0;
                     $desc = "Oh yhee.. some new orders :) ";
