@@ -549,7 +549,7 @@ class AllegroController extends Controller
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
                         }
-                        dd(['details' => $details, 'log' => $log, $detailsInfo->lineItems[0]->offer->id, $isActive['is_active']]);
+                        // dd(['details' => $details, 'log' => $log, $detailsInfo->lineItems[0]->offer->id, $isActive['is_active']]);
                         // dd(['debug' => $tests]);
                     }
                     $status = 0;
