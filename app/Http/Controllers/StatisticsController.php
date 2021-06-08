@@ -44,7 +44,7 @@ class StatisticsController extends Controller
         return 0;
     }
 
-    public function getTransactionInMonth()
+    public function getTransactionInMonth(Request $request)
     {
         if(isset($request->dev))
         {
@@ -55,21 +55,41 @@ class StatisticsController extends Controller
             $user_id = Auth::user()->id;
         }
 
-        for($i = 0; $i < cal_days_in_month(CAL_GREGORIAN, (int)date("m"), (int)date("Y")); $i++)
+        if(isset($request->m) == 1)
         {
+            $m = $request->m;
+        }
+        else
+        {
+            $m = (int)date("m");
+        }
+
+        for($i = 0; $i < $this->days_in_month($m, (int)date("Y")); $i++)
+        {
+            if(isset($request->m) == 1)
+            {
+                $m = $request->m;
+            }
+            else
+            {
+                $m = (int)date("m");
+            }
+
             $j = $i;
-            if($j <10)
+            $d = $j + 1;
+            if($d < 10)
             {
-
-                $d = "0".$j+1;
+                $d = "0".$d;
             }
 
-            if((int)date("m") < 10)
+            if($m < 10)
             {
-                $m = "0".(int)date("m");
+                $m = "0".$m;
             }
+            
             $date = (int)date("Y")."-".$m."-".$d;
-            $data[] = Orders::where('seller_id', $user_id)->whereBetween('order_date', [$date."T00:00:00.000Z", $date."T23:59:59.999Z"])->count();
+            $data[$date] = Orders::where('seller_id', $user_id)->whereBetween('order_date', [$date."T00:00:00.000Z", $date."T23:59:59.999Z"])->count();
+
         }
         return $data;
     }
