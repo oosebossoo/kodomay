@@ -11,7 +11,7 @@ use Auth;
 
 class StatisticsController extends Controller
 {
-    public function ordersTodayCount()
+    public function ordersTodayCount(Request $request)
     {
         if(isset($request->dev))
         {
@@ -25,7 +25,7 @@ class StatisticsController extends Controller
         return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
     }
 
-    public function offersActiveCount()
+    public function offersActiveCount(Request $request)
     {
         if(isset($request->dev))
         {

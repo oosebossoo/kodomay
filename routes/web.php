@@ -25,9 +25,9 @@ Route::get('/home', function () {
     //return redirect('/login');
 });
 
-Route::get('/get_auth', [AllegroController::class, 'getAuth']);
+Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/get_token', [AllegroController::class, 'getToken']);
-Route::get('/refresh_token', [AllegroController::class, 'refreshToken']);
+Route::get('/delete_allegro_user', [AllegroController::class, 'deleteAllegroUser']);
 
 Route::get('/me', [AllegroController::class, 'getAllegroUsers']);
 Route::get('/main_function', [AllegroController::class, 'mainFunction']);
@@ -44,7 +44,7 @@ Route::get('/run_email', [AllegroController::class, 'runEmail']);
 Route::get('/stat/orders/today/count', [StatisticsController::class, 'ordersTodayCount']);
 Route::get('/stat/offers/active/count', [StatisticsController::class, 'offersActiveCount']);
 Route::get('/stat/cash/allegro', [StatisticsController::class, 'cashAllegro']);
-Route::get('/stat/get_transaction_in_month', [StatisticsController::class, 'getTransactionInMonth']);
+Route::get('/stat/quantity/transaction_per_month', [StatisticsController::class, 'getTransactionInMonth']);
 Route::get('/stat/cash/transaction/value', [StatisticsController::class, 'transactionValue']);
 
 Route::get('send_mail',[MailController::class, 'sendEmail']);

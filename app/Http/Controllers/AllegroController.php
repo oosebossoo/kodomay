@@ -34,7 +34,13 @@ class AllegroController extends Controller
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
-    public function getAuth(Request $request)
+    // ==================
+    // ========---=======
+    // allegero - account
+    // ========---=======
+    //===================
+
+    public function addAllegroUser(Request $request)
     {
         if(isset($request->opt))
         {
@@ -42,7 +48,7 @@ class AllegroController extends Controller
                 'refresh' => true
             ]);
         }
-        return $this->getAuthRepo();
+        return $this->addAllegroUserRepo();
     }
 
     public function getToken(Request $request)
@@ -50,12 +56,12 @@ class AllegroController extends Controller
         return $this->getTokenRepo($request);
     }
 
-    public function refreshToken(Request $request)
+    public function deleteAllegroUser(Request $request)
     {
-        return $this->refreshTokenRepo($request);
+        return $this->deleteAllegroUserRepo($request);
     }
 
-    public function getAuthRepo()
+    public function addAllegroUserRepo()
     {
 
         $authUrl = "https://allegro.pl/auth/oauth/authorize?"
@@ -136,54 +142,49 @@ class AllegroController extends Controller
             $userData->jti = $response->jti;
             $userData->refresh = 0;
             $userData->save();
-            return ['status' => 'added new account'];
+            return [
+                'status' => 0,
+                'desc' => 'added new account'
+            ];
         }
     }
 
     
 
-    public function refreshTokenRepo()
+    public function deleteAllegroUserRepo($request)
     {
-        $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
-        $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
-        $token = UserData::where('user_id', Auth::user()->id)->get()[0];
-        $headers = [ 
-            "Accept: application/vnd.allegro.public.v1+json", 
-            "Authorization: Basic " . base64_encode("$this->clientId:$$this->clientSecret")
+        if(isset($request->user_id))
+        {
+            $user_id = $request->user_id;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+        $res = UserData::where('user_id', $user_id)->where('id', $request->$id)->delete;
+        if($res)
+        {
+            return [
+                'status' => 0,
+                'desc' => 'deleted account'
+            ];
+        }
+        return [
+            'status' => 1,
+            'desc' => 'cant delete account'
         ];
-
-        $post = [
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $token->refresh_token,
-            'redirect_uri' => 'https://kodomat.herokuapp.com/get_token'
-        ];
-
-        $curl = curl_init("https://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$token->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST,true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
-        $response = curl_exec($curl);   
-        curl_close($curl);
-
-        // ----------------------------------------------------------------------------
-        // ----------------------------+------------------+----------------------------
-        // ----------------------------| TEST HTTP CLIENT |----------------------------
-        // ----------------------------+--------|---------+----------------------------
-        // -------------------------------------V--------------------------------------
-
-        // $response = Http::withHeaders([
-        //     "Accept" => "application/vnd.allegro.public.v1+json",
-        //     "Authorization" => "Basic " . base64_encode("$this->clientId:$$this->clientSecret")
-        // ])->post("https://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$token->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
-
-        dd($response);
     }
 
     public function endOfGettingToken(Request $request)
     {
         return $request;
     }
+
+    // ==============
+    // =======---====
+    // allegro - func
+    // =======---====
+    // ==============
 
     public function setOffer(Request $request)
     {
@@ -400,6 +401,14 @@ class AllegroController extends Controller
 
         $userDatas = UserData::where('user_id', $request->user_id)->get();
 
+        if(!isset($userDatas))
+        {
+            return [ 
+                'status' => 1,
+                'desc' => 'any allegro account does not exist in database' 
+            ];
+        }
+
         foreach ($userDatas as $userData)
         {
             $response = Http::withHeaders([
@@ -414,7 +423,7 @@ class AllegroController extends Controller
                 UserData::where('user_id', $request->user_id)->update([
                     'refresh' => true
                 ]);
-                return $this->getAuthRepo();
+                return $this->addAllegroUserRepo();
             }
             if($response["events"] != []) {
                 $res = $response["events"];
