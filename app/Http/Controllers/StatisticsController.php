@@ -94,7 +94,7 @@ class StatisticsController extends Controller
             $m = (int)date("m");
         }
         // dd(cal_days_in_month(CAL_GREGORIAN, (int)date("m") - 1, (int)date("Y")));
-        for($i = 0; $i < cal_days_in_month(CAL_GREGORIAN, $m, (int)date("Y")); $i++)
+        for($i = 0; $i < $this->days_in_month($m, (int)date("Y")); $i++)
         {
             $j = $i;
             $d = $j + 1;
@@ -123,6 +123,11 @@ class StatisticsController extends Controller
         }
         return $data;
     }
+
+    function days_in_month($month, $year){
+        // calculate number of days in a month
+        return $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
+    } 
 
 
 }
