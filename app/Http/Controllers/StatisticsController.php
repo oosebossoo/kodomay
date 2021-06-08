@@ -74,7 +74,7 @@ class StatisticsController extends Controller
         return $data;
     }
 
-    public function transactionValue()
+    public function transactionValue(Request $request)
     {
         if(isset($request->dev))
         {
@@ -84,27 +84,42 @@ class StatisticsController extends Controller
         {
             $user_id = Auth::user()->id;
         }
-        for($i = 0; $i < cal_days_in_month(CAL_GREGORIAN, (int)date("m"), (int)date("Y")); $i++)
+
+        if(isset($request->m))
+        {
+            $m = $request->m;
+        }
+        else
+        {
+            $m = (int)date("m");
+        }
+        // dd(cal_days_in_month(CAL_GREGORIAN, (int)date("m") - 1, (int)date("Y")));
+        for($i = 0; $i < cal_days_in_month(CAL_GREGORIAN, $m, (int)date("Y")); $i++)
         {
             $j = $i;
-            if($j <10)
+            $d = $j + 1;
+            if($d < 10)
             {
-                $d = "0".$j+1;
+                $d = "0".$d;
             }
 
-            if((int)date("m") < 10)
+            if($m < 10)
             {
-                $m = "0".(int)date("m");
-                $m = $m - 1;
+                $m = (int)date("m");
+                $m = "0".$m;
             }
+
             $date = (int)date("Y")."-".$m."-".$d;
             $orders = Orders::select('order_price')->where('seller_id', $user_id)->whereBetween('order_date', [$date."T00:00:00.000Z", $date."T23:59:59.999Z"])->get();
+            // $data[] = [$date => $orders];
+            // $orders = Orders::select('order_price')->where('seller_id', $user_id)->whereBetween('order_date', ["2021-06-08T00:00:00.000Z", "2021-06-08T23:59:59.999Z"])->get();
             $value = 0;
             foreach($orders as $order) 
             {
                 $value = $value + (float)$order->order_price;
             }
-            $data[] = round($value, 2);
+            $data[$date] = round($value, 2);
+            // $data[$i] = [$d, $m];
         }
         return $data;
     }

@@ -407,6 +407,8 @@ class AllegroController extends Controller
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
+            // return $response;
+
             if($response->failed() || $response->clientError())
             {
                 UserData::where('user_id', $request->user_id)->update([
@@ -451,24 +453,24 @@ class AllegroController extends Controller
                             {
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
 
-                                // if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
-                                // {
-                                //     OrdersTable::where('customer_id', $buyer["id"])
-                                //         ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
-                                //         ->update([
-                                //             'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
-                                //     ]);
-                                // }
-                                // else
-                                // {
-                                //     $order_table = new OrdersTable;
-                                //     $order_table->seller_id = $request->user_id;
-                                //     $order_table->customer_id = $buyer["id"];
-                                //     $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
-                                //     $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
-                                //     $order_table->count = 1;
-                                //     $order_table->save();
-                                // }
+                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
+                                {
+                                    OrdersTable::where('customer_id', $buyer["id"])
+                                        ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
+                                        ->update([
+                                            'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
+                                    ]);
+                                }
+                                else
+                                {
+                                    $order_table = new OrdersTable;
+                                    $order_table->seller_id = $request->user_id;
+                                    $order_table->customer_id = $buyer["id"];
+                                    $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->count = 1;
+                                    $order_table->save();
+                                }
                             }
                             else 
                             {
