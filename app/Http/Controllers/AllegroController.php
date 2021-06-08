@@ -32,11 +32,6 @@ class AllegroController extends Controller
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
-    function test()
-    {
-        return $GLOBALS['id'];
-    }
-
     public function getAuth(Request $request)
     {
         if(isset($request->opt))
@@ -415,16 +410,13 @@ class AllegroController extends Controller
                 UserData::where('user_id', $request->user_id)->update([
                     'refresh' => true
                 ]);
-                $GLOBALS['id'] = $request->user_id;
                 return $this->getAuthRepo();
             }
             if($response["events"] != []) {
                 $res = $response["events"];
-                $tests[] = "pobrane zamówienia";
                 $lastEvent = $res[0]["id"];
                 if($res[0]["id"] != $userData->last_event) 
                 {
-                    $tests[] = "nowe zamówienia";
                     $log[] = "new events: ".$res[0]["id"];
                     foreach ($res as $order) 
                     {
@@ -439,7 +431,6 @@ class AllegroController extends Controller
                         {
                             $log[] = "new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
-                            $tests[] = "zapisywanie do db zamówienia";
                             $orderModel = new Orders;
                             $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
                             $orderModel->order_id = $order["id"];
@@ -453,27 +444,21 @@ class AllegroController extends Controller
                             $orderModel->seller_id = $request->user_id;
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             $orderModel->save();
-                            $tests[] = "zamówienie zostało zapisane";
 
                             if(Customer::where('customer_id', $buyer["id"])->exists())
                             {
-                                $tests[] = "jeśli klient istnieje";
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
 
                                 if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
                                 {
-                                    $tests[] = "jeśli ordersTable istnieje";
                                     OrdersTable::where('customer_id', $buyer["id"])
                                         ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
                                         ->update([
                                             'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
                                     ]);
-
-                                    $tests[] = "ordersTable updated";
                                 }
                                 else
                                 {
-                                    $tests[] = "zapisywanie do db ordersTable";
                                     $order_table = new OrdersTable;
                                     $order_table->seller_id = $request->user_id;
                                     $order_table->customer_id = $buyer["id"];
@@ -481,7 +466,6 @@ class AllegroController extends Controller
                                     $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
                                     $order_table->count = 1;
                                     $order_table->save();
-                                    $tests[] = "ordersTable zostało zapisane";
                                 }
                             }
                             else 
@@ -494,12 +478,9 @@ class AllegroController extends Controller
                                         ->update([
                                             'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
                                     ]);
-
-                                    $tests[] = "ordersTable updated";
                                 }
                                 else
                                 {
-                                    $tests[] = "zapisywanie do db ordersTable";
                                     $order_table = new OrdersTable;
                                     $order_table->seller_id = $request->user_id;
                                     $order_table->customer_id = $buyer["id"];
@@ -507,11 +488,7 @@ class AllegroController extends Controller
                                     $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
                                     $order_table->count = 1;
                                     $order_table->save();
-                                    $tests[] = "ordersTable zostało zapisane";
                                 }
-
-                                $tests[] = "zapisywanie do db klienta";
-
                                 $customer = new Customer;
                                 $customer->customer_id = $buyer["id"];
                                 $customer->seller_id = $request->user_id;
@@ -526,8 +503,6 @@ class AllegroController extends Controller
                                 $customer->guest = $buyer["guest"];
                                 $customer->orders = 1;
                                 $customer->save();
-
-                                $tests[] = "klient został zapisany";
                             }
 
                             // $this->changeStatus($order["order"]["checkoutForm"]["id"], $userData->access_token, "PROCESSING");
