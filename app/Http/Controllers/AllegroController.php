@@ -2,6 +2,8 @@
 // --- [SANDBOX] PRODUKT DO TESTÓW
 // https://allegro.pl.allegrosandbox.pl/oferta/uun2-8gb-srebrny-usb2-0-7680166142
 
+// db_password: e8khH0BUfi
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -449,24 +451,24 @@ class AllegroController extends Controller
                             {
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
 
-                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
-                                {
-                                    OrdersTable::where('customer_id', $buyer["id"])
-                                        ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
-                                        ->update([
-                                            'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
-                                    ]);
-                                }
-                                else
-                                {
-                                    $order_table = new OrdersTable;
-                                    $order_table->seller_id = $request->user_id;
-                                    $order_table->customer_id = $buyer["id"];
-                                    $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
-                                    $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
-                                    $order_table->count = 1;
-                                    $order_table->save();
-                                }
+                                // if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
+                                // {
+                                //     OrdersTable::where('customer_id', $buyer["id"])
+                                //         ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
+                                //         ->update([
+                                //             'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
+                                //     ]);
+                                // }
+                                // else
+                                // {
+                                //     $order_table = new OrdersTable;
+                                //     $order_table->seller_id = $request->user_id;
+                                //     $order_table->customer_id = $buyer["id"];
+                                //     $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                                //     $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
+                                //     $order_table->count = 1;
+                                //     $order_table->save();
+                                // }
                             }
                             else 
                             {
