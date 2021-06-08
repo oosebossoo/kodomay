@@ -18,7 +18,7 @@ use App\Models\OrdersTable;
 use App\Models\Offers;
 
 use Auth;
-ini_set('max_execution_time', 60000);
+
 class AllegroController extends Controller
 {
     // --- SANDBOX ---
@@ -549,7 +549,7 @@ class AllegroController extends Controller
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
                         }
-                        dd(['details' => $details, 'log' => $log, $detailsInfo->lineItems[0]->offer->id, $isActive['is_active']]);
+                        // dd(['details' => $details, 'log' => $log, $detailsInfo->lineItems[0]->offer->id, $isActive['is_active']]);
                         // dd(['debug' => $tests]);
                     }
                     $status = 0;
@@ -713,6 +713,11 @@ class AllegroController extends Controller
     // --- ---
     // --- ---
     // --- ---
+
+    function addCustomer()
+    {
+
+    }
 
     public function parseHeaders(array $headers)
     {
