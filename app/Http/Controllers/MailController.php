@@ -35,6 +35,12 @@ class MailController extends Controller
 
    public function sendEmail(Request $request) 
    {
+      if(isset($request->order_id))
+      {
+         $order = Orders::where('order_id', $request->order_id)->first();
+         $code = Code::where('id', $order->code_id);
+      }
+      Orders::where('order_id', $request->order_id)->first();
       $data = array('name'=> $request->customerName, 'code' => $request->code);
     
       Mail::send(['text'=>'mail'], $data, function($message) {
@@ -42,7 +48,6 @@ class MailController extends Controller
             ('Order no. 1234567890');
          $message->from('noreplay@kodo.mat','Kodomat');
       });
-        
    }
 
    public function activate()

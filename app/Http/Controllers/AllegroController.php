@@ -692,8 +692,24 @@ class AllegroController extends Controller
         }
 
         $orders = Orders::where('seller_id', $user_id)->where('offer_id', $offerId['sing'], $offerId['id'])->whereBetween('order_date', [$from, $to])->orderBy('order_date', $oderBy)->limit($limit)->get();
-
-        return $orders;
+        foreach($orders as $order)
+        {
+            $customer = Customer::where('customer_id', $order->customer_id)->first();
+            $res[] = ['order' => [ 
+                    $order, 
+                    'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
+                    'sent_date' => 'rrrr-mm-dd', 
+                    'codes' => [
+                        'jakiś_kod', 
+                        'jakiś_kod', 
+                        'jakiś_kod' 
+                    ]], 
+                    'customer' => [ 
+                        'name' => $customer->first_name." ".$customer->last_name, 'login' => $customer->login 
+                    ]
+                ];
+        }
+        return $res;
     }
 
     // --- ---
