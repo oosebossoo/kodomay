@@ -149,8 +149,6 @@ class AllegroController extends Controller
         }
     }
 
-    
-
     public function deleteAllegroUserRepo($request)
     {
         if(isset($request->user_id))
@@ -391,6 +389,34 @@ class AllegroController extends Controller
     public function cancelOrder(Request $request)
     {
         return Order::where('id', $request->id)->update(['status' => "canceled"]);
+    }
+
+    public function test(Request $request)
+    {
+        // 1621513352164979
+        $userDatas = UserData::where('user_id', $request->user_id)->get();
+
+        foreach ($userDatas as $userData)
+        {
+            if($request->func == "event")
+            {
+                $response = Http::withHeaders([
+                    "Accept" => "application/vnd.allegro.public.v1+json",
+                    "Authorization" => "Bearer $userData->access_token"
+                ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
+
+                return $response;
+            }
+
+            if($request->func == "chechout")
+            {
+                $response = Http::withHeaders([
+                    "Accept" => "application/vnd.allegro.public.v1+json",
+                    "Authorization" => "Bearer $userData->access_token"
+                ])->get("https://api.allegro.pl/order/checkout-forms/$checkOutFormId");
+                return json_decode($response);
+            }
+        }
     }
 
     public function mainFunction(Request $request)
@@ -695,6 +721,7 @@ class AllegroController extends Controller
         foreach($orders as $order)
         {
             $customer = Customer::where('customer_id', $order->customer_id)->first();
+            dd($customer);
             $res[] = ['order' => [ 
                     $order, 
                     'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
@@ -705,7 +732,7 @@ class AllegroController extends Controller
                         'jakiś_kod' 
                     ]], 
                     'customer' => [ 
-                        'name' => $customer->first_name." ".$customer->last_name, 'login' => $customer->login 
+                    'name' => $customer->first_name." ".$customer->last_name, 'login' => $customer->login 
                     ]
                 ];
         }

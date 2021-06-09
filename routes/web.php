@@ -37,7 +37,7 @@ Route::get('/get_customers', [AllegroController::class, 'getCustomers']);
 Route::get('/get_customers_orders', [AllegroController::class, 'getCustomerOrders']);
 Route::get('/get_offers', [AllegroController::class, 'getOffer']);
 Route::get('/set_offer', [AllegroController::class, 'setOffer']);
-Route::get('/test', [AllegroController::class, 'checkoutForms']);
+Route::get('/test', [AllegroController::class, 'test']);
 Route::get('/run_email', [AllegroController::class, 'runEmail']);
 
 // Statystyki
