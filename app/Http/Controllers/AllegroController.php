@@ -721,8 +721,7 @@ class AllegroController extends Controller
         foreach($orders as $order)
         {
             $customer = Customer::where('customer_id', $order->customer_id)->first();
-            // dd($customer);
-            if(isset($customer_first_name))
+            if($customer->first_name != null)
             {
                 $res[] = ['order' => [ 
                     $order, 
@@ -751,7 +750,8 @@ class AllegroController extends Controller
                         'jakiś_kod' 
                     ]], 
                     'customer' => [ 
-                        'login' => $customer->login 
+                        'name' => 'imie nazwisko', 
+                        'login' => 'login'
                     ]
                 ];
             }
