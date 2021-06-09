@@ -721,7 +721,7 @@ class AllegroController extends Controller
         foreach($orders as $order)
         {
             $customer = Customer::where('customer_id', $order->customer_id)->first();
-            if($customer->first_name != null)
+            if($customer = Customer::where('customer_id', $order->customer_id)->exists())
             {
                 $res[] = ['order' => [ 
                     $order, 
