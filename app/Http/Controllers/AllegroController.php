@@ -721,8 +721,10 @@ class AllegroController extends Controller
         foreach($orders as $order)
         {
             $customer = Customer::where('customer_id', $order->customer_id)->first();
-            dd($customer);
-            $res[] = ['order' => [ 
+            // dd($customer);
+            if(isset($customer_first_name))
+            {
+                $res[] = ['order' => [ 
                     $order, 
                     'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
                     'sent_date' => 'rrrr-mm-dd', 
@@ -732,9 +734,27 @@ class AllegroController extends Controller
                         'jakiś_kod' 
                     ]], 
                     'customer' => [ 
-                    'name' => $customer->first_name." ".$customer->last_name, 'login' => $customer->login 
+                        'name' => $customer->first_name." ".$customer->last_name, 
+                        'login' => $customer->login 
                     ]
                 ];
+            }
+            else
+            {
+                $res[] = ['order' => [ 
+                    $order, 
+                    'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
+                    'sent_date' => 'rrrr-mm-dd', 
+                    'codes' => [
+                        'jakiś_kod', 
+                        'jakiś_kod', 
+                        'jakiś_kod' 
+                    ]], 
+                    'customer' => [ 
+                        'login' => $customer->login 
+                    ]
+                ];
+            }
         }
         return $res;
     }
