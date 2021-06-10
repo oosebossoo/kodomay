@@ -44,10 +44,10 @@ class MailController extends Controller
       }
       $order = Orders::where('order_id', $request->order_id)->first();
       $offer = Offers::where('offer_id', $order->offer_id)->first();
-      $code = Code::where('offer_id', $offer->offer_id)->where('status', 1)->first();
 
       for ($i = 0; $i < $order->quantity; $i++)
       {
+         $code = Code::where('offer_id', $offer->offer_id)->where('status', 1)->where('seller_id', $order->seller_id)->first();
          $data[] = [ $code->code ];
       }
 
@@ -60,6 +60,9 @@ class MailController extends Controller
       for ($i = 0; $i < $order->quantity; $i++)
       {
          $sentMail = new SentMail();
+         $sentMail->customer_id = $order->customer_id;
+         $sentMail->offer_id = $order->offer_id;
+         $sentMail->code_id = $order->code_id;
          $sentMail->save();
       }
    }

@@ -759,6 +759,7 @@ class AllegroController extends Controller
                 $order, 
                 'platform' => 'Allegro',
                 'send_status' => 'Sending',
+                'ended' => 'null',
                 'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
                 'sent_date' => 'rrrr-mm-dd', 
                 'codes' => [
