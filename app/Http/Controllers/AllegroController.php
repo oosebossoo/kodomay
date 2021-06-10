@@ -723,7 +723,8 @@ class AllegroController extends Controller
             $customer = Customer::where('customer_id', $order->customer_id)->first();
             if($customer->first_name != "")
             {
-                // echo "1 ".$customer->first_name."<br>"; 
+                echo "1 ".$customer->customer_id."<br>";
+                echo "1 ".$customer->first_name."<br>"; 
                 $res[] = ['order' => [ 
                     $order, 
                     'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
