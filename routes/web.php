@@ -33,6 +33,7 @@ Route::get('/me', [AllegroController::class, 'getAllegroUsers']);
 Route::get('/main_function', [AllegroController::class, 'mainFunction']);
 Route::get('/lst_ord_events', [AllegroController::class, 'getLastEvent']);
 Route::get('/get_orders', [AllegroController::class, 'getOrders']);
+Route::get('/cancel_order', [AllegroController::class, 'cancelOrder']);
 Route::get('/get_customers', [AllegroController::class, 'getCustomers']);
 Route::get('/get_customers_orders', [AllegroController::class, 'getCustomerOrders']);
 Route::get('/get_offers', [AllegroController::class, 'getOffer']);

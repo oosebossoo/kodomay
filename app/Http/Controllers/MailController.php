@@ -10,6 +10,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CodesController;
 use App\Models\Code;
+use App\Models\Orders;
+use App\Models\Offers;
 
 class MailController extends Controller
 {
@@ -35,19 +37,26 @@ class MailController extends Controller
 
    public function sendEmail(Request $request) 
    {
-      if(isset($request->order_id))
+      $order = Orders::where('order_id', $request->order_id)->first();
+      $offer = Offers::where('offer_id', $order->offer_id)->first();
+      $code = Code::where('offer_id', $offer->offer_id)->where('status', 1)->first();
+
+      for ($i = 0; $i < $order->quantity; $i++)
       {
-         $order = Orders::where('order_id', $request->order_id)->first();
-         $code = Code::where('id', $order->code_id);
+         $data[] = [ $code->code ];
       }
-      Orders::where('order_id', $request->order_id)->first();
-      $data = array('name'=> $request->customerName, 'code' => $request->code);
-    
+
       Mail::send(['text'=>'mail'], $data, function($message) {
-         $message->to("vyjpq3e2u1+1ee2043b8@user.allegrogroup.pl", "Sebastian")->subject
-            ('Order no. 1234567890');
+         $message->to("$request->email", "Sebastian")->subject
+            ("Order no. $order->order_id");
          $message->from('noreplay@kodo.mat','Kodomat');
       });
+
+      for ($i = 0; $i < $order->quantity; $i++)
+      {
+         $sentMail = new SentMail();
+         $sentMail->save();
+      }
    }
 
    public function activate()

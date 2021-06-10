@@ -304,7 +304,8 @@ class AllegroController extends Controller
 
         $oderBy = 'desc';
         $limit = 100;
-        $customerId = ['sing' => '!=', 'id' => ''];
+        $customerId = ['sign' => '!=', 'id' => ''];
+        $canceled = [ 'sign' => '=', 'desc' => ''];
 
         if(isset($request->oderBy))
         {
@@ -332,8 +333,14 @@ class AllegroController extends Controller
 
         if(isset($request->customer_id))
         {
-            $customerId['sing'] = '=';
+            $customerId['sign'] = '=';
             $customerId['id'] = $request->customer_id;
+        }
+
+        if(isset($request->canceled))
+        {
+            $customerId['sign'] = '=';
+            $customerId['desc'] = 'CANCELED';
         }
 
         if(isset($request->date))
@@ -341,7 +348,12 @@ class AllegroController extends Controller
             
             $from = date($request->date . " 00:00:00");
             $to = date($request->date . " 23:59:59");
-            $customers = Customer::where('seller_id', $user_id)->whereBetween('created_at', [$from, $to])->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
+            $customers = Customer::where('seller_id', $user_id)
+                ->whereBetween('created_at', [$from, $to])
+                ->where('customer_id', $customerId['sign'], $customerId['id'])
+                ->where('status', $canceled['sign'], $canceled['desc'])
+                ->limit($limit)
+                ->get();
         }
 
         $customers = Customer::where('seller_id', $user_id)->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
@@ -388,7 +400,9 @@ class AllegroController extends Controller
 
     public function cancelOrder(Request $request)
     {
-        return Order::where('id', $request->id)->update(['status' => "canceled"]);
+        // 3990
+        // 1623157840976792
+        return Orders::where('order_id', $request->order_id)->update(['status' => "CANCELED"]);
     }
 
     public function test(Request $request)
@@ -674,6 +688,7 @@ class AllegroController extends Controller
         $oderBy = 'desc';
         $limit = 100;
         $offerId = ['sing' => '!=', 'id' => ''];
+        $canceled = [ 'sign' => '=', 'desc' => ''];
         $from = date('2000-01-01');
         $to = date('2022-01-01');
 
@@ -717,7 +732,26 @@ class AllegroController extends Controller
             $to = date($request->to);
         }
 
-        $orders = Orders::where('seller_id', $user_id)->where('offer_id', $offerId['sing'], $offerId['id'])->whereBetween('order_date', [$from, $to])->orderBy('order_date', $oderBy)->limit($limit)->get();
+        if(isset($request->canceled))
+        {
+            $orders = Orders::where('seller_id', $user_id)
+            ->where('offer_id', $offerId['sing'], $offerId['id'])
+            ->where('status', 'CANCELED')
+            ->whereBetween('order_date', [$from, $to])
+            ->orderBy('order_date', $oderBy)
+            ->limit($limit)
+            ->get();
+        }
+        else
+        {
+            $orders = Orders::where('seller_id', $user_id)
+            ->where('offer_id', $offerId['sing'], $offerId['id'])
+            ->whereBetween('order_date', [$from, $to])
+            ->orderBy('order_date', $oderBy)
+            ->limit($limit)
+            ->get();
+        }
+
         foreach($orders as $order)
         {
             $customer = Customer::where('customer_id', $order->customer_id)->first();
