@@ -57,6 +57,7 @@ Route::get('/get_sold_codes', [ CodesController::class, 'getSoldCodes']);
 
 Route::post('/change_status_of_code', [ CodesController::class, 'changeStatusOfCode']);
 Route::get('/add_codes', [ CodesController::class, 'addCodes']);
+Route::get('/magre_codes_to_offer', [ CodesController::class, 'magreCodesToOffer']);
 Route::get('/add_codes_form_text_box', [ CodesController::class, 'addCodesFormTextBox']);
 
 Route::get('/login', [AccountController::class, 'create']);

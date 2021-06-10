@@ -11,9 +11,13 @@ use App\Models\Code;
 
 class CodesController extends Controller
 {
+    public function magreCodesToOffer(Request $request)
+    {
+        Code::where('db_id', $request->db_id)->update( ['offer_id' => $request->offer_id] );
+    }
+
     public function addCodes(Request $request) 
     {
-        // dd($request->db_type[0]);
         if(isset($request->dev))
         {
             $user_id = 14;
@@ -29,16 +33,15 @@ class CodesController extends Controller
             $dbName = $request->db_name;
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
+            $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
             foreach ($request->codes as $code)
             {
-                // dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
                 $cddb = new Code();
-                $cddb->db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
+                $cddb->db_id = $db_id;
                 $cddb->db_type = $dbType;
                 $cddb->db_name = $dbName;
                 $cddb->code = $code;
                 $cddb->seller_id = $user_id;
-                $cddb->offer_id = $offerId;
                 $cddb->save();
             }
         }
@@ -48,16 +51,15 @@ class CodesController extends Controller
             $dbName = $request->db_name;
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
+            $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
             foreach ($request->codes as $code)
             {
-                // dd(Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId));
                 $cddb = new Code();
-                $cddb->db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
+                $cddb->db_id = $db_id;
                 $cddb->db_type = $dbType;
                 $cddb->db_name = $dbName;
                 $cddb->code = $code;
                 $cddb->seller_id = $user_id;
-                $cddb->offer_id = $offerId;
                 $cddb->save();
             }
         }
