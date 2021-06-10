@@ -757,6 +757,8 @@ class AllegroController extends Controller
             $customer = Customer::where('customer_id', $order->customer_id)->first();
             $res[] = ['order' => [ 
                 $order, 
+                'platform' => 'Allegro',
+                'send_status' => 'Sending',
                 'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
                 'sent_date' => 'rrrr-mm-dd', 
                 'codes' => [

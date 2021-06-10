@@ -37,6 +37,11 @@ class MailController extends Controller
 
    public function sendEmail(Request $request) 
    {
+      $email = 'sebek.kasprzak.kodomat@gmail.com';
+      if(isset($request->email))
+      {
+         $email = $request->email;
+      }
       $order = Orders::where('order_id', $request->order_id)->first();
       $offer = Offers::where('offer_id', $order->offer_id)->first();
       $code = Code::where('offer_id', $offer->offer_id)->where('status', 1)->first();
@@ -47,7 +52,7 @@ class MailController extends Controller
       }
 
       Mail::send(['text'=>'mail'], $data, function($message) {
-         $message->to("$request->email", "Sebastian")->subject
+         $message->to("$email", "Sebastian")->subject
             ("Order no. $order->order_id");
          $message->from('noreplay@kodo.mat','Kodomat');
       });
