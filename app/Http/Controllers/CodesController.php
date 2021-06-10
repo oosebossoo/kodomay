@@ -42,6 +42,7 @@ class CodesController extends Controller
                 $cddb->db_name = $dbName;
                 $cddb->code = $code;
                 $cddb->seller_id = $user_id;
+                $cddb->status = 1;
                 $cddb->save();
             }
         }
@@ -60,6 +61,7 @@ class CodesController extends Controller
                 $cddb->db_name = $dbName;
                 $cddb->code = $code;
                 $cddb->seller_id = $user_id;
+                $cddb->status = 1;
                 $cddb->save();
             }
         }
