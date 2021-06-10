@@ -721,7 +721,7 @@ class AllegroController extends Controller
         foreach($orders as $order)
         {
             $customer = Customer::where('customer_id', $order->customer_id)->first();
-            $res[] = $customer;
+            $res[$order->order_id] = [ $order->order_id, $customer ];
             // echo "1 ".$customer->customer_id."<br>";
             // echo "--".$customer->first_name."<br>"; 
             // if($customer->first_name != "")
