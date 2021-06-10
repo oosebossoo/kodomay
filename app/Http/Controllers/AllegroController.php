@@ -720,7 +720,7 @@ class AllegroController extends Controller
         $orders = Orders::where('seller_id', $user_id)->where('offer_id', $offerId['sing'], $offerId['id'])->whereBetween('order_date', [$from, $to])->orderBy('order_date', $oderBy)->limit($limit)->get();
         foreach($orders as $order)
         {
-            $customer = Customer::where('customer_id', $order->customer_id)->first();
+            // $customer = Customer::where('customer_id', $order->customer_id)->first();
             echo Customer::where('customer_id', $order->customer_id)->exists(); 
             // echo "1 ".$customer->customer_id."<br>";
             // echo "--".$customer->first_name."<br>"; 
