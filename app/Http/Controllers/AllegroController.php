@@ -675,7 +675,7 @@ class AllegroController extends Controller
         $limit = 100;
         $offerId = ['sing' => '!=', 'id' => ''];
         $from = date('2000-01-01');
-        $to = date('3000-01-01');
+        $to = date('2022-01-01');
 
         if(isset($request->oderBy))
         {
@@ -758,7 +758,7 @@ class AllegroController extends Controller
                 ];
             }
         }
-        return $res;
+        // return $res;
     }
 
     // --- ---
