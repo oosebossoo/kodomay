@@ -36,7 +36,7 @@ class MailController extends Controller
       return true;
    }
 
-   public static function sendEmail(Request $request) 
+   public static function sendEmail($request) 
    {
       $email = 'sebek.kasprzak.kodomat@gmail.com';
 
