@@ -8,6 +8,7 @@ use Response;
 use Auth;
 
 use App\Models\Code;
+use App\Models\SentMail;
 
 class CodesController extends Controller
 {
@@ -71,6 +72,17 @@ class CodesController extends Controller
         }
 
         return ['status' => 'neeew codes, i like it ^-^'];
+    }
+
+    public function getCodesFromOrder(Request $request)
+    {
+        $codes_id = SentMail::select('code_id')->where('order_id', $request->orderId)->where('customer_id', $request->customerId)->get();
+        foreach ($codes_id as $code_id)
+        {   
+            $code = Code::where('id', $code_id->code_id)->first();
+            $codes[] = $code->code;
+        }
+        return $codes;
     }
 
     public function getAllCode(Request $request)

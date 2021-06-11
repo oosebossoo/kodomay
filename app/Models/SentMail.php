@@ -13,6 +13,7 @@ class SentMail extends Model
 
     protected $fillable = [
         'customer_id',
+        'order_id',
         'offer_id',
         'code_id',
     ];
