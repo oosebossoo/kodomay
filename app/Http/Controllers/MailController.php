@@ -36,7 +36,7 @@ class MailController extends Controller
       return true;
    }
 
-   public static function sendEmail($request) 
+   public static function sendEmail(Request $request) 
    {
       $email = 'sebek.kasprzak.kodomat@gmail.com';
 
@@ -56,8 +56,8 @@ class MailController extends Controller
          $data = array('code' => $code->code);
       }
 
-      Mail::send(['text'=>'mail'], $data, function($message) use ($order) {
-         $message->to('sebek.kasprzak.kodomat@gmail.com', "Sebastian")->subject
+      Mail::send('mail', $data, function($message) use ($order, $email) {
+         $message->to($email, "Sebastian")->subject
             ("Order no. $order->offer_id");
          $message->from('noreplay@kodo.mat','Kodomat');   
       });
