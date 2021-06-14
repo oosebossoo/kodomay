@@ -16,27 +16,37 @@ use App\Models\SentMail;
 
 class MailController extends Controller
 {
-   public static function sendCode($request) 
+   public static function sendCode($order_id, $quantity, $email) 
    {
-      $mail = $request["mail"];
-      $customerName = $request["customerName"];
+      $email = 'sebek.kasprzak.kodomat@gmail.com';
 
-      $code = CodesController::getSellableCode();
-      $codeId = json_decode($code->original->id);
+      $order = Orders::where('order_id', $order_id)->first();
+      $offer = Offers::where('offer_id', $order->offer_id)->first();
 
-      $data = array('name'=> $request["customerName"], 'code' => $code->original->code, 'email' => $request["mail"]);
+      for ($i = 0; $i < $quantity; $i++)
+      {
+         $code = Code::where('offer_id', $offer->offer_id)->where('status', 1)->where('seller_id', $order->seller_id)->first();
+         $data = array('code' => $code->code);
+      }
 
-      CodesController::changeStatusOfCode($codeId);
-
-      Mail::send(['text'=>'mail'], $data, function($message) use ($request) {
-         $message->to($request["mail"], $request["customerName"])->subject
-            ('Order no. '.$request["subject"]);
-         $message->from('noreplay@kodo.mat','Kodomat');
+      Mail::send('mail', $data, function($message) use ($order, $email) {
+         $message->to($email, "Sebastian")->subject
+            ("Order no. $order->offer_id");
+         $message->from('noreplay@kodo.mat','Kodomat');   
       });
-      return true;
+
+      for ($i = 0; $i < $order->quantity; $i++)
+      {
+         $sentMail = new SentMail();
+         $sentMail->customer_id = $order->customer_id;
+         $sentMail->order_id = $request->order_id;
+         $sentMail->offer_id = $order->offer_id;
+         $sentMail->code_id = $code->id;
+         $sentMail->save();
+      }
    }
 
-   public static function sendEmail($request) 
+   public static function sendEmail(Request $request) 
    {
       $email = 'sebek.kasprzak.kodomat@gmail.com';
 
@@ -47,8 +57,6 @@ class MailController extends Controller
 
       $order = Orders::where('order_id', $request->order_id)->first();
       $offer = Offers::where('offer_id', $order->offer_id)->first();
-
-      $message['order_id'] = $order->order_id;
 
       for ($i = 0; $i < $order->quantity; $i++)
       {
