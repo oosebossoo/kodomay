@@ -12,9 +12,14 @@ class Code extends Model
     protected $table = 'code';
 
     protected $fillable = [
+        'offer_id',
+        'db_id',
+        'db_type',
+        'db_name',
         'code',
-        'type',
+        'seller_id',
         'status',
-        'user_id',
+        'created_at',
+        'updated_at',
     ];
 }

@@ -21,11 +21,10 @@ class MailController extends Controller
       $email = 'sebek.kasprzak.kodomat@gmail.com';
 
       $order = Orders::where('order_id', $order_id)->first();
-      $offer = Offers::where('offer_id', $order->offer_id)->first();
 
       for ($i = 0; $i < $quantity; $i++)
       {
-         $code = Code::where('offer_id', $offer->offer_id)->where('status', 1)->where('seller_id', $order->seller_id)->first();
+         $code = Code::where('offer_id', $order->offer_id)->where('status', 1)->where('seller_id', $order->seller_id)->first();
          $data = array('code' => $code->code);
       }
 

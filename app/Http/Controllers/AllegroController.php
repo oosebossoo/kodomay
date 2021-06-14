@@ -18,6 +18,8 @@ use App\Models\UserData;
 use App\Models\Orders;
 use App\Models\OrdersTable;
 use App\Models\Offers;
+use App\Models\SentMail;
+use App\Models\Code;
 
 use Auth;
 
@@ -750,24 +752,45 @@ class AllegroController extends Controller
 
         foreach($orders as $order)
         {
+            $sentMails = SentMail::where('order_id', $order->order_id)->get();
+            // dd(isset($sentMails[0]));
+            if (!isset($sentMails[0]))
+            {
+                $send_status = 'Sending';
+                $sent_date = 'Sending';
+                $codes[] = 'Sending';
+            }
+            else
+            {
+                foreach ($sentMails as $sentMail)
+                {
+                    $send_status = 'Sent';
+                    $sent_date = $sentMail->created_at;
+                    $code = Code::where('id', $sentMail->code_id)->first();
+                    $codes[] = $code->code;
+                }
+            }
             $customer = Customer::where('customer_id', $order->customer_id)->first();
-            $res[] = ['order' => [ 
-                $order, 
-                'platform' => 'Allegro',
-                'send_status' => 'Sending',
-                'ended' => 'null',
-                'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
-                'sent_date' => 'rrrr-mm-dd', 
-                'codes' => [
-                    'jakiś_kod', 
-                    'jakiś_kod', 
-                    'jakiś_kod' 
-                ]], 
+            $res[] = [
+                'order' => [ 
+                    $order, 
+                    'platform' => 'Allegro',
+                    'send_status' => $send_status,
+                    'ended' => 'null',
+                    'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
+                    'sent_date' => $sent_date, 
+                    'codes' => $codes
+                ], 
                 'customer' => [ 
                     'name' => $customer->first_name." ".$customer->last_name, 
                     'login' => $customer->login 
                 ]
             ];
+
+            if($codes != 'Sending')
+            {
+                \array_splice($codes, 0, 1);
+            }
         }
         return $res;
     }
