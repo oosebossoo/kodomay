@@ -39,7 +39,7 @@ class MailController extends Controller
       {
          $sentMail = new SentMail();
          $sentMail->customer_id = $order->customer_id;
-         $sentMail->order_id = $request->order_id;
+         $sentMail->order_id = $order_id;
          $sentMail->offer_id = $order->offer_id;
          $sentMail->code_id = $code->id;
          $sentMail->save();
