@@ -17,6 +17,33 @@ class CodesController extends Controller
         Code::where('db_id', $request->db_id)->update( ['offer_id' => $request->offer_id] );
     }
 
+    public function getNameOfDBCodes(Request $request)
+    {
+        if(isset(Auth::user()->id))
+        {
+            $userId = Auth::user()->id;
+        }
+        elseif(!isset($request->user_id))
+        {
+            return [
+                'status' => 0 ,
+                'desc' => 'please give me a user id... :/'
+            ];
+        }
+        else
+        {
+            $userId = $request->user_id;
+        }
+
+        $DBNames = Code::where('seller_id', $userId)->select('db_name')->groupBy('db_name')->get();
+        
+        foreach($DBNames as $DBName)
+        {
+            $result[] = $DBName->db_name;
+        }
+        return $result;
+    }
+
     public function addCodes(Request $request) 
     {
         if(isset($request->dev))

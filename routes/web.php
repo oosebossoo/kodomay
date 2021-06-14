@@ -51,6 +51,7 @@ Route::get('/stat/cash/transaction/value', [StatisticsController::class, 'transa
 Route::get('/send_email_again',[MailController::class, 'sendEmailAgain']);
 
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
+Route::get('/get_name_of_DB_codes', [ CodesController::class, 'getNameOfDBCodes']);
 Route::get('/get_codes_from_order', [CodesController::class, 'getCodesFromOrder']);
 Route::get('/get_sellable_code', [ CodesController::class, 'getSellableCode']);
 Route::get('/get_sellable_codes', [ CodesController::class, 'getSellableCodes']);
