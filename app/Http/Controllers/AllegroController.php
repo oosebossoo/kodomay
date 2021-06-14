@@ -358,7 +358,7 @@ class AllegroController extends Controller
                 ->get();
         }
 
-        $customers = Customer::where('seller_id', $user_id)->where('customer_id', $customerId['sing'], $customerId['id'])->limit($limit)->get();
+        $customers = Customer::where('seller_id', $user_id)->where('customer_id', $customerId['sign'], $customerId['id'])->limit($limit)->get();
 
         foreach($customers as $customer)
         {
@@ -770,7 +770,7 @@ class AllegroController extends Controller
                     $codes[] = $code->code;
                 }
             }
-            
+
             $customer = Customer::where('customer_id', $order->customer_id)->first();
             $res[] = [
                 'order' => [ 
