@@ -39,7 +39,11 @@ class CodesController extends Controller
         
         foreach($DBNames as $DBName)
         {
-            $result[] = $DBName->db_name;
+            $code = Code::where('db_name', $DBName->db_name)->first();
+            $result[] = [ 
+                'id' => $code->db_id, 
+                'name' => $code->db_name
+            ];
         }
         return $result;
     }

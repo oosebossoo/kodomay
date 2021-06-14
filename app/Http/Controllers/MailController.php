@@ -81,7 +81,7 @@ class MailController extends Controller
 
       $mail = Mail::send('mail', $data, function($message) use ($order, $email) {
          $message->to($email, "Sebastian")->subject
-            ("Order no. $order->offer_id");
+            ("Send Again | Order no. $order->offer_id");
          $message->from('noreplay@kodo.mat','Kodomat');   
       });
 
