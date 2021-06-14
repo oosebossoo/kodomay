@@ -48,7 +48,7 @@ Route::get('/stat/cash/allegro', [StatisticsController::class, 'cashAllegro']);
 Route::get('/stat/quantity/transaction_per_month', [StatisticsController::class, 'getTransactionInMonth']);
 Route::get('/stat/cash/transaction/value', [StatisticsController::class, 'transactionValue']);
 
-Route::get('/send_email',[MailController::class, 'sendEmail']);
+Route::get('/send_email_again',[MailController::class, 'sendEmailAgain']);
 
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 Route::get('/get_codes_from_order', [CodesController::class, 'getCodesFromOrder']);

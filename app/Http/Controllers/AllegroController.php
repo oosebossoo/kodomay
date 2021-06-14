@@ -770,6 +770,7 @@ class AllegroController extends Controller
                     $codes[] = $code->code;
                 }
             }
+            
             $customer = Customer::where('customer_id', $order->customer_id)->first();
             $res[] = [
                 'order' => [ 

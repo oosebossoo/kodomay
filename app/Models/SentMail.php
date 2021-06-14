@@ -16,5 +16,6 @@ class SentMail extends Model
         'order_id',
         'offer_id',
         'code_id',
+        'resend',
     ];
 }
