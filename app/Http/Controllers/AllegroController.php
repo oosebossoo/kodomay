@@ -684,7 +684,7 @@ class AllegroController extends Controller
         }
 
         $oderBy = 'desc';
-        $limit = 100;
+        $limit = 50;
         $offerId = ['sing' => '!=', 'id' => ''];
         $canceled = 0;
         $from = date('2000-01-01');
