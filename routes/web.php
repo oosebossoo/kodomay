@@ -12,6 +12,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\TemplateController;
 
 Route::get('/', function () {
     return ["1" => "jeden", "2" => "dwa"];
@@ -49,6 +50,9 @@ Route::get('/stat/quantity/transaction_per_month', [StatisticsController::class,
 Route::get('/stat/cash/transaction/value', [StatisticsController::class, 'transactionValue']);
 
 Route::get('/send_email_again',[MailController::class, 'sendEmailAgain']);
+Route::get('/test_mail',[MailController::class, 'testMail']);
+
+Route::get('/add_template',[TemplateController::class, 'addTemplate']);
 
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 Route::get('/get_name_of_DB_codes', [ CodesController::class, 'getNameOfDBCodes']);

@@ -9,10 +9,12 @@ use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CodesController;
+
 use App\Models\Code;
 use App\Models\Orders;
 use App\Models\Offers;
 use App\Models\SentMail;
+use App\Models\MailTemplate;
 
 class MailController extends Controller
 {
@@ -44,6 +46,23 @@ class MailController extends Controller
          $sentMail->resend = 0;
          $sentMail->save();
       }
+   }
+
+   public function testMail(Request $request)
+   {
+      $email = 'sebek.kasprzak.work@gmail.com';
+
+      $data['code'] = '2345haejfdsj098124.faiushfo';
+      Mail::send([], [], function($message) use ($email, $data) {
+
+         $emailTemplate = MailTemplate::where('id', 1)->first();
+
+         $message->to($email, "Sebastian");
+         $message->subject("Testowanie templatek");
+         $message->from('noreplay@kodo.mat','Kodomat');
+         
+         $message->setBody($emailTemplate->parse($data), 'text/html');
+      });
    }
 
    public static function sendEmailAgain(Request $request) 
