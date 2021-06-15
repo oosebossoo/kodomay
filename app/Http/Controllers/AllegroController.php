@@ -784,7 +784,8 @@ class AllegroController extends Controller
                 ], 
                 'customer' => [ 
                     'name' => $customer->first_name." ".$customer->last_name, 
-                    'login' => $customer->login 
+                    'login' => $customer->login,
+                    'email' => $customer->email,
                 ]
             ];
 
