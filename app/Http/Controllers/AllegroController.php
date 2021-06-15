@@ -404,7 +404,7 @@ class AllegroController extends Controller
     {
         // 3990
         // 1623157840976792
-        return Orders::where('order_id', $request->order_id)->update(['status' => "CANCELED"]);
+        return Orders::where('order_id', $request->order_id)->update(['isCanceled' => 1]);
     }
 
     public function test(Request $request)
@@ -686,7 +686,7 @@ class AllegroController extends Controller
         $oderBy = 'desc';
         $limit = 100;
         $offerId = ['sing' => '!=', 'id' => ''];
-        $canceled = [ 'sign' => '=', 'desc' => ''];
+        $canceled = 0;
         $from = date('2000-01-01');
         $to = date('2022-01-01');
 
@@ -734,7 +734,7 @@ class AllegroController extends Controller
         {
             $orders = Orders::where('seller_id', $user_id)
             ->where('offer_id', $offerId['sing'], $offerId['id'])
-            ->where('status', 'CANCELED')
+            ->where('isCanceled', 1)
             ->whereBetween('order_date', [$from, $to])
             ->orderBy('order_date', $oderBy)
             ->limit($limit)
@@ -753,7 +753,6 @@ class AllegroController extends Controller
         foreach($orders as $order)
         {
             $sentMails = SentMail::where('order_id', $order->order_id)->get();
-            // dd(isset($sentMails[0]));
             if (!isset($sentMails[0]))
             {
                 $send_status = 'Sending';
