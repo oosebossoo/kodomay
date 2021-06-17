@@ -11,7 +11,7 @@ class TemplateController extends Controller
     public function addTemplate(Request $request)
     {
         $content = $request->getContent();
-        return $content;
+        return $content->tmp_name;
         if(!isset($request))
         {
             return "podaj następujące parametry: tmp_name, tmp_body, user_id, np. /add_template?tmp_name=test&tmp_body=<p>test<p>&user_id=1";
