@@ -19,7 +19,7 @@ class MailTemplate extends Model
 
     public function parse($data)
     {
-        $parsed = preg_replace_callback('({{(.*?)}})', function ($matches) use ($data) 
+        $parsed = preg_replace_callback('({(.*?)})', function ($matches) use ($data) 
         {
             list($shortCode, $index) = $matches;
 

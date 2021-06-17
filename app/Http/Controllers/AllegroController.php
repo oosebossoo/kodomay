@@ -774,6 +774,7 @@ class AllegroController extends Controller
             $res[] = [
                 'order' => [ 
                     $order, 
+                    'link' => "https://allegro.pl/oferta/$order->offer_id",
                     'platform' => 'Allegro',
                     'send_status' => $send_status,
                     'ended' => 'null',
