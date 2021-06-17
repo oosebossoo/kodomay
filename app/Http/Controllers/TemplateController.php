@@ -10,9 +10,9 @@ class TemplateController extends Controller
 {
     public function addTemplate(Request $request)
     {
-        if(!isset($request))
+        if(!isset($request->tmp_name) || !isset($request->tmp_body) || !isset($request->user_id))
         {
-            return "podaj następujące parametry: tmp_name, tmp_body, user_id, np. /add_template?tmp_name=test&tmp_body=<p>test<p>&user_id=1";
+            return "please give me this parametrs: tmp_name, tmp_body, user_id";
         }
 
         $template = new MailTemplate();
