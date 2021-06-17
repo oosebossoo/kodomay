@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\MailTemplate;
+use App\Models\Offers;
 
 class TemplateController extends Controller
 {
@@ -67,5 +68,14 @@ class TemplateController extends Controller
             return "please give me this parametrs: template_id, template";
         }
         return MailTemplate::where('id', $request->template_id)->update(["template" => $request->template]);
+    }
+
+    public function magreTemplateToOffer(Request $request)
+    {
+        if(!isset($request->template_id) || !isset($request->offer_id))
+        {
+            return "please give me this parametrs: template_id, offer_id";
+        }
+        return Offers::where('offer_id', $request->offer_id)->update(['mail_template' => $request->template_id]);
     }
 }

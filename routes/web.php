@@ -56,6 +56,7 @@ Route::post('/add_template',[TemplateController::class, 'addTemplate']);
 Route::get('/get_templates',[TemplateController::class, 'getTemplates']);
 Route::post('/edit_template',[TemplateController::class, 'editTemplate']);
 Route::post('/delete_template',[TemplateController::class, 'deleteTemplate']);
+Route::put('/magre_template_to_offer',[TemplateController::class, 'magreTemplateToOffer']);
 
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 Route::get('/get_name_of_DB_codes', [ CodesController::class, 'getNameOfDBCodes']);

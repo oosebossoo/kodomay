@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
         'http://localhost:8000/add_template',
         'http://localhost:8000/edit_template',
         'http://localhost:8000/delete_template',
+        'http://localhost:8000/magre_template_to_offer',
         '/register',
         'http://kodomat.herokuapp.com/',
         'http://kodomat.herokuapp.com/*',
