@@ -10,7 +10,7 @@ class TemplateController extends Controller
 {
     public function addTemplate(Request $request)
     {
-        $content = Request::all();
+        $content = $request->getContent();
         return $content;
         if(!isset($request))
         {
