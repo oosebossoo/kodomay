@@ -53,10 +53,19 @@ class TemplateController extends Controller
 
     public function deleteTemplate(Request $request)
     {
-        if(!isset($request))
+        if(!isset($request->id))
         {
             return "please give me this parametrs: id, np. /delete_template?id=1";
         }
         return MailTemplate::where('id', $request->id)->delete();
+    }
+
+    public function editTemplate(Request $request)
+    {
+        if(!isset($request->template_id))
+        {
+            return "please give me this parametrs: template_id, template";
+        }
+        return MailTemplate::where('id', $request->template_id)->update(["template" => $request->template]);
     }
 }
