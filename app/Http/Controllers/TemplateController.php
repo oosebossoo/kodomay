@@ -30,19 +30,19 @@ class TemplateController extends Controller
 
     public function getTemplates(Request $request)
     {
-        if(!isset($request))
-        {
-            return "podaj następujące parametry: type=list lub type=edit,user_id, np. /get_template?type=edit&user_id=1";
-        }
         if(isset($request->type))
         {
             if($request->type == "list")
             {
                 return MailTemplate::select('id', 'template_name')->where('user_id', $request->user_id)->get();
             }
-            if($request->type == "edit")
+            elseif($request->type == "edit")
             {
                 return MailTemplate::select('id', 'template')->where('user_id', $request->user_id)->where('id', $request->template_id)->first();
+            }
+            else
+            {
+                return "please give me this parametrs: for type=list, user_id or for type=edit, user_id ,template_id, np. /get_template?type=edit&user_id=1&template_id=2";
             }
         }
         else
@@ -55,7 +55,7 @@ class TemplateController extends Controller
     {
         if(!isset($request))
         {
-            return "podaj następujące parametry: id, np. /delete_template?id=1";
+            return "please give me this parametrs: id, np. /delete_template?id=1";
         }
         return MailTemplate::where('id', $request->id)->delete();
     }
