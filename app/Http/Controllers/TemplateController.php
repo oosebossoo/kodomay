@@ -12,7 +12,7 @@ class TemplateController extends Controller
     {
         $content = $request->getContent();
 
-        dd($request->tmp_body);
+        dd($request);
 
         if(!isset($request))
         {
