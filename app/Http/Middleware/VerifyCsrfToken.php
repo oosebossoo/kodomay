@@ -13,10 +13,14 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'http://localhost:8000/add_template',
+        'http://localhost:8000/edit_template',
+        'http://localhost:8000/delete_template',
         '/register',
         'http://kodomat.herokuapp.com/',
         'http://kodomat.herokuapp.com/*',
         'http://kodomat.herokuapp.com/login',
         'http://kodomat.herokuapp.com/add_template',
+        'http://kodomat.herokuapp.com/edit_template',
+        'http://kodomat.herokuapp.com/delete_template',
     ];
 }
