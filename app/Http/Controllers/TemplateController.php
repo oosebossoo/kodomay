@@ -38,16 +38,16 @@ class TemplateController extends Controller
         {
             if($request->type == "list")
             {
-                return MailTemplate::select('name_template')->where('seller_id', $request->user_id)->get();
+                return MailTemplate::select('id', 'template_name')->where('user_id', $request->user_id)->get();
             }
             if($request->type == "edit")
             {
-                return MailTemplate::select('template')->where('seller_id', $request->user_id)->where('id', $request->template_id)->first();
+                return MailTemplate::select('id', 'template')->where('user_id', $request->user_id)->where('id', $request->template_id)->first();
             }
         }
         else
         {
-            return MailTemplate::where('seller_id', $request->user_id)->get();
+            return MailTemplate::where('user_id', $request->user_id)->get();
         }
     }
 

@@ -53,9 +53,9 @@ Route::get('/send_email_again',[MailController::class, 'sendEmailAgain']);
 Route::get('/test_mail',[MailController::class, 'testMail']);
 
 Route::post('/add_template',[TemplateController::class, 'addTemplate']);
-Route::get('/get_template',[TemplateController::class, 'getTemplate']);
+Route::get('/get_templates',[TemplateController::class, 'getTemplates']);
 Route::get('/edit_template',[TemplateController::class, 'editTemplate']);
-Route::get('/delete_template',[TemplateController::class, 'deleteTemplate']);
+Route::delete('/delete_template',[TemplateController::class, 'deleteTemplate']);
 
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 Route::get('/get_name_of_DB_codes', [ CodesController::class, 'getNameOfDBCodes']);
