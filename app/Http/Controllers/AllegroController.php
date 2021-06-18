@@ -115,7 +115,7 @@ class AllegroController extends Controller
             stream_context_create($options),
         ));
 
-        if(UserData::select('refresh')->where('refresh', 1)->get())
+        if(UserData::select('refresh')->where('refresh', 1)->exists())
         {
             $updates = UserData::where('refresh', 1)->get();
             $log[] = 'start updating';
@@ -144,6 +144,7 @@ class AllegroController extends Controller
             $userData->jti = $response->jti;
             $userData->refresh = 0;
             $userData->save();
+
             return [
                 'status' => 0,
                 'desc' => 'added new account'
