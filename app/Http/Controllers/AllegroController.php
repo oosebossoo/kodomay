@@ -161,18 +161,21 @@ class AllegroController extends Controller
         {
             $user_id = Auth::user()->id;
         }
-        $res = UserData::where('user_id', $user_id)->where('id', $request->$id)->delete;
-        if($res)
+
+        if(UserData::where('user_id', $user_id)->where('id', $request->id)->delete())
         {
             return [
                 'status' => 0,
                 'desc' => 'deleted account'
             ];
         }
-        return [
-            'status' => 1,
-            'desc' => 'cant delete account'
-        ];
+        else
+        {
+            return [
+                'status' => 1,
+                'desc' => 'cant delete account'
+            ];
+        }
     }
 
     public function endOfGettingToken(Request $request)

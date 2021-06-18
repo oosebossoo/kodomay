@@ -9,47 +9,27 @@ use App\Models\Offers;
 
 class TemplateController extends Controller
 {
-    public function addTemplate(Request $request)
-    {
-        if(!isset($request->tmp_name) || !isset($request->tmp_body) || !isset($request->user_id))
-        {
-            return "please give me this parametrs: tmp_name, tmp_body, user_id";
-        }
-
-        $template = new MailTemplate();
-        $template->template_name = $request->tmp_name;
-        $template->template = $request->tmp_body;
-        $template->user_id = $request->user_id;
-        $template->save();
-
-        if(MailTemplate::where('template_name', $request->tmp_name)->exists())
-        {
-            return ['status' => 0, 'desc' => 'you added new template... :)'];
-        }
-        return ['status' => 1, 'desc' => 'somethink goes wrong... :('];
-    }
-
     public function getTemplates(Request $request)
     {
-        if(isset($request->type))
+        if(isset($request->user_id))
         {
-            if($request->type == "list")
-            {
-                return MailTemplate::select('id', 'template_name')->where('user_id', $request->user_id)->get();
-            }
-            elseif($request->type == "edit")
-            {
-                return MailTemplate::select('id', 'template')->where('user_id', $request->user_id)->where('id', $request->template_id)->first();
-            }
-            else
-            {
-                return "please give me this parametrs: for type=list, user_id or for type=edit, user_id ,template_id, np. /get_template?type=edit&user_id=1&template_id=2";
-            }
+            $user_id = $request->user_id;
         }
         else
         {
-            return MailTemplate::where('user_id', $request->user_id)->get();
+            $user_id = Auth::user()->id;
         }
+
+        return MailTemplate::where('user_id', $user_id)->get();
+    }
+
+    public function getTemplate(Request $request)
+    {
+        if(isset($request->id))
+        {
+            return MailTemplate::where('id', $request->id)->first();
+        }
+        return [ "status" => 1, "desc" => "you should set id of template to display that one... ;)" ];
     }
 
     public function deleteTemplate(Request $request)
@@ -61,21 +41,31 @@ class TemplateController extends Controller
         return MailTemplate::where('id', $request->id)->delete();
     }
 
-    public function editTemplate(Request $request)
+    public function saveTemplate(Request $request)
     {
-        if(!isset($request->template_id))
+        if(isset($request->user_id))
         {
-            return "please give me this parametrs: template_id, template";
+            $user_id = $request->user_id;
         }
-        return MailTemplate::where('id', $request->template_id)->update(["template" => $request->template]);
-    }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
 
-    public function magreTemplateToOffer(Request $request)
-    {
-        if(!isset($request->template_id) || !isset($request->offer_id))
+        if (MailTemaplate::where('id', $request->template_id)->exists())
         {
-            return "please give me this parametrs: template_id, offer_id";
+            return MailTemplate::where('id', $request->template_id)->update(["template_name" => $request->name, "template_subject" => $request->subject, "replay_email" => $request->replay_email,"template" => $request->body]);
         }
-        return Offers::where('offer_id', $request->offer_id)->update(['mail_template' => $request->template_id]);
+        else
+        {
+            $template = new MailTemplate();
+            $template->template_name = $request->name;
+            $template->template_subject = $request->subject;
+            $template->replay_email = $request->replay_email;
+            $template->template = $request->body;
+            $template->user_id = $user_id;
+            $template->save();
+        }
+        return [ "status" => 1, "desc" => "please check all parametrs" ];
     }
 }
