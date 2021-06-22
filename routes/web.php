@@ -13,6 +13,7 @@ use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\SettingsController;
 
 Route::get('/', function () {
     return ["1" => "jeden", "2" => "dwa"];
@@ -29,6 +30,10 @@ Route::get('/home', function () {
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/get_token', [AllegroController::class, 'getToken']);
 Route::get('/delete_allegro_user', [AllegroController::class, 'deleteAllegroUser']);
+Route::get('/get_presonal_data', [SettingsController::class, 'getPresonalData']);
+Route::post('/save_presonal_data', [SettingsController::class, 'savePresonalData']);
+Route::get('/get_notification', [SettingsController::class, 'getNotification']);
+Route::post('/save_notifications', [SettingsController::class, 'saveNotifications']);
 
 Route::get('/me', [AllegroController::class, 'getAllegroUsers']);
 Route::get('/main_function', [AllegroController::class, 'mainFunction']);
@@ -55,7 +60,6 @@ Route::get('/test_mail',[MailController::class, 'testMail']);
 Route::post('/save_template',[TemplateController::class, 'saveTemplate']);
 Route::get('/get_templates',[TemplateController::class, 'getTemplates']);
 Route::get('/get_template',[TemplateController::class, 'getTemplate']);
-Route::post('/edit_template',[TemplateController::class, 'editTemplate']);
 Route::post('/delete_template',[TemplateController::class, 'deleteTemplate']);
 // Route::put('/magre_template_to_offer',[TemplateController::class, 'magreTemplateToOffer']);
 
