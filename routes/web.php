@@ -30,8 +30,8 @@ Route::get('/home', function () {
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/get_token', [AllegroController::class, 'getToken']);
 Route::get('/delete_allegro_user', [AllegroController::class, 'deleteAllegroUser']);
-Route::get('/get_presonal_data', [SettingsController::class, 'getPresonalData']);
-Route::post('/save_presonal_data', [SettingsController::class, 'savePresonalData']);
+Route::get('/get_personal_data', [SettingsController::class, 'getPersonalData']);
+Route::post('/save_personal_data', [SettingsController::class, 'savePersonalData']);
 Route::get('/get_notification', [SettingsController::class, 'getNotification']);
 Route::post('/save_notifications', [SettingsController::class, 'saveNotifications']);
 

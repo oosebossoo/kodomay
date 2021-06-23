@@ -76,7 +76,7 @@ class SettingsController extends Controller
         }
     }
 
-    public function getPresonalData(Request $request)
+    public function getPersonalData(Request $request)
     {
         if(isset($request->dev))
         {
@@ -89,7 +89,7 @@ class SettingsController extends Controller
 
         return PersonalData::where('user_id', $user_id)->first();
     }
-    public function savePresonalData(Request $request)
+    public function savePersonalData(Request $request)
     {
         
         if(isset($request->dev))
