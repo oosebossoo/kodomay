@@ -7,7 +7,6 @@ use Auth;
 use Illuminate\Http\Request;
 
 use App\Models\PersonalData;
-use App\Models\Notification;
 
 class SettingsController extends Controller
 {

@@ -14,6 +14,7 @@ use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return ["1" => "jeden", "2" => "dwa"];
@@ -35,6 +36,8 @@ Route::post('/save_personal_data', [SettingsController::class, 'savePersonalData
 Route::get('/get_notification', [SettingsController::class, 'getNotification']);
 Route::post('/save_notifications', [SettingsController::class, 'saveNotifications']);
 
+Route::get('/send_notification', [NotificationController::class, 'sendNotification']);
+
 Route::get('/me', [AllegroController::class, 'getAllegroUsers']);
 Route::get('/main_function', [AllegroController::class, 'mainFunction']);
 Route::get('/lst_ord_events', [AllegroController::class, 'getLastEvent']);
@@ -54,15 +57,18 @@ Route::get('/stat/cash/allegro', [StatisticsController::class, 'cashAllegro']);
 Route::get('/stat/quantity/transaction_per_month', [StatisticsController::class, 'getTransactionInMonth']);
 Route::get('/stat/cash/transaction/value', [StatisticsController::class, 'transactionValue']);
 
+// Mail
 Route::get('/send_email_again',[MailController::class, 'sendEmailAgain']);
 Route::get('/test_mail',[MailController::class, 'testMail']);
 
+// Szablony
 Route::post('/save_template',[TemplateController::class, 'saveTemplate']);
 Route::get('/get_templates',[TemplateController::class, 'getTemplates']);
 Route::get('/get_template',[TemplateController::class, 'getTemplate']);
 Route::post('/delete_template',[TemplateController::class, 'deleteTemplate']);
 // Route::put('/magre_template_to_offer',[TemplateController::class, 'magreTemplateToOffer']);
 
+// Kody
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 Route::get('/get_name_of_DB_codes', [ CodesController::class, 'getNameOfDBCodes']);
 Route::get('/get_codes_from_order', [CodesController::class, 'getCodesFromOrder']);
@@ -75,11 +81,13 @@ Route::get('/add_codes', [ CodesController::class, 'addCodes']);
 Route::get('/magre_codes_to_offer', [ CodesController::class, 'magreCodesToOffer']);
 Route::get('/add_codes_form_text_box', [ CodesController::class, 'addCodesFormTextBox']);
 
+// Logowanie
 Route::get('/login', [AccountController::class, 'create']);
 Route::post('login', [AccountController::class, 'store']);
 Route::get('/logout', [AccountController::class, 'destroy']);
 Route::get('/activation', [AccountController::class, 'activation']);
 
+// Rejestracja
 Route::get('/register', [RegistrationController::class, 'create']);
 Route::post('register', [RegistrationController::class, 'store']);
 Route::get('/register/activate', [MailController::class, 'activate']);
