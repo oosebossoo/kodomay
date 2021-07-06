@@ -77,7 +77,7 @@ class AllegroController extends Controller
 
     public function refreshToken(Request $request)
     {
-        return base64_encode($this->clientId.":".$this->clientSecret)
+        return base64_encode($this->clientId.":".$this->clientSecret);
     }
 
     public function getTokenRepo($request)
