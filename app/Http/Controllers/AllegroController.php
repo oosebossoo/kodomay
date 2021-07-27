@@ -77,7 +77,17 @@ class AllegroController extends Controller
 
     public function refreshToken(Request $request)
     {
-        return base64_encode($this->clientId.":".$this->clientSecret);
+        // return base64_encode($this->clientId.":".$this->clientSecret);
+
+        $userData = UserData::where('user_id', 14)->first();
+        // dd($userData);
+
+        $response = Http::withHeaders([
+            "Authorization" => "Basic ".base64_encode($this->clientId.":".$this->clientSecret)
+        ])->post("https://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$userData->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token")->json();
+
+        return $response;
+
     }
 
     public function getTokenRepo($request)
@@ -614,6 +624,7 @@ class AllegroController extends Controller
     // {
     //     $this->changeStatus($request->checkoutFormId, $request->access_token, "SENT");
     // }
+     
     public static function getOfferLink($offerId, $token)
     {
         $response = Http::withHeaders([
