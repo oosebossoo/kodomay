@@ -11,4 +11,25 @@ class AdminController extends Controller
     {
         return User::all();
     }
+
+    public function editUser()
+    {
+
+    }
+
+    public function deleteUser()
+    {
+        
+    }
+
+    public function sendPDF()
+    {
+
+    }
+
+    public function getExcel()
+    {
+        
+    }
+
 }

@@ -88,6 +88,7 @@ class SettingsController extends Controller
 
         return PersonalData::where('user_id', $user_id)->first();
     }
+    
     public function savePersonalData(Request $request)
     {
         
@@ -181,5 +182,10 @@ class SettingsController extends Controller
             $data->save();
         }
         
+    }
+
+    public function setSessionTime()
+    {
+
     }
 }

@@ -30,7 +30,7 @@ Route::get('/home', function () {
 
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/get_token', [AllegroController::class, 'getToken']);
-Route::get('/refresh_token', [AllegroController::class, 'refreshToken']);
+Route::get('/refresh_token', [AllegroController::class, 'refreshToken']); 
 Route::get('/delete_allegro_user', [AllegroController::class, 'deleteAllegroUser']);
 Route::get('/get_personal_data', [SettingsController::class, 'getPersonalData']);
 Route::post('/save_personal_data', [SettingsController::class, 'savePersonalData']);
