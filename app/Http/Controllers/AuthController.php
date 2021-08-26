@@ -48,6 +48,7 @@ class AuthController extends Controller
                 'confirmed',
             ],
         ]);
+        dd('test');
 
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
