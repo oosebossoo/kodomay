@@ -54,21 +54,21 @@ class AccountController extends Controller
 
     public function activation(Request $request)
     {
-        $name = User::where('activate_code', $request->activate_code)->first();
-        if(isset($name->name))
-        {
+        // $name = User::where('activate_code', $request->activate_code)->first();
+        // if(isset($name->name))
+        // {
             User::where('activate_code', $request->activate_code)->update(['activate' => 1,'activate_code' => ""]);
 
             return response()->json([
                 'message' => 'User successfully activated',
                 'user' => $name
             ], 201);
-        }
-        else
-        {
-            return response()->json([
-                'message' => 'Something goes wrong'
-            ], 404);
-        }
+        // }
+        // else
+        // {
+        //     return response()->json([
+        //         'message' => 'Something goes wrong'
+        //     ], 404);
+        // }
     }
 }
