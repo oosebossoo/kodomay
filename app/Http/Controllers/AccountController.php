@@ -61,7 +61,6 @@ class AccountController extends Controller
 
             return response()->json([
                 'message' => 'User successfully activated',
-                'user' => $name
             ], 201);
         // }
         // else
