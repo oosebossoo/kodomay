@@ -122,8 +122,8 @@ class MailController extends Controller
       $data = array('url' => "localhost/activation?activate_code=".Auth::user()->activate_code);
       // dd($data);
       Mail::send(['text'=>'activate'], $data, function($message) {
-         $message->to(Auth::user()->email, Auth::user()->name)->subject
-            ('Welcome'.Auth::user()->name);
+         $message->to('email', 'name')->subject
+            ('Welcome'.'name');
          $message->from('noreplay@kodo.mat','Kodomat');
       });
    }

@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Validator;
+use Mail;
 
 class AuthController extends Controller
 {
+    protected $name, $email;
+
     public function __construct() {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
@@ -34,22 +37,53 @@ class AuthController extends Controller
     public function register(Request $request) 
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
+            'name' => 'required|string|between:2,100|unique:users',
             'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|confirmed|min:6',
+            'password' => [
+                'required', 
+                'min:6',              // musi zawierać co najmniej 6 znaków
+                'regex:/[a-z]/',      // musi zawierać jedną małą litere
+                'regex:/[A-Z]/',      // musi zawierać jedną dużą litere
+                'regex:/[0-9]/',      // musi zawierać jedną cyfre
+                'confirmed',
+            ],
         ]);
 
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
 
+        $name = $request->name;
+        $email = $request->email;
+
         $user = User::create(array_merge(
-                    $validator->validated(),
-                    ['password' => bcrypt($request->password)]
+                    $validator->validated(), ['password' => bcrypt($request->password), 'activate_code' => bcrypt($name.$email)]
                 ));
+
+        $this->sendActivationEmail($email, $name);
 
         return response()->json([
             'message' => 'User successfully registered',
+            'user' => $user
+        ], 201);
+    }
+
+    public function resetPassword(Request $request) 
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:100',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        dd($validator->email);
+        $user = User::where('email', $validator->email)(array_merge(
+                    $validator->validated(), ['password' => bcrypt($request->password)]
+                ));
+
+        return response()->json([
+            'message' => 'User successfully reset password',
             'user' => $user
         ], 201);
     }
@@ -80,5 +114,17 @@ class AuthController extends Controller
             'expires_in' => auth("api")->factory()->getTTL() * 60,
             'user' => auth()->user()
         ]);
+    }
+
+    protected function sendActivationEmail($email, $name)
+    {
+        // dd(User::where('email', $email)->first()->activate_code);
+        $data = array('url' => "{domain}/activation?activate_code=".User::where('email', $email)->first()->activate_code);
+        // dd($data);
+        Mail::send(['text'=>'activate'], $data, function($message) use ($email, $name) {
+            $message->to($email, $name)->subject
+            ('Welcome '.$name);
+            $message->from('noreplay@kodo.mat','Kodomat');
+        });
     }
 }

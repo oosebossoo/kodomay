@@ -8,7 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\CodesController;
 use App\Http\Controllers\AccountController;
-use App\Http\Controllers\RegistrationController;
+// use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
@@ -17,15 +17,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
-    return ["1" => "jeden", "2" => "dwa"];
-});
-
-Route::get('/home', function () {
-    if (Auth::check()) {
-        return ["name" => Auth::user()->name, "email" => Auth::user()->email];
-    }
-    return "nie działa logowanie";
-    //return redirect('/login');
+    return Auth::user()->id;
 });
 
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
@@ -82,15 +74,15 @@ Route::get('/add_codes', [ CodesController::class, 'addCodes']);
 Route::get('/magre_codes_to_offer', [ CodesController::class, 'magreCodesToOffer']);
 Route::get('/add_codes_form_text_box', [ CodesController::class, 'addCodesFormTextBox']);
 
-// Logowanie
-Route::get('/login', [AccountController::class, 'create']);
-Route::post('login', [AccountController::class, 'store']);
-Route::get('/logout', [AccountController::class, 'destroy']);
+// // Logowanie
+// Route::get('/login', [AccountController::class, 'create']);
+// Route::post('login', [AccountController::class, 'store']);
+// Route::get('/logout', [AccountController::class, 'destroy']);
 Route::get('/activation', [AccountController::class, 'activation']);
 
-// Rejestracja
-Route::get('/register', [RegistrationController::class, 'create']);
-Route::post('register', [RegistrationController::class, 'store']);
-Route::get('/register/activate', [MailController::class, 'activate']);
+// // Rejestracja
+// Route::get('/register', [RegistrationController::class, 'create']);
+// Route::post('register', [RegistrationController::class, 'store']);
+// Route::get('/register/activate', [MailController::class, 'activate']);
 
 Route::get('/exchange_to_pln', [ExchangeController::class, 'exchangeToPln']);
