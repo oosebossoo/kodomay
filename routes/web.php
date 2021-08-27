@@ -8,6 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\CodesController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdminController;
 // use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\AllegroController;
@@ -55,6 +56,13 @@ Route::get('/stat/cash/transaction/value', [StatisticsController::class, 'transa
 // Mail
 Route::get('/send_email_again',[MailController::class, 'sendEmailAgain']);
 Route::get('/test_mail',[MailController::class, 'testMail']);
+
+//Admin Panel
+Route::get('/show_users',[AdminController::class, 'showUsers']);
+Route::get('/edit_user',[AdminController::class, 'editUser']);
+Route::get('/delete_user',[AdminController::class, 'deleteUser']);
+Route::get('/send_pdf',[AdminController::class, 'sendPDF']);
+Route::get('/get_excel',[AdminController::class, 'getExcel']);
 
 // Szablony
 Route::post('/save_template',[TemplateController::class, 'saveTemplate']);

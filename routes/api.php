@@ -34,4 +34,17 @@ Route::group([
 
 });
 
+Route::group([
+    'middleware' => 'admin',
+    'prefix' => 'auth'
+
+], function ($router) {
+    Route::post('/admin/login', [AuthController::class, 'login']);
+    Route::post('/admin/register', [AuthController::class, 'register']);
+    Route::post('/admin/logout', [AuthController::class, 'logout']);
+    Route::post('/admin/refresh', [AuthController::class, 'refresh']);
+    Route::get('/admin/user-profile', [AuthController::class, 'userProfile']);
+
+});
+
 Route::post('/add_codes_form_file', [ CodesController::class, 'addCodesFormFile']);

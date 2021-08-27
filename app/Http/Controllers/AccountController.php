@@ -58,8 +58,6 @@ class AccountController extends Controller
         // if(isset($name->name))
         // {
             User::where('activate_code', $request->activate_code)->update(['activate' => 1,'activate_code' => ""]);
-            
-            dd(User::where('activate_code', $request->activate_code)->first());
 
             return response()->json([
                 'message' => 'User successfully activated',
@@ -71,10 +69,5 @@ class AccountController extends Controller
         //         'message' => 'Something goes wrong'
         //     ], 404);
         // }
-    }
-
-    public function allUsers()
-    {
-        return User::all();
     }
 }
