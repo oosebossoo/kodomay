@@ -20,6 +20,8 @@ Route::get('/', function () {
     return Auth::user()->id;
 });
 
+Route::get('/dev_test_all_users', [AccountController::class, 'allUsers']);
+
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/get_token', [AllegroController::class, 'getToken']);
 Route::get('/refresh_token', [AllegroController::class, 'refreshToken']); 
