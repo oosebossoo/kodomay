@@ -17,6 +17,8 @@ class VerifyCsrfToken extends Middleware
         'http://localhost:8000/delete_template',
         'http://localhost:8000/save_presonal_data',
         'http://localhost:8000/save_notifications',
+        'http://localhost:8000/reset_password',
+        'http://localhost:8000/reset_password_mail',
         '/register',
         'http://kodomat.herokuapp.com/',
         'http://kodomat.herokuapp.com/*',

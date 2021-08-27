@@ -17,6 +17,8 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\NotificationController;
 
+use Carbon\Carbon;
+
 Route::get('/', function () {
     return Auth::user()->id;
 });
@@ -89,6 +91,8 @@ Route::get('/add_codes_form_text_box', [ CodesController::class, 'addCodesFormTe
 // Route::post('login', [AccountController::class, 'store']);
 // Route::get('/logout', [AccountController::class, 'destroy']);
 Route::get('/activation', [AccountController::class, 'activation']);
+Route::get('/reset_password', [AccountController::class, 'resetPassword']);
+Route::post('/reset_password_mail', [AccountController::class, 'resetPasswordMail']);
 
 // // Rejestracja
 // Route::get('/register', [RegistrationController::class, 'create']);

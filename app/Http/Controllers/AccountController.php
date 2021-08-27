@@ -9,6 +9,7 @@ use App\Models\User;
 
 use Validator;
 use Auth;
+use Mail;
 
 class AccountController extends Controller
 {
@@ -69,5 +70,40 @@ class AccountController extends Controller
         //         'message' => 'Something goes wrong'
         //     ], 404);
         // }
+    }
+
+    public function resetPasswordMail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:100',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $email = $request->email;
+
+        User::where('email', $request->email)->update(['remember_token' => bcrypt($request->email.time())]);
+
+        $data = array(
+            'url' => "{domain}/reset-password?reset_code=".User::where('email', $request->email)->first()->remember_token,
+            'email' => $request->email
+        );
+        Mail::send(['text'=>'reset'], $data, function($message) use ($email) {
+            $message->to($email)->subject
+            ('Welcome '.$email);
+            $message->from('noreplay@kodo.mat','Kodomat');
+        });
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $user = User::where('remember_token', $request->reset_code)->update(['password' => bcrypt($request->password), 'remember_token' => ""]);
+
+        return response()->json([
+            'message' => 'User successfully reset password',
+            'user' => $user
+        ], 201);
     }
 }
