@@ -100,7 +100,7 @@ class AccountController extends Controller
 
     public function resetPassword(Request $request)
     {
-        $user = User::where('remember_token', $request->id)->update(['password' => bcrypt($request->password), 'remember_token' => ""]);
+        $user = User::where('remember_token', $request->token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]);
 
         return response()->json([
             'message' => 'User successfully reset password',
