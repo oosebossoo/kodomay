@@ -88,7 +88,7 @@ class AccountController extends Controller
         User::where('email', $request->email)->update(['remember_token' => bcrypt($request->email.time())]);
 
         $data = array(
-            'url' => "{domain}/reset-password?reset_code=".User::where('email', $request->email)->first()->remember_token,
+            'url' => "http://localhost:3000/reset:".User::where('email', $request->email)->first()->remember_token,
             'email' => $request->email
         );
         Mail::send(['text'=>'reset'], $data, function($message) use ($email) {
