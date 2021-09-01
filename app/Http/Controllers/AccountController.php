@@ -74,7 +74,7 @@ class AccountController extends Controller
 
     public function resetPasswordMail(Request $request)
     {
-        return response()->json(['dziala'], 200);
+        // return response()->json(['dziala'], 200);
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:100',
         ]);
