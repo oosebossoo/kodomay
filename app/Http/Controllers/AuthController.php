@@ -65,7 +65,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user
+            'user' => $user->id
         ], 201);
     }
 
@@ -124,7 +124,7 @@ class AuthController extends Controller
             'email' => $email
         );
 
-        Mail::send(['text'=>'activate'], $data, function($message) use ($email, $name) {
+        Mail::send(['html'=>'activate'], $data, function($message) use ($email, $name) {
             $message->to($email, $name)->subject('Welcome '.$name);
             $message->from('noreplay@kodo.mat','Kodomat');
         });
