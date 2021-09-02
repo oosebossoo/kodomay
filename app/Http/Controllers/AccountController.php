@@ -15,15 +15,12 @@ class AccountController extends Controller
 {
     public function activation(Request $request)
     {
-        // $name = User::where('activate_code', $request->activate_code)->first();
-        // if(isset($name->name))
-        // {
-            User::where('activate_code', $request->activate_code)->update(['activate' => 1,'activate_code' => ""]);
+        // if()
+            $isActive = User::where('activate_code', $request->activate_code)->update(['activate' => 1,'activate_code' => ""]);
 
             return response()->json([
                 'message' => 'User successfully activated',
             ], 201);
-        // }
         // else
         // {
         //     return response()->json([
@@ -34,7 +31,6 @@ class AccountController extends Controller
 
     public function resetPasswordMail(Request $request)
     {
-        // return response()->json(['dziala'], 200);
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:100',
         ]);
