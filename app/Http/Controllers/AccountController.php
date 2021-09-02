@@ -13,46 +13,6 @@ use Mail;
 
 class AccountController extends Controller
 {
-    // public function create()
-    // {
-    //     if(Auth::check()) {
-    //         return redirect('/home');
-    //     }
-    //     return view('login');
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     if(Auth::check()) {
-    //         return redirect('/home');
-    //     }
-    //     $this->validate($request, [
-    //         'email'   => 'required|email',
-    //         'password'  => 'required'
-    //     ]);
-
-    //     $user_data = array(
-    //         'email'  => $request->get('email'),
-    //         'password' => $request->get('password')
-    //     );
-
-    //     if(Auth::attempt($user_data)) {
-    //         return redirect('/home');
-    //         if (Auth::check()) {
-    //             return ["name" => Auth::user()->name, "email" => Auth::user()->email];
-    //         }
-    //         return ["status" => "logout", "desc" => "please login"];
-    //     } else {
-    //         return 'Zle informacje';
-    //     }
-    // }
-
-    // public function destroy()
-    // {
-    //     Auth::logout();
-    //     return 'Wylogowano';
-    // }
-
     public function activation(Request $request)
     {
         // $name = User::where('activate_code', $request->activate_code)->first();
@@ -100,6 +60,21 @@ class AccountController extends Controller
 
     public function resetPassword(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'password' => [
+                'required', 
+                'min:6',              // musi zawierać co najmniej 6 znaków
+                'regex:/[a-z]/',      // musi zawierać jedną małą litere
+                'regex:/[A-Z]/',      // musi zawierać jedną dużą litere
+                'regex:/[0-9]/',      // musi zawierać jedną cyfre
+                'confirmed',
+            ],
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        
         $user = User::where('remember_token', $request->token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]);
 
         return response()->json([

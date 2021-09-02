@@ -119,7 +119,7 @@ class AuthController extends Controller
     protected function sendActivationEmail($email, $name)
     {
         // dd(User::where('email', $email)->first()->activate_code);
-        $data = array('url' => "{domain}/activation?activate_code=".User::where('email', $email)->first()->activate_code);
+        $data = array('url' => "http://localhost:3000/activation:id".User::where('email', $email)->first()->activate_code);
         // dd($data);
         Mail::send(['text'=>'activate'], $data, function($message) use ($email, $name) {
             $message->to($email, $name)->subject
