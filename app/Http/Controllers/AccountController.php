@@ -16,7 +16,7 @@ class AccountController extends Controller
     public function activation(Request $request)
     {
         $isActive = User::where('activate_code', $request->activate_code)->update(['activate' => 1,'activate_code' => ""]);
-        
+
         if($isActive)
             return response()->json([
                 'message' => 'User successfully activated',
@@ -25,7 +25,7 @@ class AccountController extends Controller
         {
             return response()->json([
                 'message' => 'Something goes wrong ;-)'
-            ], 404);
+            ], 503);
         }
     }
 
