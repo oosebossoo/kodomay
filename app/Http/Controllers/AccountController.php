@@ -52,8 +52,7 @@ class AccountController extends Controller
             'email' => $request->email
         );
         Mail::send(['html'=>'reset'], $data, function($message) use ($email) {
-            $message->to($email)->subject
-            ('Welcome '.$email);
+            $message->to($email)->subject('Welcome '.$email);
             $message->from('noreplay@kodo.mat','Kodomat');
         });
     }

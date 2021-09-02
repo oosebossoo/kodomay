@@ -1,8 +1,8 @@
 <html>
     <div>
         <h1>Welcome {{ $email }}</h1>
-        <p>
-            <b><a href= {{ $url }}>Comfirm registration</a></b>
-        </p>
+        <form action={{ $url }}>
+            <input type="submit" value="Confirm registration" />
+        </form>
     </div>
 </html>

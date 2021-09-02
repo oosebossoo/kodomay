@@ -55,12 +55,13 @@ class AuthController extends Controller
 
         $name = $request->name;
         $email = $request->email;
+        $token = bcrypt($name.$email);
 
         $user = User::create(array_merge(
-                    $validator->validated(), ['password' => bcrypt($request->password), 'activate_code' => bcrypt($name.$email)]
+                    $validator->validated(), ['password' => bcrypt($request->password), 'activate_code' => $token]
                 ));
 
-        $this->sendActivationEmail($email, $name);
+        $this->sendActivationEmail($email, $name, $token);
 
         return response()->json([
             'message' => 'User successfully registered',
@@ -116,14 +117,15 @@ class AuthController extends Controller
         ]);
     }
 
-    protected function sendActivationEmail($email, $name)
+    protected function sendActivationEmail($email, $name, $token)
     {
-        // dd(User::where('email', $email)->first()->activate_code);
-        $data = array('url' => "http://localhost:3000/activation:id".User::where('email', $email)->first()->activate_code);
-        // dd($data);
+        $data = array(
+            'url' => "http://localhost:3000/activation:".$token,
+            'email' => $email
+        );
+
         Mail::send(['text'=>'activate'], $data, function($message) use ($email, $name) {
-            $message->to($email, $name)->subject
-            ('Welcome '.$name);
+            $message->to($email, $name)->subject('Welcome '.$name);
             $message->from('noreplay@kodo.mat','Kodomat');
         });
     }
