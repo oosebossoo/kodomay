@@ -32,5 +32,7 @@ class VerifyCsrfToken extends Middleware
         'http://kodomat.herokuapp.com/save_presonal_data',
         'http://kodomat.herokuapp.com/save_notifications',
         'http://kodomat.herokuapp.com/activation',
+        'http://kodomat.herokuapp.com/reset_password',
+        'http://kodomat.herokuapp.com/reset_password_mail',
     ];
 }
