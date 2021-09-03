@@ -90,7 +90,7 @@ Route::get('/add_codes_form_text_box', [ CodesController::class, 'addCodesFormTe
 // Route::get('/login', [AccountController::class, 'create']);
 // Route::post('login', [AccountController::class, 'store']);
 // Route::get('/logout', [AccountController::class, 'destroy']);
-Route::get('/activation', [AccountController::class, 'activation']);
+Route::post('/activation', [AccountController::class, 'activation']);
 Route::get('/reset_password', [AccountController::class, 'resetPassword']);
 Route::post('/reset_password_mail', [AccountController::class, 'resetPasswordMail']);
 
