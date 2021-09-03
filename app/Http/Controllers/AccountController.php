@@ -16,14 +16,14 @@ class AccountController extends Controller
     public function activation(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'activate_code' => 'required',
+            'token' => 'required',
         ]);
 
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
-        
-        $isActive = User::where('activate_code', $request->activate_code)->update(['activate' => 1,'activate_code' => ""]);
+
+        $isActive = User::where('activate_code', $request->token)->update(['activate' => 1,'activate_code' => ""]);
 
         if($isActive)
             return response()->json([
