@@ -85,4 +85,9 @@ class AccountController extends Controller
             'user' => $user
         ], 201);
     }
+
+    public function allUsers()
+    {
+        return User::all();
+    }
 }
