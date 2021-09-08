@@ -106,35 +106,16 @@ class CodesController extends Controller
             ];
         }
 
-        return $response;
-
-        // if(isset(Auth::user()->id))
-        // {
-        //     $userId = Auth::user()->id;
-        // }
-        // elseif(!isset($request->user_id))
-        // {
-        //     return [
-        //         'status' => 0 ,
-        //         'desc' => 'please give me a user id... :/'
-        //     ];
-        // }
-        // else
-        // {
-        //     $userId = $request->user_id;
-        // }
-
-        // $DBNames = Code::where('seller_id', $userId)->select('db_name')->groupBy('db_name')->get();
-        
-        // foreach($DBNames as $DBName)
-        // {
-        //     $code = Code::where('db_name', $DBName->db_name)->first();
-        //     $result[] = [ 
-        //         'id' => $code->db_id, 
-        //         'name' => $code->db_name
-        //     ];
-        // }
-        // return $result;
+        if(isset($response))
+        {
+            return $response;
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'No data in database',
+            ], 200);
+        }
     }
 
     public function addCodes(Request $request) 
