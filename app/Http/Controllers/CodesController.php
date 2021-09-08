@@ -97,6 +97,12 @@ class CodesController extends Controller
             {
                 $sold[$dbUnique->db_id] = 0;
             }
+
+            if(!isset($available[$dbUnique->db_id]))
+            {
+                $available[$dbUnique->db_id] = 0;
+            }
+
             $response[] = [ 
                 'id' => $dbUnique->db_id, 
                 'name' => $dbUnique->db_name, 
