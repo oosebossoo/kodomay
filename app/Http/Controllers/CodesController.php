@@ -4,48 +4,137 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Validator;
+
 use Response;
-use Auth;
+use JWTAuth;
 
 use App\Models\Code;
 use App\Models\SentMail;
 
 class CodesController extends Controller
 {
+    protected $user;
+ 
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
     public function magreCodesToOffer(Request $request)
     {
         Code::where('db_id', $request->db_id)->update( ['offer_id' => $request->offer_id] );
     }
 
-    public function getNameOfDBCodes(Request $request)
+    public function getListOfDbscodes(Request $request)
     {
-        if(isset(Auth::user()->id))
+        $codes = $this->user->codes()->get();
+        $dbsUnique = $codes->unique('db_id');
+
+        foreach ($codes as $code) 
         {
-            $userId = Auth::user()->id;
-        }
-        elseif(!isset($request->user_id))
-        {
-            return [
-                'status' => 0 ,
-                'desc' => 'please give me a user id... :/'
-            ];
-        }
-        else
-        {
-            $userId = $request->user_id;
+            if(isset($ids[$code->db_id]))
+            {
+                $ids[$code->db_id] = $ids[$code->db_id] + 1;
+
+
+                if(isset($sold[$code->db_id]))
+                {
+                    if($code->status == 0)
+                    {
+                        $sold[$code->db_id] ++;
+                    }
+                    else
+                    {
+                        $available[$code->db_id] ++;
+                    }
+                }
+                else
+                {
+                    if($code->status == 0)
+                    {
+                        $sold[$code->db_id] = 1;
+                    }
+                    else
+                    {
+                        $available[$code->db_id] = 1;
+                    }
+                }
+            }
+            else
+            {
+                $ids[$code->db_id] = 1;
+
+                if(isset($sold[$code->db_id]))
+                {
+                    if($code->status == 0)
+                    {
+                        $sold[$code->db_id] ++;
+                    }
+                    else
+                    {
+                        $available[$code->db_id] ++;
+                    }
+                }
+                else
+                {
+                    if($code->status == 0)
+                    {
+                        $sold[$code->db_id] = 1;
+                    }
+                    else
+                    {
+                        $available[$code->db_id] = 1;
+                    }
+                }
+            }
         }
 
-        $DBNames = Code::where('seller_id', $userId)->select('db_name')->groupBy('db_name')->get();
-        
-        foreach($DBNames as $DBName)
+        foreach ($dbsUnique as $dbUnique)
         {
-            $code = Code::where('db_name', $DBName->db_name)->first();
-            $result[] = [ 
-                'id' => $code->db_id, 
-                'name' => $code->db_name
+            if(!isset($sold[$dbUnique->db_id]))
+            {
+                $sold[$dbUnique->db_id] = 0;
+            }
+            $response[] = [ 
+                'id' => $dbUnique->db_id, 
+                'name' => $dbUnique->db_name, 
+                'quantity' => $ids[$dbUnique->db_id],
+                'available' => $available[$dbUnique->db_id],
+                'sold' => $sold[$dbUnique->db_id],
             ];
         }
-        return $result;
+
+        return $response;
+
+        // if(isset(Auth::user()->id))
+        // {
+        //     $userId = Auth::user()->id;
+        // }
+        // elseif(!isset($request->user_id))
+        // {
+        //     return [
+        //         'status' => 0 ,
+        //         'desc' => 'please give me a user id... :/'
+        //     ];
+        // }
+        // else
+        // {
+        //     $userId = $request->user_id;
+        // }
+
+        // $DBNames = Code::where('seller_id', $userId)->select('db_name')->groupBy('db_name')->get();
+        
+        // foreach($DBNames as $DBName)
+        // {
+        //     $code = Code::where('db_name', $DBName->db_name)->first();
+        //     $result[] = [ 
+        //         'id' => $code->db_id, 
+        //         'name' => $code->db_name
+        //     ];
+        // }
+        // return $result;
     }
 
     public function addCodes(Request $request) 
