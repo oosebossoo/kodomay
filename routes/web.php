@@ -75,14 +75,16 @@ Route::post('/delete_template',[TemplateController::class, 'deleteTemplate']);
 
 // Kody
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
-Route::get('/get_list_of_dbscodes', [ CodesController::class, 'getListOfDbscodes']);
+
+Route::get('/codedcs/add', [ CodesController::class, 'addCodes']);
+Route::get('/codedcs/list', [ CodesController::class, 'getListOfDbscodes']);
+Route::get('/codedcs/delete', [ CodesController::class, 'getListOfDbscodes']);
+
 Route::get('/get_codes_from_order', [CodesController::class, 'getCodesFromOrder']);
 Route::get('/get_sellable_code', [ CodesController::class, 'getSellableCode']);
 Route::get('/get_sellable_codes', [ CodesController::class, 'getSellableCodes']);
 Route::get('/get_sold_codes', [ CodesController::class, 'getSoldCodes']);
-
 Route::post('/change_status_of_code', [ CodesController::class, 'changeStatusOfCode']);
-Route::get('/add_codes', [ CodesController::class, 'addCodes']);
 Route::get('/magre_codes_to_offer', [ CodesController::class, 'magreCodesToOffer']);
 Route::get('/add_codes_form_text_box', [ CodesController::class, 'addCodesFormTextBox']);
 

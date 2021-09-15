@@ -301,7 +301,16 @@ class CodesController extends Controller
 
     public function deleteDatabase(Request $request)
     {
-        
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = $this->user->id;
+        }
+
+        Code::where('db_id', $request->db_id)->delete();
     }
 
     public function deleteFile($file)
