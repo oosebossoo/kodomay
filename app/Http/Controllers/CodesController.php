@@ -38,7 +38,6 @@ class CodesController extends Controller
             {
                 $ids[$code->db_id] = $ids[$code->db_id] + 1;
 
-
                 if(isset($sold[$code->db_id]))
                 {
                     if($code->status == 0)
@@ -132,7 +131,7 @@ class CodesController extends Controller
         }
         else
         {
-            $user_id = Auth::user()->id;
+            $user_id = $this->user->id;
         }
 
         if($request->db_type == 0)
@@ -175,10 +174,14 @@ class CodesController extends Controller
         }
         else
         {
-            return ['status' => 'choose type of db... im not a clairvoyant ^-^'];
+            return response()->json([
+                'status' => 'choose type of db... im not a clairvoyant ^-^'
+            ], 200);
         }
 
-        return ['status' => 'neeew codes, i like it ^-^'];
+        return response()->json([
+            'status' => 'neeew codes, i like it ^-^'
+        ], 201);
     }
 
     public function getCodesFromOrder(Request $request)
@@ -201,7 +204,7 @@ class CodesController extends Controller
         }
         else
         {
-            $user_id = Auth::user()->id;
+            $user_id = $this->user->id;
         }
 
         if(isset($request->limit))
@@ -229,7 +232,7 @@ class CodesController extends Controller
         }
         else
         {
-            $user_id = Auth::user()->id;
+            $user_id = $this->user->id;
         }
 
         $result = Code::where('status', 1)->where('user_id', $user_id)->first();
@@ -245,7 +248,7 @@ class CodesController extends Controller
         }
         else
         {
-            $user_id = Auth::user()->id;
+            $user_id = $this->user->id;
         }
 
         if(isset($request->limit))
@@ -265,7 +268,7 @@ class CodesController extends Controller
         }
         else
         {
-            $user_id = Auth::user()->id;
+            $user_id = $this->user->id;
         }
 
         if(isset($request->count))
@@ -294,6 +297,11 @@ class CodesController extends Controller
         
         if(count($result) == 0) return false;
         return true;
+    }
+
+    public function deleteDatabase(Request $request)
+    {
+        
     }
 
     public function deleteFile($file)

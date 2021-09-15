@@ -54,4 +54,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Code::class, 'seller_id');
     }
+
+    public function addCodes(Request $request)
+    {
+        return $this->createMany($request);
+    }
 }

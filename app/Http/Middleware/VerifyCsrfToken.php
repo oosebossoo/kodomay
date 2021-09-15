@@ -22,6 +22,7 @@ class VerifyCsrfToken extends Middleware
         'http://localhost:3000/reset_password',
         'http://localhost:3000/reset_password_mail',
         'http://localhost:8000/activation',
+        'http://localhost:8000/addCodes',
         '/register',
         'http://kodomat.herokuapp.com/',
         'http://kodomat.herokuapp.com/*',
