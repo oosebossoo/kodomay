@@ -27,7 +27,7 @@ class CodesController extends Controller
         Code::where('db_id', $request->db_id)->update( ['offer_id' => $request->offer_id] );
     }
 
-    public function getListOfDbscodes(Request $request)
+    public function list(Request $request)
     {
         $codes = $this->user->codes()->get();
         $dbsUnique = $codes->unique('db_id');
@@ -123,7 +123,7 @@ class CodesController extends Controller
         }
     }
 
-    public function addCodes(Request $request) 
+    public function add(Request $request) 
     {
         if(isset($request->dev))
         {
@@ -299,7 +299,7 @@ class CodesController extends Controller
         return true;
     }
 
-    public function deleteDatabase(Request $request)
+    public function delete(Request $request)
     {
         if(isset($request->dev))
         {

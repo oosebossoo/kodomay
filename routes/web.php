@@ -76,9 +76,9 @@ Route::post('/delete_template',[TemplateController::class, 'deleteTemplate']);
 // Kody
 Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 
-Route::get('/codedbs/add', [ CodesController::class, 'addCodes']);
-Route::get('/codedbs/list', [ CodesController::class, 'getListOfDbscodes']);
-Route::get('/codedbs/delete', [ CodesController::class, 'getListOfDbscodes']);
+Route::get('/codedbs/add', [ CodesController::class, 'add']);
+Route::get('/codedbs/list', [ CodesController::class, 'list']);
+Route::get('/codedbs/delete', [ CodesController::class, 'delete']);
 
 Route::get('/get_codes_from_order', [CodesController::class, 'getCodesFromOrder']);
 Route::get('/get_sellable_code', [ CodesController::class, 'getSellableCode']);
