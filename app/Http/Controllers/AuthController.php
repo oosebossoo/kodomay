@@ -120,7 +120,7 @@ class AuthController extends Controller
     protected function sendActivationEmail($email, $name, $token)
     {
         $data = array(
-            'url' => "http://localhost:3000/activation:".$token,
+            'url' => "http://localhost:3000/token:".$token,
             'email' => $email
         );
 
