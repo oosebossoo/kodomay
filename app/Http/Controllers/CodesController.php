@@ -310,6 +310,8 @@ class CodesController extends Controller
             $user_id = $this->user->id;
         }
 
+        dd(Code::where('db_id', $request->db_id)->get());
+
         Code::where('db_id', $request->db_id)->delete();
     }
 
