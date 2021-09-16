@@ -312,13 +312,18 @@ class CodesController extends Controller
 
         $codes = Code::where('db_id', $request->db_id)->get();
 
-        foreach ( $codes as $code)
-        {
-            $res[] = $code;
-        }
-        return $res;
+        // foreach ( $codes as $code)
+        // {
+        //     $res[] = $code;
+        // }
+        // return $res;
 
-        Code::where('db_id', $request->db_id)->delete();
+        if(Code::where('db_id', $request->db_id)->delete())
+        {
+            return response()->json(['status' => 'database deleted'], 200);
+        }
+
+        return response()->json(['status' => 'no codes database in database'], 400);
     }
 
     public function deleteFile($file)

@@ -22,7 +22,8 @@ class VerifyCsrfToken extends Middleware
         'http://localhost:3000/reset_password',
         'http://localhost:3000/reset_password_mail',
         'http://localhost:8000/activation',
-        'http://localhost:8000/addCodes',
+        'http://localhost:8000/codedbs/add',
+        'http://localhost:8000/codedbs/delete',
         '/register',
         'http://kodomat.herokuapp.com/',
         'http://kodomat.herokuapp.com/*',
@@ -35,5 +36,6 @@ class VerifyCsrfToken extends Middleware
         'http://kodomat.herokuapp.com/activation',
         'http://kodomat.herokuapp.com/reset_password',
         'http://kodomat.herokuapp.com/reset_password_mail',
+        'http://kodomat.herokuapp.com/codedbs/add',
     ];
 }
