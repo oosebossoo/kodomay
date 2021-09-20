@@ -15,29 +15,28 @@ class AccountController extends Controller
 {
     public function activation(Request $request)
     {
-        return response()->json([
-            'token' => $request->token,
-        ], 201);
-        // $validator = Validator::make($request->all(), [
-        //     'token' => 'required',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+        ]);
 
-        // if($validator->fails()){
-        //     return response()->json($validator->errors()->toJson(), 400);
-        // }
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
 
-        $isActive = User::where('activate_code', $request->token)->update(['activate' => 1,'activate_code' => ""]);
-
-        if($isActive)
+        if(User::where('activate_code', $request->token)->update(['activate' => 1,'activate_code' => ""]))
             return response()->json([
                 'message' => 'User successfully activated',
             ], 201);
         else
         {
             return response()->json([
-                'message' => 'Something goes wrong ;-)'
-            ], 503);
+                'message' => "Can't update db or find user"
+            ], 500);
         }
+
+        return response()->json([
+            'message' => "Can't activate account"
+        ], 500);
     }
 
     public function resetPasswordMail(Request $request)
@@ -94,8 +93,6 @@ class AccountController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
-        $user = User::where('remember_token', $request->token)->first();
-        return response()->json($user->id);
         
         if(User::where('remember_token', $request->token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]))
         {
