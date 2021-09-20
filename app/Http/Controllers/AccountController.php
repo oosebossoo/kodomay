@@ -51,7 +51,11 @@ class AccountController extends Controller
 
         $email = $request->email;
 
-        User::where('email', $request->email)->update(['remember_token' => bcrypt($request->email.time())]);
+        $token = bcrypt($request->email.time() );
+        $char = array('/', '.');
+        $token = str_replace($char, "", $token);
+
+        User::where('email', $request->email)->update(['remember_token' => $token]);
 
         $data = array(
             'url' => "http://localhost:3000/reset:".User::where('email', $request->email)->first()->remember_token,
@@ -114,6 +118,7 @@ class AccountController extends Controller
 
     public function allUsers()
     {
-        return User::all();
+        // return User::all();
+        return "User::all()";
     }
 }

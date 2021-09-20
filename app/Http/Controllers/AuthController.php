@@ -28,7 +28,7 @@ class AuthController extends Controller
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Niepoprawny email lub hasło'], 401);
         }
 
         return $this->createNewToken($token);
@@ -55,7 +55,10 @@ class AuthController extends Controller
 
         $name = $request->name;
         $email = $request->email;
+        
         $token = bcrypt($name.$email);
+        $char = array('/', '.');
+        $token = str_replace($char, "", $token);
 
         $user = User::create(array_merge(
                     $validator->validated(), ['password' => bcrypt($request->password), 'activate_code' => $token]
@@ -65,27 +68,6 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user->id
-        ], 201);
-    }
-
-    public function resetPassword(Request $request) 
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:100',
-        ]);
-
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-        dd($validator->email);
-        $user = User::where('email', $validator->email)(array_merge(
-                    $validator->validated(), ['password' => bcrypt($request->password)]
-                ));
-
-        return response()->json([
-            'message' => 'User successfully reset password',
-            'user' => $user
         ], 201);
     }
 
