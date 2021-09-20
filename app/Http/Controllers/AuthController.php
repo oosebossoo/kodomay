@@ -28,7 +28,7 @@ class AuthController extends Controller
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['message' => 'Niepoprawny email lub hasło'], 401);
+            return response()->json(['message' => 'Niepoprawny email lub/i hasło'], 401);
         }
 
         return $this->createNewToken($token);
@@ -55,7 +55,7 @@ class AuthController extends Controller
 
         $name = $request->name;
         $email = $request->email;
-        
+
         $token = bcrypt($name.$email);
         $char = array('/', '.');
         $token = str_replace($char, "", $token);
