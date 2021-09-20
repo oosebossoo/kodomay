@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 use App\Models\MailTemplate;
 use App\Models\Offers;
 
+use JWTAuth;
+
 class TemplateController extends Controller
 {
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
     public function getTemplates(Request $request)
     {
         if(isset($request->user_id))

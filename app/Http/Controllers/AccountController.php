@@ -81,12 +81,22 @@ class AccountController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         
-        $user = User::where('remember_token', $request->token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]);
+        if(User::where('remember_token', $request->token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]))
+        {
+            return response()->json([
+                'message' => 'User successfully reset password',
+            ], 201);
+        }
+        else
+        {
+            return response()->json([
+                'message' => "Can't update db or find user",
+            ], 500);
+        }
 
         return response()->json([
-            'message' => 'User successfully reset password',
-            'user' => $user
-        ], 201);
+            'message' => "Can't change password",
+        ], 500);
     }
 
     public function allUsers()
