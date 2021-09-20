@@ -15,6 +15,9 @@ class AccountController extends Controller
 {
     public function activation(Request $request)
     {
+
+        return response()->json([User::where('activate_code', $request->token)->first()]);
+
         $validator = Validator::make($request->all(), [
             'token' => 'required',
         ]);
@@ -24,7 +27,7 @@ class AccountController extends Controller
         }
 
         User::where('activate_code', $request->token)->update(['activate' => 1,'activate_code' => ""]);
-        
+
         return response()->json([
             'message' => 'User successfully activated',
         ], 201);
