@@ -58,12 +58,24 @@ class AccountController extends Controller
             'url' => "http://localhost:3000/reset:".User::where('email', $request->email)->first()->remember_token,
             'email' => $request->email
         );
-        $stat = Mail::send(['html'=>'reset'], $data, function($message) use ($email) {
+
+        Mail::send(['html'=>'reset'], $data, function($message) use ($email) {
             $message->to($email)->subject('Welcome '.$email);
             $message->from('noreplay@kodo.mat','Kodomat');
         });
 
-        return response()->json($stat, 201);
+        if(Mail::failures())
+        {
+            return response()->json([
+                'message' => "Can't send email"]
+                , 500);
+        }
+        else
+        {
+            return response()->json([
+                'message' => "Email sent"
+            ], 200);
+        }
     }
 
     public function resetPassword(Request $request)
