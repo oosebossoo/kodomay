@@ -28,7 +28,7 @@ class AuthController extends Controller
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['message' => 'Login i/lub hasło są nie prawidłowe'], 401);
+            return response()->json(['message' => 'Login i/lub hasło są nieprawidłowe'], 401);
         }
 
         return $this->createNewToken($token);
