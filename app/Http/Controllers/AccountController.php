@@ -63,7 +63,7 @@ class AccountController extends Controller
             $message->from('noreplay@kodo.mat','Kodomat');
         });
 
-        return response()->json($stat, 13);
+        return response()->json($stat, 201);
     }
 
     public function resetPassword(Request $request)
