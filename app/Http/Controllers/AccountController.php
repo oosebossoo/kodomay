@@ -16,7 +16,10 @@ class AccountController extends Controller
     public function activation(Request $request)
     {
 
-        // return response()->json([User::where('activate_code', $request->token)->first()]);
+        return response()->json([ 
+            'token' => $request->token,
+            'user' => User::where('activate_code', $request->token)->first()
+        ]);
 
         $validator = Validator::make($request->all(), [
             'token' => 'required',
