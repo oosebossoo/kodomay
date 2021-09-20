@@ -94,6 +94,8 @@ class AccountController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
+        $user = User::where('remember_token', $request->token)->first();
+        dd($user);
         
         if(User::where('remember_token', $request->token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]))
         {
