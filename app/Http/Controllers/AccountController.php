@@ -15,10 +15,12 @@ class AccountController extends Controller
 {
     public function activation(Request $request)
     {
+        $char = array(':');
+        $token = str_replace($char, "", $request->token);
 
         return response()->json([ 
-            'token' => $request->token,
-            'user' => User::where('activate_code', $request->token)->first()
+            'token' => $token,
+            'user' => User::where('activate_code', $token)->first()
         ]);
 
         $validator = Validator::make($request->all(), [
