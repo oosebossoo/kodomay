@@ -23,16 +23,11 @@ class AccountController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        if(User::where('activate_code', $request->token)->update(['activate' => 1,'activate_code' => ""]))
-            return response()->json([
-                'message' => 'User successfully activated',
-            ], 201);
-        else
-        {
-            return response()->json([
-                'message' => "Can't update db or find user"
-            ], 500);
-        }
+        User::where('activate_code', $request->token)->update(['activate' => 1,'activate_code' => ""]);
+        
+        return response()->json([
+            'message' => 'User successfully activated',
+        ], 201);
 
         return response()->json([
             'message' => "Can't activate account"
