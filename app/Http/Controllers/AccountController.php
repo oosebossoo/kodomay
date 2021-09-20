@@ -95,8 +95,11 @@ class AccountController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
+
+        $char = array(':');
+        $token = str_replace($char, "", $request->token);
         
-        if(User::where('remember_token', $request->token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]))
+        if(User::where('remember_token', $token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]))
         {
             return response()->json([
                 'message' => 'User successfully reset password',
