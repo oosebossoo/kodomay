@@ -67,8 +67,8 @@ class AccountController extends Controller
         if(Mail::failures())
         {
             return response()->json([
-                'message' => "Can't send email"]
-                , 500);
+                'message' => "Can't send email"
+                ], 500);
         }
         else
         {
