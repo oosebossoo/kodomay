@@ -8,11 +8,12 @@ use App\Models\Orders;
 use App\Models\Offers;
 
 use Auth;
+use JWTAuth;
 
 class StatisticsController extends Controller
 {
     protected $user;
-    
+
     public function __construct()
     {
         $this->user = JWTAuth::parseToken()->authenticate();
