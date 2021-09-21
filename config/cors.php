@@ -16,19 +16,11 @@ return [
     */
 
     'paths' => ['api/*', 'api/auth/codedbs/list'],
-
     'allowed_methods' => ['GET, POST'],
-
     'allowed_origins' => ['localhost:3000', 'localhost:*'],
-
     'allowed_origins_patterns' => [],
-
     'allowed_headers' => ['*'],
-
     'exposed_headers' => [],
-
     'max_age' => 0,
-
     'supports_credentials' => true,
-
 ];
