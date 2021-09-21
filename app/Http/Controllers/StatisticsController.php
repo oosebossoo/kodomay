@@ -28,14 +28,7 @@ class StatisticsController extends Controller
 
     public function offersActiveCount(Request $request)
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
+        $user_id = $this->user->id;
 
         return Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count();
     }
