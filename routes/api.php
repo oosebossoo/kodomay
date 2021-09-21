@@ -31,7 +31,11 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
-
+    Route::post('/codedbs/add', [ CodesController::class, 'add']);
+    Route::get('/codedbs/list', [ CodesController::class, 'list']);
+    Route::post('/codedbs/delete', [ CodesController::class, 'delete']);
 });
+
+
 
 Route::post('/add_codes_form_file', [ CodesController::class, 'addCodesFormFile']);
