@@ -8,27 +8,40 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Models\MailTemplate;
 use App\Models\Offers;
 
+use Validator;
 use JWTAuth;
 
 class TemplateController extends Controller
 {
     public function __construct()
     {
+        if(null == JWTAuth::parseToken()->authenticate())
+        {
+            dd('asd');
+        }
         $this->user = JWTAuth::parseToken()->authenticate();
     }
 
-    public function getTemplates(Request $request)
+    public function listTemplates(Request $request)
     {
-        if(isset($request->user_id))
+        if(isset($this->user))
         {
-            $user_id = $request->user_id;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
+            $user_id = $this->user->id;
+
+            $templates = MailTemplate::where('user_id', $user_id)->get();
+
+            foreach($templates as $template)
+            {
+                $templates[] = $template;
+            }
+
+            return response()->json([
+                $templates
+            ], 200);
         }
 
-        return MailTemplate::where('user_id', $user_id)->get();
+        return response()->json(403);
+        
     }
 
     public function getTemplate(Request $request)
@@ -37,7 +50,7 @@ class TemplateController extends Controller
         {
             return MailTemplate::where('id', $request->id)->first();
         }
-        return [ "status" => 1, "desc" => "you should set id of template to display that one... ;)" ];
+        return [ "message" => "you should set id of template to display that one... ;)" ];
     }
 
     public function deleteTemplate(Request $request)
@@ -51,29 +64,35 @@ class TemplateController extends Controller
 
     public function saveTemplate(Request $request)
     {
-        if(isset($request->user_id))
-        {
-            $user_id = $request->user_id;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
+        $user_id = $this->user->id;
 
-        if (MailTemaplate::where('id', $request->template_id)->exists())
+        if(isset($request->new))
         {
-            return MailTemplate::where('id', $request->template_id)->update(["template_name" => $request->name, "template_subject" => $request->subject, "replay_email" => $request->replay_email,"template" => $request->body]);
-        }
-        else
-        {
+            $validator = Validator::make($request->all(), [
+                'template_name' => 'required|unique:mail_template',
+            ]);
+    
+            if($validator->fails()){
+                return response()->json($validator->errors()->toJson(), 400);
+            }
+
             $template = new MailTemplate();
-            $template->template_name = $request->name;
+            $template->template_name = $request->template_name;
             $template->template_subject = $request->subject;
-            $template->replay_email = $request->replay_email;
+            // $template->replay_email = $request->replay_email;
             $template->template = $request->body;
             $template->user_id = $user_id;
             $template->save();
+
+            return response()->json(['message' => 'added'], 201);
         }
-        return [ "status" => 1, "desc" => "please check all parametrs" ];
+        // return MailTemplate::where('template_name', $request->template_name)->first();
+
+        if(MailTemplate::where('template_name', $request->template_name)->update(["template_name" => $request->template_name, "template_subject" => $request->subject, "template" => $request->body]))
+        {
+            return response()->json(['message' => 'updated'], 201);
+        }
+
+        return [ "message" => "please check all parametrs" ];
     }
 }

@@ -175,12 +175,12 @@ class CodesController extends Controller
         else
         {
             return response()->json([
-                'status' => 'choose type of db... im not a clairvoyant ^-^'
+                'message' => 'choose type of db... im not a clairvoyant ^-^'
             ], 200);
         }
 
         return response()->json([
-            'status' => 'neeew codes, i like it ^-^'
+            'message' => 'yhy, neeew codes, i like it ^-^'
         ], 201);
     }
 

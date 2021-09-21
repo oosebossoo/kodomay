@@ -13,7 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'http://localhost:8000/add_template',
-        'http://localhost:8000/save_template',
+        'http://localhost:8000/templates/save',
         'http://localhost:8000/delete_template',
         'http://localhost:8000/save_presonal_data',
         'http://localhost:8000/save_notifications',
