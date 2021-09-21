@@ -301,29 +301,16 @@ class CodesController extends Controller
 
     public function delete(Request $request)
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = $this->user->id;
-        }
+        $user_id = $this->user->id;
 
         $codes = Code::where('db_id', $request->db_id)->get();
-
-        // foreach ( $codes as $code)
-        // {
-        //     $res[] = $code;
-        // }
-        // return $res;
 
         if(Code::where('db_id', $request->db_id)->delete())
         {
             return response()->json(['status' => 'database deleted'], 200);
         }
 
-        return response()->json(['status' => 'no codes database in database'], 400);
+        return response()->json(['status' => 'no codes database in database'], 200);
     }
 
     public function deleteFile($file)
