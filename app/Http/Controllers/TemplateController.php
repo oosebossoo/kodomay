@@ -15,10 +15,6 @@ class TemplateController extends Controller
 {
     public function __construct()
     {
-        if(null == JWTAuth::parseToken()->authenticate())
-        {
-            dd('asd');
-        }
         $this->user = JWTAuth::parseToken()->authenticate();
     }
 
@@ -79,20 +75,21 @@ class TemplateController extends Controller
             $template = new MailTemplate();
             $template->template_name = $request->template_name;
             $template->template_subject = $request->subject;
-            // $template->replay_email = $request->replay_email;
+            $template->replay_email = $request->replay_email;
             $template->template = $request->body;
             $template->user_id = $user_id;
             $template->save();
 
             return response()->json(['message' => 'added'], 201);
         }
-        // return MailTemplate::where('template_name', $request->template_name)->first();
 
         if(MailTemplate::where('template_name', $request->template_name)->update(["template_name" => $request->template_name, "template_subject" => $request->subject, "template" => $request->body]))
         {
             return response()->json(['message' => 'updated'], 201);
         }
 
-        return [ "message" => "please check all parametrs" ];
+        return response()->json([
+            "message" => "please check all parametrs" 
+        ], 400);
     }
 }
