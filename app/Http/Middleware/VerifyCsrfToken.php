@@ -19,12 +19,18 @@ class VerifyCsrfToken extends Middleware
         'http://localhost:8000/save_notifications',
         'http://localhost:8000/reset_password',
         'http://localhost:8000/reset_password_mail',
+        'http://localhost:8000/codedbs/add',
+        'http://localhost:8000/api/auth/codedbs/list',
+        'http://localhost:8000/codedbs/delete',
+        // ------------------------------------
         'http://localhost:3000/reset_password',
         'http://localhost:3000/reset_password_mail',
         'http://localhost:8000/activation',
-        'http://localhost:8000/codedbs/add',
-        'http://localhost:8000/codedbs/delete',
+        'http://localhost:3000/codedbs/add',
+        'http://localhost:3000/api/auth/codedbs/list',
+        'http://localhost:3000/codedbs/delete',
         '/register',
+        // ------------------------------------
         'http://kodomat.herokuapp.com/',
         'http://kodomat.herokuapp.com/*',
         'http://kodomat.herokuapp.com/login',
@@ -37,5 +43,6 @@ class VerifyCsrfToken extends Middleware
         'http://kodomat.herokuapp.com/reset_password',
         'http://kodomat.herokuapp.com/reset_password_mail',
         'http://kodomat.herokuapp.com/codedbs/add',
+        'http://kodomat.herokuapp.com/api/auth/codedbs/list',
     ];
 }
