@@ -22,11 +22,6 @@ class CodesController extends Controller
         $this->user = JWTAuth::parseToken()->authenticate();
     }
 
-    public function magreCodesToOffer(Request $request)
-    {
-        Code::where('db_id', $request->db_id)->update( ['offer_id' => $request->offer_id] );
-    }
-
     public function list(Request $request)
     {
         $codes = $this->user->codes()->get();
@@ -195,33 +190,52 @@ class CodesController extends Controller
         return $codes;
     }
 
-    public function getAllCode(Request $request)
+    public function listOfCodesFromDB(Request $request)
     {
-        $limit = 100;
-        if(isset($request->dev))
+        $user_id = $this->user->id;
+
+        // db_id
+        // code_id
+        // limit
+
+        if(null !== $request->limit && null !== $request->db_id)
         {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = $this->user->id;
+            if(null !== $request->id)
+            {
+                return response()->json(Code::where('seller_id', $user_id)
+                    ->where('db_id', $request->db_id)
+                    ->limit($limit)
+                    ->get(), 200);
+            }
+            else
+            {
+                return response()->json(Code::where('seller_id', $user_id)
+                    ->where('db_id', $request->db_id)
+                    ->where('id', '>', $request->code_id)
+                    ->limit($limit)
+                    ->get(), 200);
+            }
         }
 
-        if(isset($request->limit))
-        {
-            $limit = $request->limit;
-        }
+        return response()->json(['message' => 'wrong values'], 400);
+    }
 
-        if(isset($request->db_name))
-        {
-            return Code::where('seller_id', $user_id)->where('db_name', $request->db_name)->limit($limit)->get();
-        }
-        if(isset($request->offer_id))
-        {
-            return Code::where('seller_id', $user_id)->where('offer_id', $request->offer_id)->limit($limit)->get();
-        }
+    public function deleteCodes(Request $request)
+    {
+        $user_id = $this->user->id;
 
-        return Code::where('seller_id', $user_id)->limit($limit)->get();
+        // code_ids
+        if(null !== $request->codes_id)
+        {
+            foreach($request->code_ids as $id)
+            {
+                if(!Code::where('id', $id)->delete())
+                {
+                    return response()->json(['message' => "Can't delete code from database"], 500);
+                }
+            }
+        }
+        return response()->json(['message' => 'wrong values'], 400);
     }
 
     public static function getSellableCode(Request $request)

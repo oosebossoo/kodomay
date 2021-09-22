@@ -80,6 +80,9 @@ Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 // Route::get('/codedbs/list', [ CodesController::class, 'list']);
 // Route::post('/codedbs/delete', [ CodesController::class, 'delete']);
 
+Route::get('/codedbs/codes/list', [CodesController::class, 'listOfCodesFromDB']);
+Route::get('/codedbs/codes/delete', [CodesController::class, 'deleteCodes']);
+
 Route::get('/get_codes_from_order', [CodesController::class, 'getCodesFromOrder']);
 Route::get('/get_sellable_code', [ CodesController::class, 'getSellableCode']);
 Route::get('/get_sellable_codes', [ CodesController::class, 'getSellableCodes']);
