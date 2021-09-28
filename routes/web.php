@@ -79,6 +79,8 @@ Route::get('/get_all_code', [ CodesController::class, 'getAllCode']);
 // Route::post('/codedbs/add', [ CodesController::class, 'add']);
 // Route::get('/codedbs/list', [ CodesController::class, 'list']);
 // Route::post('/codedbs/delete', [ CodesController::class, 'delete']);
+// Route::post('/codedbs/db/unused', [ CodesController::class, 'unused']);
+// Route::post('/codedbs/db/used', [ CodesController::class, 'used']);
 
 Route::get('/codedbs/codes/list', [CodesController::class, 'listOfCodesFromDB']);
 Route::get('/codedbs/codes/delete', [CodesController::class, 'deleteCodes']);

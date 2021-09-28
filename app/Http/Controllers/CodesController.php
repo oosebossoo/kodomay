@@ -118,7 +118,7 @@ class CodesController extends Controller
         }
     }
 
-    public function add(Request $request) 
+    public function add_db(Request $request) 
     {
         if(isset($request->dev))
         {
@@ -179,6 +179,115 @@ class CodesController extends Controller
         ], 201);
     }
 
+    public function delete(Request $request)
+    {
+        $user_id = $this->user->id;
+
+        $codes = Code::where('db_id', $request->db_id)->get();
+
+        if(Code::where('db_id', $request->db_id)->delete())
+        {
+            return response()->json(['status' => 'database deleted'], 200);
+        }
+
+        return response()->json(['status' => 'no codes database in database'], 200);
+    }
+
+    public function add_code(Request $request) 
+    {
+        if(null !== $request->db_id)
+        {
+            $user_id = $this->user->id;
+
+            $db = Code::where('db_id', $request->db_id)->first();
+            $dbName = $db->db_name;
+            $dbType = $db->db_type;
+            $offerId = $db->offer_id;
+            $db_id = $request->db_id;
+
+            if($request->db_type == 0)
+            {
+                // baza zwykła
+                foreach ($request->codes as $code)
+                {
+                    $cddb = new Code();
+                    $cddb->db_id = $db_id;
+                    $cddb->db_type = $dbType;
+                    $cddb->db_name = $dbName;
+                    $cddb->code = $code;
+                    $cddb->seller_id = $user_id;
+                    $cddb->status = 1;
+                    $cddb->save();
+                }
+            }
+            elseif($request->db_type == 1)
+            {
+                // baza rek.
+                foreach ($request->codes as $code)
+                {
+                    $cddb = new Code();
+                    $cddb->db_id = $db_id;
+                    $cddb->db_type = $dbType;
+                    $cddb->db_name = $dbName;
+                    $cddb->code = $code;
+                    $cddb->seller_id = $user_id;
+                    $cddb->status = 1;
+                    $cddb->save();
+                }
+            }
+            else
+            {
+                return response()->json([
+                    'message' => 'choose type of db... im not a clairvoyant ^-^'
+                ], 200);
+            }
+
+            return response()->json([
+                'message' => 'yhy, neeew codes, i like it ^-^'
+            ], 201);
+        }
+    }
+
+    public function unused(Request $request)
+    {
+        $codes = Code::where('db_id', $request->db_id)->where('status', 1)->get();
+
+        if(!isset($codes))
+        {
+            foreach ($codes as $code) 
+            {
+                $res[] = [
+                    'id' => $code->id,
+                    'code' => $code->code,
+                ];
+            }
+
+            return response()->json($res, 200);
+        }
+
+        return response()->json(['message' => 'Empty db'], 200);
+    }
+
+    public function used(Request $request)
+    {
+        $codes = Code::where('db_id', $request->db_id)->where('status', 0)->get();
+
+        if(!isset($codes))
+        {
+            foreach ($codes as $code) 
+            {
+                $res[] = [
+                    'id' => $code->id,
+                    'code' => $code->code,
+                ];
+            }
+
+            return response()->json($res, 200);
+        }
+
+        return response()->json(['message' => 'Empty db'], 200);
+    }
+
     public function getCodesFromOrder(Request $request)
     {
         $codes_id = SentMail::select('code_id')->where('order_id', $request->orderId)->where('customer_id', $request->customerId)->get();
@@ -235,6 +344,7 @@ class CodesController extends Controller
                 }
             }
         }
+
         return response()->json(['message' => 'wrong values'], 400);
     }
 
@@ -311,20 +421,6 @@ class CodesController extends Controller
         
         if(count($result) == 0) return false;
         return true;
-    }
-
-    public function delete(Request $request)
-    {
-        $user_id = $this->user->id;
-
-        $codes = Code::where('db_id', $request->db_id)->get();
-
-        if(Code::where('db_id', $request->db_id)->delete())
-        {
-            return response()->json(['status' => 'database deleted'], 200);
-        }
-
-        return response()->json(['status' => 'no codes database in database'], 200);
     }
 
     public function deleteFile($file)

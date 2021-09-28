@@ -17,10 +17,6 @@ use App\Http\Controllers\CodesController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -31,11 +27,27 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
-    Route::post('/codedbs/add', [ CodesController::class, 'add']);
-    Route::get('/codedbs/list', [ CodesController::class, 'list']);
-    Route::post('/codedbs/delete', [ CodesController::class, 'delete']);
 });
 
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'dbs'
 
+], function ($router) {
+    Route::post('/add', [ CodesController::class, 'add_db']);
+    Route::get('/list', [ CodesController::class, 'list']);
+    Route::post('/delete', [ CodesController::class, 'delete']);
+});
 
-Route::post('/add_codes_form_file', [ CodesController::class, 'addCodesFormFile']);
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'db'
+
+], function ($router) {
+    Route::get('/info', [ CodesController::class, 'info']);
+    Route::get('/unused', [ CodesController::class, 'unused']);
+    Route::get('/used', [ CodesController::class, 'used']);
+    Route::post('/add', [ CodesController::class, 'add_code']);
+    Route::post('/find', [ CodesController::class, 'find']);
+    Route::post('/delete', [ CodesController::class, 'codes-delete']);
+});
