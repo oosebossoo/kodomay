@@ -136,7 +136,6 @@ class CodesController extends Controller
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
-            dd($request->codes);
             foreach ($request->codes as $code)
             {
                 $cddb = new Code();
@@ -289,6 +288,41 @@ class CodesController extends Controller
         return response()->json(['message' => 'Empty db'], 200);
     }
 
+    public function deleteCodes(Request $request)
+    {
+        $user_id = $this->user->id;
+
+        // code_ids
+        if(null !== $request->codes_id)
+        {
+            foreach($request->code_ids as $id)
+            {
+                if(!Code::where('id', $id)->delete())
+                {
+                    return response()->json(['message' => "Can't delete code from database"], 500);
+                }
+            }
+        }
+
+        return response()->json(['message' => 'wrong values'], 400);
+    }
+
+    public function info(Request $request)
+    {
+        $db = Code::where('db_id', $request->db_id)->first();
+
+        $res = [
+            'db_name' => $db->db_name,
+        ];
+
+        return response()->json($res, 200);
+    }
+
+    public function find()
+    {
+
+    }
+
     public function getCodesFromOrder(Request $request)
     {
         $codes_id = SentMail::select('code_id')->where('order_id', $request->orderId)->where('customer_id', $request->customerId)->get();
@@ -324,25 +358,6 @@ class CodesController extends Controller
                     ->where('id', '>', $request->code_id)
                     ->limit($limit)
                     ->get(), 200);
-            }
-        }
-
-        return response()->json(['message' => 'wrong values'], 400);
-    }
-
-    public function deleteCodes(Request $request)
-    {
-        $user_id = $this->user->id;
-
-        // code_ids
-        if(null !== $request->codes_id)
-        {
-            foreach($request->code_ids as $id)
-            {
-                if(!Code::where('id', $id)->delete())
-                {
-                    return response()->json(['message' => "Can't delete code from database"], 500);
-                }
             }
         }
 

@@ -44,10 +44,10 @@ Route::group([
     'prefix' => 'db'
 
 ], function ($router) {
-    Route::get('/info', [ CodesController::class, 'info']);
+    // Route::get('/info', [ CodesController::class, 'info']);
     Route::get('/unused', [ CodesController::class, 'unused']);
     Route::get('/used', [ CodesController::class, 'used']);
     Route::post('/add', [ CodesController::class, 'add_code']);
-    Route::post('/find', [ CodesController::class, 'find']);
+    // Route::post('/find', [ CodesController::class, 'find']);
     Route::post('/delete', [ CodesController::class, 'codes-delete']);
 });
