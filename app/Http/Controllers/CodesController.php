@@ -24,99 +24,99 @@ class CodesController extends Controller
 
     public function list(Request $request)
     {
-        return response()->json([ 'id' => 1, 'name' => 'test1']);
-        // $codes = $this->user->codes()->get();
-        // $dbsUnique = $codes->unique('db_id');
+        // return response()->json([ 'id' => 1, 'name' => 'test1']);
+        $codes = $this->user->codes()->get();
+        $dbsUnique = $codes->unique('db_id');
 
-        // foreach ($codes as $code) 
-        // {
-        //     if(isset($ids[$code->db_id]))
-        //     {
-        //         $ids[$code->db_id] = $ids[$code->db_id] + 1;
+        foreach ($codes as $code) 
+        {
+            if(isset($ids[$code->db_id]))
+            {
+                $ids[$code->db_id] = $ids[$code->db_id] + 1;
 
-        //         if(isset($sold[$code->db_id]))
-        //         {
-        //             if($code->status == 0)
-        //             {
-        //                 $sold[$code->db_id] ++;
-        //             }
-        //             else
-        //             {
-        //                 $available[$code->db_id] ++;
-        //             }
-        //         }
-        //         else
-        //         {
-        //             if($code->status == 0)
-        //             {
-        //                 $sold[$code->db_id] = 1;
-        //             }
-        //             else
-        //             {
-        //                 $available[$code->db_id] = 1;
-        //             }
-        //         }
-        //     }
-        //     else
-        //     {
-        //         $ids[$code->db_id] = 1;
+                if(isset($sold[$code->db_id]))
+                {
+                    if($code->status == 0)
+                    {
+                        $sold[$code->db_id] ++;
+                    }
+                    else
+                    {
+                        $available[$code->db_id] ++;
+                    }
+                }
+                else
+                {
+                    if($code->status == 0)
+                    {
+                        $sold[$code->db_id] = 1;
+                    }
+                    else
+                    {
+                        $available[$code->db_id] = 1;
+                    }
+                }
+            }
+            else
+            {
+                $ids[$code->db_id] = 1;
 
-        //         if(isset($sold[$code->db_id]))
-        //         {
-        //             if($code->status == 0)
-        //             {
-        //                 $sold[$code->db_id] ++;
-        //             }
-        //             else
-        //             {
-        //                 $available[$code->db_id] ++;
-        //             }
-        //         }
-        //         else
-        //         {
-        //             if($code->status == 0)
-        //             {
-        //                 $sold[$code->db_id] = 1;
-        //             }
-        //             else
-        //             {
-        //                 $available[$code->db_id] = 1;
-        //             }
-        //         }
-        //     }
-        // }
+                if(isset($sold[$code->db_id]))
+                {
+                    if($code->status == 0)
+                    {
+                        $sold[$code->db_id] ++;
+                    }
+                    else
+                    {
+                        $available[$code->db_id] ++;
+                    }
+                }
+                else
+                {
+                    if($code->status == 0)
+                    {
+                        $sold[$code->db_id] = 1;
+                    }
+                    else
+                    {
+                        $available[$code->db_id] = 1;
+                    }
+                }
+            }
+        }
 
-        // foreach ($dbsUnique as $dbUnique)
-        // {
-        //     if(!isset($sold[$dbUnique->db_id]))
-        //     {
-        //         $sold[$dbUnique->db_id] = 0;
-        //     }
+        foreach ($dbsUnique as $dbUnique)
+        {
+            if(!isset($sold[$dbUnique->db_id]))
+            {
+                $sold[$dbUnique->db_id] = 0;
+            }
 
-        //     if(!isset($available[$dbUnique->db_id]))
-        //     {
-        //         $available[$dbUnique->db_id] = 0;
-        //     }
+            if(!isset($available[$dbUnique->db_id]))
+            {
+                $available[$dbUnique->db_id] = 0;
+            }
 
-        //     $response[] = [ 
-        //         'id' => $dbUnique->db_id, 
-        //         'name' => $dbUnique->db_name, 
-        //         'quantity' => $ids[$dbUnique->db_id],
-        //         'available' => $available[$dbUnique->db_id],
-        //         'sold' => $sold[$dbUnique->db_id],
-        //     ];
-        // }
+            $response[] = [ 
+                'id' => $dbUnique->db_id, 
+                'name' => $dbUnique->db_name, 
+                'quantity' => $ids[$dbUnique->db_id],
+                'available' => $available[$dbUnique->db_id],
+                'sold' => $sold[$dbUnique->db_id],
+            ];
+        }
 
-        // if(isset($response))
-        // {
-        //     return $response;
-        // }
-        // else
-        // {
-        //     return response()->json([
-        //         'message' => 'No data in database',
-        //     ], 200);
-        // }
+        if(isset($response))
+        {
+            return $response;
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'No data in database',
+            ], 200);
+        }
     }
 
     public function add_db(Request $request) 
