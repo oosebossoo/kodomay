@@ -17,10 +17,10 @@ class CodesController extends Controller
 {
     protected $user;
  
-    public function __construct()
-    {
-        $this->user = JWTAuth::parseToken()->authenticate();
-    }
+    // public function __construct()
+    // {
+    //     $this->user = JWTAuth::parseToken()->authenticate();
+    // }
 
     public function list(Request $request)
     {
@@ -179,7 +179,7 @@ class CodesController extends Controller
         ], 201);
     }
 
-    public function delete(Request $request)
+    public function delete_db(Request $request)
     {
         $user_id = $this->user->id;
 
@@ -252,7 +252,7 @@ class CodesController extends Controller
     {
         $codes = Code::where('db_id', $request->db_id)->where('status', 1)->get();
 
-        if(!isset($codes))
+        if(!$codes->isEmpty())
         {
             foreach ($codes as $code) 
             {
@@ -272,7 +272,7 @@ class CodesController extends Controller
     {
         $codes = Code::where('db_id', $request->db_id)->where('status', 0)->get();
 
-        if(!isset($codes))
+        if(!$codes->isEmpty())
         {
             foreach ($codes as $code) 
             {
@@ -288,18 +288,22 @@ class CodesController extends Controller
         return response()->json(['message' => 'Empty db'], 200);
     }
 
-    public function deleteCodes(Request $request)
+    public function delete_codes(Request $request)
     {
         $user_id = $this->user->id;
 
         // code_ids
-        if(null !== $request->codes_id)
+        if(null !== $request->code_ids)
         {
             foreach($request->code_ids as $id)
             {
-                if(!Code::where('id', $id)->delete())
+                if(!Code::where('seller_id', $user_id)->where('id', $id)->delete())
                 {
                     return response()->json(['message' => "Can't delete code from database"], 500);
+                }
+                else
+                {
+                    return response()->json(['message' => "Codes deleted from database"], 200);
                 }
             }
         }
@@ -309,18 +313,29 @@ class CodesController extends Controller
 
     public function info(Request $request)
     {
-        $db = Code::where('db_id', $request->db_id)->first();
+        $user_id = $this->user->id;
+        $db = Code::where('seller_id', $user_id)->where('db_id', $request->db_id)->first();
 
         $res = [
+            'db_id' => $db->db_id,
             'db_name' => $db->db_name,
+            'db_type' => $db->db_type,
         ];
 
         return response()->json($res, 200);
     }
 
-    public function find()
+    public function find(Request $request)
     {
+        $user_id = $this->user->id;
+        $db = Code::where('seller_id', $user_id)->where('code', $request->code)->first();
 
+        $res = [
+            'db_id' => $db->db_id,
+            'db_name' => $db->db_name,
+        ];
+
+        return response()->json($res, 200);
     }
 
     public function getCodesFromOrder(Request $request)

@@ -36,7 +36,7 @@ Route::group([
 ], function ($router) {
     Route::post('/add', [ CodesController::class, 'add_db']);
     Route::get('/list', [ CodesController::class, 'list']);
-    Route::post('/delete', [ CodesController::class, 'delete']);
+    Route::post('/delete', [ CodesController::class, 'delete_db']);
 });
 
 Route::group([
@@ -44,10 +44,10 @@ Route::group([
     'prefix' => 'db'
 
 ], function ($router) {
-    // Route::get('/info', [ CodesController::class, 'info']);
+    Route::get('/info', [ CodesController::class, 'info']);
     Route::get('/unused', [ CodesController::class, 'unused']);
     Route::get('/used', [ CodesController::class, 'used']);
     Route::post('/add', [ CodesController::class, 'add_code']);
-    // Route::post('/find', [ CodesController::class, 'find']);
-    Route::post('/delete', [ CodesController::class, 'codes-delete']);
+    Route::get('/find', [ CodesController::class, 'find']);
+    Route::post('/delete', [ CodesController::class, 'delete_codes']);
 });
