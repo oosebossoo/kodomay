@@ -17,10 +17,10 @@ class CodesController extends Controller
 {
     protected $user;
  
-    // public function __construct()
-    // {
-    //     $this->user = JWTAuth::parseToken()->authenticate();
-    // }
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
 
     public function list(Request $request)
     {
