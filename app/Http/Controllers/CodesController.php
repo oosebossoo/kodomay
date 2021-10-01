@@ -205,40 +205,35 @@ class CodesController extends Controller
             $offerId = $db->offer_id;
             $db_id = $request->db_id;
 
-            if($request->db_type == 0)
+            if($dbType == 0)
             {
                 // baza zwykła
-                foreach ($request->codes as $code)
-                {
-                    $cddb = new Code();
-                    $cddb->db_id = $db_id;
-                    $cddb->db_type = $dbType;
-                    $cddb->db_name = $dbName;
-                    $cddb->code = $code;
-                    $cddb->seller_id = $user_id;
-                    $cddb->status = 1;
-                    $cddb->save();
-                }
+                $cddb = new Code();
+                $cddb->db_id = $db_id;
+                $cddb->db_type = $dbType;
+                $cddb->db_name = $dbName;
+                $cddb->code = $request->code;
+                $cddb->seller_id = $user_id;
+                $cddb->status = 1;
+                $cddb->save();
+
             }
-            elseif($request->db_type == 1)
+            elseif($db_type == 1)
             {
-                // baza rek.
-                foreach ($request->codes as $code)
-                {
-                    $cddb = new Code();
-                    $cddb->db_id = $db_id;
-                    $cddb->db_type = $dbType;
-                    $cddb->db_name = $dbName;
-                    $cddb->code = $code;
-                    $cddb->seller_id = $user_id;
-                    $cddb->status = 1;
-                    $cddb->save();
-                }
+                // baza rek
+                $cddb = new Code();
+                $cddb->db_id = $db_id;
+                $cddb->db_type = $dbType;
+                $cddb->db_name = $dbName;
+                $cddb->code = $request->code;
+                $cddb->seller_id = $user_id;
+                $cddb->status = 1;
+                $cddb->save();
             }
             else
             {
                 return response()->json([
-                    'message' => 'choose type of db... im not a clairvoyant ^-^'
+                    'message' => 'something goes wrong'
                 ], 200);
             }
 
@@ -246,6 +241,10 @@ class CodesController extends Controller
                 'message' => 'yhy, neeew codes, i like it ^-^'
             ], 201);
         }
+
+        return response()->json([
+            'message' => 'id = null'
+        ], 201);
     }
 
     public function unused(Request $request)
@@ -327,7 +326,7 @@ class CodesController extends Controller
         else
         {
             $res = [
-                'db_id' => $db->db_id,
+                // 'db_id' => $db->db_id,
                 'db_name' => $db->db_name,
                 'db_type' => "Rekurencyjna",
             ];
@@ -342,7 +341,7 @@ class CodesController extends Controller
         $db = Code::where('seller_id', $user_id)->where('code', $request->code)->first();
 
         $res = [
-            'db_id' => $db->db_id,
+            // 'db_id' => $db->db_id,
             'db_name' => $db->db_name,
         ];
 

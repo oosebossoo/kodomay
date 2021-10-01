@@ -20,7 +20,7 @@ class TemplateController extends Controller
         $this->user = JWTAuth::parseToken()->authenticate();
     }
 
-    public function listTemplates(Request $request)
+    public function list(Request $request)
     {
         if(isset($this->user))
         {
@@ -39,19 +39,18 @@ class TemplateController extends Controller
         }
 
         return response()->json(403);
-        
     }
 
-    public function getTemplate(Request $request)
+    public function get(Request $request)
     {
         if(isset($request->id))
         {
-            return MailTemplate::where('id', $request->id)->first();
+            return response()->json(MailTemplate::where('id', $request->id)->first(), 200);
         }
-        return [ "message" => "you should set id of template to display that one... ;)" ];
+        return response()->json([ "message" => "you should set id of template to display that one... ;)" ], 200);
     }
 
-    public function deleteTemplate(Request $request)
+    public function delete(Request $request)
     {
         if(!isset($request->id))
         {
@@ -60,7 +59,7 @@ class TemplateController extends Controller
         return MailTemplate::where('id', $request->id)->delete();
     }
 
-    public function saveTemplate(Request $request)
+    public function save(Request $request)
     {
         $user_id = $this->user->id;
 

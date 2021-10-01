@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CodesController;
+use App\Http\Controllers\TemplateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,4 +51,15 @@ Route::group([
     Route::post('/add', [ CodesController::class, 'add_code']);
     Route::get('/find', [ CodesController::class, 'find']);
     Route::post('/delete', [ CodesController::class, 'delete_codes']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'templates'
+
+], function ($router) {
+    Route::get('/list', [ TemplateController::class, 'list']);
+    Route::get('/get', [ TemplateController::class, 'get']);
+    Route::post('/save', [ TemplateController::class, 'save']);
+    Route::delete('/delete/{id}', [ TemplateController::class, 'delete']);
 });
