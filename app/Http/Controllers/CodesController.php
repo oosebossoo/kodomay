@@ -24,7 +24,6 @@ class CodesController extends Controller
 
     public function list(Request $request)
     {
-        // return response()->json([ 'id' => 1, 'name' => 'test1']);
         $codes = $this->user->codes()->get();
         $dbsUnique = $codes->unique('db_id');
 
@@ -317,11 +316,22 @@ class CodesController extends Controller
         $user_id = $this->user->id;
         $db = Code::where('seller_id', $user_id)->where('db_id', $request->db_id)->first();
 
-        $res = [
-            'db_id' => $db->db_id,
-            'db_name' => $db->db_name,
-            'db_type' => $db->db_type,
-        ];
+        if($db->db_type == 0)
+        {
+            $res = [
+                'db_id' => $db->db_id,
+                'db_name' => $db->db_nam,
+                'db_type' => "Zwykła",
+            ];
+        }
+        else
+        {
+            $res = [
+                'db_id' => $db->db_id,
+                'db_name' => $db->db_name,
+                'db_type' => "Rekurencyjna",
+            ];
+        }
 
         return response()->json($res, 200);
     }
