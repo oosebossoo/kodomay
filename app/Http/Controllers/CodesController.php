@@ -118,7 +118,7 @@ class CodesController extends Controller
                 'quantity' => $ids[$dbUnique->db_id],
                 'available' => $available[$dbUnique->db_id],
                 'sold' => $sold[$dbUnique->db_id],
-                'db_type' => $db_type
+                'db_type' => $db_type,
             ];
         }
 
@@ -336,7 +336,7 @@ class CodesController extends Controller
         {
             $res = [
                 'db_id' => $db->db_id,
-                'db_name' => $db->db_nam,
+                'db_name' => $db->db_name,
                 'db_type' => "Zwykła",
             ];
         }
