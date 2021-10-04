@@ -195,7 +195,7 @@ class CodesController extends Controller
 
     public function add_code(Request $request) 
     {
-        if(null !== $request->db_id)
+        if(null !== $request->db_id || null !== $request->code)
         {
             $user_id = $this->user->id;
 
@@ -233,18 +233,19 @@ class CodesController extends Controller
             else
             {
                 return response()->json([
-                    'message' => 'something goes wrong'
+                    'message' => 'something goes wrong',
+                    'db_id' => $request->db_id
                 ], 200);
             }
 
             return response()->json([
-                'message' => 'yhy, neeew codes, i like it ^-^'
+                'message' => 'new key added'
             ], 201);
         }
 
         return response()->json([
-            'message' => 'id = null'
-        ], 201);
+            'message' => 'db_id = null'
+        ], 400);
     }
 
     public function unused(Request $request)

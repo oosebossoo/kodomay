@@ -59,7 +59,7 @@ Route::group([
 
 ], function ($router) {
     Route::get('/list', [ TemplateController::class, 'list']);
-    Route::get('/get', [ TemplateController::class, 'get']);
+    Route::post('/get', [ TemplateController::class, 'get']);
     Route::post('/save', [ TemplateController::class, 'save']);
-    Route::delete('/delete/{id}', [ TemplateController::class, 'delete']);
+    Route::post('/delete', [ TemplateController::class, 'delete']);
 });

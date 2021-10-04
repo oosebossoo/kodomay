@@ -47,16 +47,31 @@ class TemplateController extends Controller
         {
             return response()->json(MailTemplate::where('id', $request->id)->first(), 200);
         }
-        return response()->json([ "message" => "you should set id of template to display that one... ;)" ], 200);
+        return response()->json([ 
+            "message" => "Template id is null" 
+        ], 200);
     }
 
     public function delete(Request $request)
     {
         if(!isset($request->id))
         {
-            return "please give me this parametrs: id, np. /delete_template?id=1";
+            return response()->json([
+                "message" => "Template id is null"
+            ], 400);
         }
-        return MailTemplate::where('id', $request->id)->delete();
+        if(MailTemplate::where('id', $request->id)->delete())
+        {
+            return response()->json([
+                "message" => "Template deleted"
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                "message" => "Can't delete"
+            ], 500);
+        }
     }
 
     public function save(Request $request)
@@ -81,12 +96,21 @@ class TemplateController extends Controller
             $template->user_id = $user_id;
             $template->save();
 
-            return response()->json(['message' => 'added'], 201);
+            return response()->json([
+                'message' => 'Template added'
+            ], 201);
         }
 
-        if(MailTemplate::where('template_name', $request->template_name)->update(["template_name" => $request->template_name, "template_subject" => $request->subject, "template" => $request->body]))
+        if(MailTemplate::where('template_name', $request->name)
+            ->update([
+                "template_name" => $request->name, 
+                "template_subject" => $request->subject, 
+                "template" => $request->body,
+            ]))
         {
-            return response()->json(['message' => 'updated'], 201);
+            return response()->json([
+                'message' => 'updated'
+            ], 201);
         }
 
         return response()->json([

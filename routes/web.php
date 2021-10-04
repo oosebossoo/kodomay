@@ -67,10 +67,10 @@ Route::get('/send_pdf',[AdminController::class, 'sendPDF']);
 Route::get('/get_excel',[AdminController::class, 'getExcel']);
 
 // Szablony
-Route::post('/templates/save',[TemplateController::class, 'saveTemplate']);
-Route::get('/templates/list',[TemplateController::class, 'listTemplates']);
-Route::get('/templates/get',[TemplateController::class, 'getTemplate']);
-Route::post('/template/delete',[TemplateController::class, 'deleteTemplate']);
+// Route::post('/templates/save',[TemplateController::class, 'saveTemplate']);
+// Route::get('/templates/list',[TemplateController::class, 'listTemplates']);
+// Route::get('/templates/get',[TemplateController::class, 'getTemplate']);
+// Route::post('/template/delete',[TemplateController::class, 'deleteTemplate']);
 // Route::put('/magre_template_to_offer',[TemplateController::class, 'magreTemplateToOffer']);
 
 // Kody
