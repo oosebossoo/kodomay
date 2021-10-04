@@ -99,7 +99,18 @@ class CodesController extends Controller
             }
             // $dbUnique->created_at = substr($dbUnique->created_at, 0, strpos($dbUnique->created_at, "T"));
             // $created_at = explode('T',$dbUnique->created_at);
+
             $created_at = strtok($dbUnique->created_at, 'T');
+
+            if($dbUnique->db_type == 0)
+            {
+                $db_type = "Zwykła";
+            }
+            else
+            {
+                $db_type = "Rekurencyjna";
+            }
+
             $response[] = [ 
                 'id' => $dbUnique->db_id, 
                 'name' => $dbUnique->db_name, 
@@ -107,6 +118,7 @@ class CodesController extends Controller
                 'quantity' => $ids[$dbUnique->db_id],
                 'available' => $available[$dbUnique->db_id],
                 'sold' => $sold[$dbUnique->db_id],
+                'db_type' => $db_type
             ];
         }
 
