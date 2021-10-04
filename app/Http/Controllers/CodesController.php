@@ -26,6 +26,7 @@ class CodesController extends Controller
     {
         $codes = $this->user->codes()->get();
         $dbsUnique = $codes->unique('db_id');
+        //dd($dbsUnique);
 
         foreach ($codes as $code) 
         {
@@ -96,10 +97,13 @@ class CodesController extends Controller
             {
                 $available[$dbUnique->db_id] = 0;
             }
-
+            // $dbUnique->created_at = substr($dbUnique->created_at, 0, strpos($dbUnique->created_at, "T"));
+            // $created_at = explode('T',$dbUnique->created_at);
+            $created_at = strtok($dbUnique->created_at, 'T');
             $response[] = [ 
                 'id' => $dbUnique->db_id, 
                 'name' => $dbUnique->db_name, 
+                'date' => $created_at,
                 'quantity' => $ids[$dbUnique->db_id],
                 'available' => $available[$dbUnique->db_id],
                 'sold' => $sold[$dbUnique->db_id],
