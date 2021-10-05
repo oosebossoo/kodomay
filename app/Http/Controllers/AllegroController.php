@@ -182,17 +182,15 @@ class AllegroController extends Controller
 
         if(UserData::where('user_id', $user_id)->where('id', $request->id)->delete())
         {
-            return [
-                'status' => 0,
-                'desc' => 'deleted account'
-            ];
+            return resposne()->json([
+                'message' => "Can't delete account"
+            ], 500);
         }
         else
         {
-            return [
-                'status' => 1,
-                'desc' => 'cant delete account'
-            ];
+            return resposne()->json([
+                'message' => "Can't delete account"
+            ], 500);
         }
     }
 
@@ -215,22 +213,26 @@ class AllegroController extends Controller
         {
             //dd(Offers::where('offer_id', $request->offer_id)->first());
             Offers::where('offer_id', $request->offer_id)->update([ 'is_active' => 'YES' ]);
-            $status = ['is_active' => 'YES'];
+            $status = ['YES'];
         }
 
         if($offer->is_active == 'YES')
         {
             Offers::where('offer_id', $request->offer_id)->update([ 'is_active' => 'NO' ]);
-            $status = ['is_active' => 'NO'];
+            $status = ['NO'];
         }
 
         if(isset($status))
         {
-            return $status;
+            return resposne()->json([
+                'message' => $status
+            ], 200);
         }
         else
         {
-            return ['some goes wrong... :('];
+            return resposne()->json([
+                'message' => 'some goes wrong... :('
+            ], 500);
         }
     }
 

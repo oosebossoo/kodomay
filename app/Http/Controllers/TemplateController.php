@@ -28,14 +28,14 @@ class TemplateController extends Controller
 
             $templates = MailTemplate::where('user_id', $user_id)->get();
 
-            foreach($templates as $template)
-            {
-                $templates[] = $template;
-            }
+            // foreach($templates as $template)
+            // {
+            //     $templates[] = $template;
+            // }
 
-            return response()->json([
+            return response()->json(
                 $templates
-            ], 200);
+            , 200);
         }
 
         return response()->json(403);
@@ -91,7 +91,7 @@ class TemplateController extends Controller
             $template = new MailTemplate();
             $template->template_name = $request->template_name;
             $template->template_subject = $request->subject;
-            $template->replay_email = $request->replay_email;
+            $template->replay_email = $request->email;
             $template->template = $request->body;
             $template->user_id = $user_id;
             $template->save();
@@ -100,17 +100,19 @@ class TemplateController extends Controller
                 'message' => 'Template added'
             ], 201);
         }
-
-        if(MailTemplate::where('template_name', $request->name)
-            ->update([
-                "template_name" => $request->name, 
-                "template_subject" => $request->subject, 
-                "template" => $request->body,
-            ]))
+        else
         {
-            return response()->json([
-                'message' => 'updated'
-            ], 201);
+            if(MailTemplate::where('template_name', $request->template_name)
+                ->update([
+                    "template_name" => $request->template_name, 
+                    "template_subject" => $request->subject, 
+                    "template" => $request->body,
+                ]))
+            {
+                return response()->json([
+                    'message' => 'updated'
+                ], 201);
+            }
         }
 
         return response()->json([
