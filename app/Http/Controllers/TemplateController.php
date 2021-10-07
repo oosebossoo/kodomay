@@ -46,7 +46,16 @@ class TemplateController extends Controller
     {
         if(isset($request->id))
         {
-            return response()->json(MailTemplate::where('id', $request->id)->first(), 200);
+            $template = MailTemplate::where('id', $request->id)->first();
+            $res = [
+                'id' => $template->id, 
+                'template_name' => $template->template_name,
+                'subject' =>$template->template_subject,
+                'template' => $template->template,
+                'replay_email' => $template->replay_email
+            ];
+
+            return response()->json($res, 200);
         }
         return response()->json([ 
             "message" => "Template id is null" 

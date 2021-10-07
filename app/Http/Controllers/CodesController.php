@@ -273,7 +273,6 @@ class CodesController extends Controller
             foreach ($codes as $code) 
             {
                 $res[] = [
-                    'id' => $code->id,
                     'code' => $code->code,
                 ];
             }
@@ -293,7 +292,6 @@ class CodesController extends Controller
             foreach ($codes as $code) 
             {
                 $res[] = [
-                    'id' => $code->id,
                     'code' => $code->code,
                 ];
             }
