@@ -88,8 +88,6 @@ class TemplateController extends Controller
     {
         $user_id = $this->user->id;
 
-        dd($request->body);
-
         if(isset($request->new))
         {
             $validator = Validator::make($request->all(), [
