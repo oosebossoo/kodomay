@@ -51,8 +51,8 @@ class TemplateController extends Controller
                 'id' => $template->id, 
                 'template_name' => $template->template_name,
                 'subject' =>$template->template_subject,
-                'template' => $template->template,
-                'replay_email' => $template->replay_email
+                'body' => $template->template,
+                'email' => $template->replay_email
             ];
 
             return response()->json($res, 200);
