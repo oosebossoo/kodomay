@@ -197,6 +197,7 @@ class CodesController extends Controller
 
     public function delete_db(Request $request)
     {
+        dd($request->db_id);
         $user_id = $this->user->id;
 
         $codes = Code::where('db_id', $request->db_id)->get();
