@@ -309,7 +309,7 @@ class CodesController extends Controller
         {
             // foreach($request->code_ids as $id)
             // {
-                if(!Code::where('seller_id', $user_id)->where('id', $id)->delete())
+                if(!Code::where('seller_id', $user_id)->where('id', $code_ids)->delete())
                 {
                     return response()->json(['message' => "Can't delete code from database"], 500);
                 }
