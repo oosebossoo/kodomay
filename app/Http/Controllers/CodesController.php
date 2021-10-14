@@ -304,12 +304,13 @@ class CodesController extends Controller
     public function delete_codes(Request $request)
     {
         $user_id = $this->user->id;
+        //dd($request->code_ids);
 
         if(null !== $request->code_ids)
         {
             // foreach($request->code_ids as $id)
             // {
-                if(!Code::where('seller_id', $user_id)->where('id', $code_ids)->delete())
+                if(!Code::where('seller_id', $user_id)->where('id', $request->code_ids)->delete())
                 {
                     return response()->json(['message' => "Can't delete code from database"], 500);
                 }
