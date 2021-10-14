@@ -37,7 +37,7 @@ Route::group([
 ], function ($router) {
     Route::post('/add', [ CodesController::class, 'add_db']);
     Route::get('/list', [ CodesController::class, 'list']);
-    Route::post('/delete', [ CodesController::class, 'delete_db']);
+    Route::get('/delete', [ CodesController::class, 'delete_db']);
 });
 
 Route::group([

@@ -62,26 +62,6 @@ class TemplateController extends Controller
         ], 200);
     }
 
-    public function get_id(Request $request)
-    {
-        if(isset($request->id))
-        {
-            $template = MailTemplate::where('id', $request->id)->first();
-            $res = [
-                'id' => $template->id, 
-                'template_name' => $template->template_name,
-                'subject' =>$template->template_subject,
-                'body' => $template->template,
-                'email' => $template->replay_email
-            ];
-
-            return response()->json($res, 200);
-        }
-        return response()->json([ 
-            "message" => "Template id is null" 
-        ], 200);
-    }
-
     public function delete(Request $request)
     {
         if(!isset($request->id))
