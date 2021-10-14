@@ -304,11 +304,11 @@ class CodesController extends Controller
     public function delete_codes(Request $request)
     {
         $user_id = $this->user->id;
-        
+
         if(null !== $request->code_ids)
         {
-            foreach($request->code_ids as $id)
-            {
+            // foreach($request->code_ids as $id)
+            // {
                 if(!Code::where('seller_id', $user_id)->where('id', $id)->delete())
                 {
                     return response()->json(['message' => "Can't delete code from database"], 500);
@@ -317,7 +317,7 @@ class CodesController extends Controller
                 {
                     return response()->json(['message' => "Codes deleted from database"], 200);
                 }
-            }
+            // }
         }
 
         return response()->json(['message' => 'wrong values'], 400);
