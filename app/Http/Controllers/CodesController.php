@@ -271,6 +271,7 @@ class CodesController extends Controller
             foreach ($codes as $code) 
             {
                 $res[] = [
+                    'id' => $code->id,
                     'key' => $code->code,
                 ];
             }
@@ -303,8 +304,7 @@ class CodesController extends Controller
     public function delete_codes(Request $request)
     {
         $user_id = $this->user->id;
-
-        // code_ids
+        
         if(null !== $request->code_ids)
         {
             foreach($request->code_ids as $id)
