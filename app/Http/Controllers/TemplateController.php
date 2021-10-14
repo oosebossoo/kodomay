@@ -62,6 +62,26 @@ class TemplateController extends Controller
         ], 200);
     }
 
+    public function get_id(Request $request)
+    {
+        if(isset($request->id))
+        {
+            $template = MailTemplate::where('id', $request->id)->first();
+            $res = [
+                'id' => $template->id, 
+                'template_name' => $template->template_name,
+                'subject' =>$template->template_subject,
+                'body' => $template->template,
+                'email' => $template->replay_email
+            ];
+
+            return response()->json($res, 200);
+        }
+        return response()->json([ 
+            "message" => "Template id is null" 
+        ], 200);
+    }
+
     public function delete(Request $request)
     {
         if(!isset($request->id))
@@ -92,7 +112,6 @@ class TemplateController extends Controller
         {
             $validator = Validator::make($request->all(), [
                 'template_name' => 'required|unique:mail_template',
-                'body' => 'required',
             ]);
     
             if($validator->fails()){
@@ -113,7 +132,7 @@ class TemplateController extends Controller
         }
         else
         {
-            if(MailTemplate::where('template_name', $request->template_name)
+            if(MailTemplate::where('id', $request->id)
                 ->update([
                     "template_name" => $request->template_name, 
                     "template_subject" => $request->subject, 

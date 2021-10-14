@@ -43,6 +43,13 @@ class AllegroController extends Controller
     // ========---=======
     //===================
 
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
+    //==================
+
     public function addAllegroUser(Request $request)
     {
         if(isset($request->opt))
@@ -52,6 +59,17 @@ class AllegroController extends Controller
             ]);
         }
         return $this->addAllegroUserRepo();
+    }
+
+    public function addAllegroUserRepo()
+    {
+
+        $authUrl = "https://allegro.pl/auth/oauth/authorize?"
+            ."response_type=code&"
+            ."client_id=$this->clientId&"
+            ."redirect_uri=https://kodomat.herokuapp.com/get_token";
+
+        return redirect($authUrl);
     }
 
     public function getToken(Request $request)
@@ -64,15 +82,29 @@ class AllegroController extends Controller
         return $this->deleteAllegroUserRepo($request);
     }
 
-    public function addAllegroUserRepo()
+    public function deleteAllegroUserRepo($request)
     {
+        if(isset($request->user_id))
+        {
+            $user_id = $request->user_id;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
 
-        $authUrl = "https://allegro.pl/auth/oauth/authorize?"
-            ."response_type=code&"
-            ."client_id=$this->clientId&"
-            ."redirect_uri=https://kodomat.herokuapp.com/get_token";
-
-        return redirect($authUrl);
+        if(UserData::where('user_id', $user_id)->where('id', $request->id)->delete())
+        {
+            return resposne()->json([
+                'message' => "Can't delete account"
+            ], 500);
+        }
+        else
+        {
+            return resposne()->json([
+                'message' => "Can't delete account"
+            ], 500);
+        }
     }
 
     public function refreshToken(Request $request)
@@ -169,31 +201,6 @@ class AllegroController extends Controller
         }
     }
 
-    public function deleteAllegroUserRepo($request)
-    {
-        if(isset($request->user_id))
-        {
-            $user_id = $request->user_id;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-
-        if(UserData::where('user_id', $user_id)->where('id', $request->id)->delete())
-        {
-            return resposne()->json([
-                'message' => "Can't delete account"
-            ], 500);
-        }
-        else
-        {
-            return resposne()->json([
-                'message' => "Can't delete account"
-            ], 500);
-        }
-    }
-
     public function endOfGettingToken(Request $request)
     {
         return $request;
@@ -211,7 +218,6 @@ class AllegroController extends Controller
 
         if($offer->is_active == 'NO')
         {
-            //dd(Offers::where('offer_id', $request->offer_id)->first());
             Offers::where('offer_id', $request->offer_id)->update([ 'is_active' => 'YES' ]);
             $status = ['YES'];
         }
@@ -235,6 +241,12 @@ class AllegroController extends Controller
             ], 500);
         }
     }
+
+    // ==========================
+    // =======---================
+    // allegro - pobieranie ofert
+    // =======---================
+    // ==========================
 
     public function getOffer(Request $request)
     {

@@ -63,3 +63,14 @@ Route::group([
     Route::post('/save', [ TemplateController::class, 'save']);
     Route::post('/delete', [ TemplateController::class, 'delete']);
 });
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'allegro'
+
+], function ($router) {
+    Route::get('/add', [ TemplateController::class, 'add']);
+    Route::get('/get', [ TemplateController::class, 'get']);
+    Route::post('/save', [ TemplateController::class, 'save']);
+    Route::post('/delete', [ TemplateController::class, 'delete']);
+});
