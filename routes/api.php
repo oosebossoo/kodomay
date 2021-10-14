@@ -50,7 +50,7 @@ Route::group([
     Route::get('/used', [ CodesController::class, 'used']);
     Route::post('/add', [ CodesController::class, 'add_code']);
     Route::get('/find', [ CodesController::class, 'find']);
-    Route::post('/delete', [ CodesController::class, 'delete_codes']);
+    Route::get('/delete', [ CodesController::class, 'delete_codes']);
 });
 
 Route::group([
