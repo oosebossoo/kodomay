@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Http;
+
 use App\Http\Controllers\MailController;
 
 // use App\Models\Customer;
@@ -35,39 +37,50 @@ class IntegrationRepository
 
         // ------------------------------------------------------------------------------
 
-        $json = true;
+        $response = Http::withHeaders([
+            'Authorization'     => 'Basic ' . base64_encode($clientId.":".$clientSecret),
+            'Content-Type'      => 'application/vnd.allegro.public.v1+json',
+            'Accept'            => 'application/vnd.allegro.public.v1+json',
+        ])->post("https://allegro.pl/auth/oauth/token?
+            grant_type=authorization_code&
+            code=$request->code&
+            redirect_uri=https://kodomat.herokuapp.com/get_token
+        "); 
 
-        $resource = "https://allegro.pl/auth/oauth/token?"
-            ."grant_type=authorization_code&"
-            ."code=$request->code&"
-            ."redirect_uri=https://kodomat.herokuapp.com/get_token";
+        // $resource = "https://allegro.pl/auth/oauth/token?"
+        //     ."grant_type=authorization_code&"
+        //     ."code=$request->code&"
+        //     ."redirect_uri=https://kodomat.herokuapp.com/get_token";
 
-        $headers = array();
-        $data = array();
 
-        $options = array(
-            'http' => array(
-                'method'  => strtoupper('POST'),
-                'header'  => self::parseHeaders($requestHeaders = array_replace(array(
-                    'User-Agent'      => 'Kodomat',
-                    'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
-                    'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-                    'Accept'          => 'application/vnd.allegro.public.v1+json',
-                    'Accept-Language' => 'pl-PL'
-                ))),
-                'content' => ($json ? json_encode($data) : $data),
-                'ignore_errors' => true
-            )
-        );
+        // $json = true;
 
-        $response = json_decode(file_get_contents(
-            (stristr($resource, 'http') !== false 
-                ? $resource 
-                : self::getUrl() . '/' . ltrim($resource, '/')
-            ), 
-            false, 
-            stream_context_create($options),
-        ));
+        // $headers = array();
+        // $data = array();
+
+        // $options = array(
+        //     'http' => array(
+        //         'method'  => strtoupper('POST'),
+        //         'header'  => self::parseHeaders($requestHeaders = array_replace(array(
+        //             'User-Agent'      => 'Kodomat',
+        //             'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
+        //             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+        //             'Accept'          => 'application/vnd.allegro.public.v1+json',
+        //             'Accept-Language' => 'pl-PL'
+        //         ))),
+        //         'content' => ($json ? json_encode($data) : $data),
+        //         'ignore_errors' => true
+        //     )
+        // );
+
+        // $response = json_decode(file_get_contents(
+        //     (stristr($resource, 'http') !== false 
+        //         ? $resource 
+        //         : self::getUrl() . '/' . ltrim($resource, '/')
+        //     ), 
+        //     false, 
+        //     stream_context_create($options),
+        // ));
 
         // ------------------------------------------------------------
 
@@ -130,6 +143,33 @@ class IntegrationRepository
             return resposne()->json([
                 'message' => "Can't delete account"
             ], 500);
+        }
+    }
+
+    static function list($user_id)
+    {
+        // --- PRODUKCJA --- 
+        $userDatas = UserData::where('user_id', $user_id)->get();
+
+        $users = array();
+        foreach ($userDatas as $userData)
+        {
+            $response = Http::withHeaders([
+                "Accept" => "application/vnd.allegro.public.v1+json",
+                "Authorization" => "Bearer $userData->access_token"
+            ])->get("https://api.allegro.pl/me"); 
+            if(!isset($response["error"])) {   
+                $response = json_decode($response);
+                $user[] = [
+                    $response->login,
+                    $response->firstName,
+                    $response->lastName,
+                ];
+                return response()->json($user);
+            }
+            else {
+                return response()->json(['error' => $response['error']]);
+            }  
         }
     }
 

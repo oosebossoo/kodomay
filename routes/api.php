@@ -72,7 +72,7 @@ Route::group([
 ], function ($router) {
     Route::get('/test', [ AllegroController::class, 'test']);
     Route::get('/add', [ AllegroController::class, 'add']);
-    Route::get('/get/info', [ AllegroController::class, 'info']);
+    Route::get('/user/list', [ AllegroController::class, 'list']);
     Route::get('/get/offers', [ AllegroController::class, 'offers']);
     Route::get('/get/transaction', [ AllegroController::class, 'transaction']);
     Route::post('/set/listening', [ AllegroController::class, 'setListening']);

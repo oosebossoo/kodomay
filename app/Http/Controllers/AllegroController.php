@@ -73,6 +73,11 @@ class AllegroController extends Controller
         return $this->integrationRepo::deleteAllegroUser($request);
     }
 
+    public function list()
+    {
+        return $this->integrationRepo::list(40);
+    }
+
     public function refreshToken(Request $request)
     {
         // return base64_encode($this->clientId.":".$this->clientSecret);
@@ -324,33 +329,33 @@ class AllegroController extends Controller
         return Orders::where('order_id', $request->order_id)->update(['isCanceled' => 1]);
     }
 
-    // public function test(Request $request)
-    // {
-    //     // 1621513352164979
-    //     $userDatas = UserData::where('user_id', $request->user_id)->get();
+    public function tst(Request $request)
+    {
+        // 1621513352164979
+        $userDatas = UserData::where('user_id', $request->user_id)->get();
 
-    //     foreach ($userDatas as $userData)
-    //     {
-    //         if($request->func == "event")
-    //         {
-    //             $response = Http::withHeaders([
-    //                 "Accept" => "application/vnd.allegro.public.v1+json",
-    //                 "Authorization" => "Bearer $userData->access_token"
-    //             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
+        foreach ($userDatas as $userData)
+        {
+            if($request->func == "event")
+            {
+                $response = Http::withHeaders([
+                    "Accept" => "application/vnd.allegro.public.v1+json",
+                    "Authorization" => "Bearer $userData->access_token"
+                ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
-    //             return $response;
-    //         }
+                return $response;
+            }
 
-    //         if($request->func == "chechout")
-    //         {
-    //             $response = Http::withHeaders([
-    //                 "Accept" => "application/vnd.allegro.public.v1+json",
-    //                 "Authorization" => "Bearer $userData->access_token"
-    //             ])->get("https://api.allegro.pl/order/checkout-forms/$checkOutFormId");
-    //             return json_decode($response);
-    //         }
-    //     }
-    // }
+            if($request->func == "chechout")
+            {
+                $response = Http::withHeaders([
+                    "Accept" => "application/vnd.allegro.public.v1+json",
+                    "Authorization" => "Bearer $userData->access_token"
+                ])->get("https://api.allegro.pl/order/checkout-forms/$checkOutFormId");
+                return json_decode($response);
+            }
+        }
+    }
 
     public function mainFunction(Request $request)
     {
@@ -567,28 +572,7 @@ class AllegroController extends Controller
         return json_decode($response);
     }
 
-    public function getAllegroUsers()
-    {
-        // --- PRODUKCJA --- 
-        $userDatas = UserData::where('user_id',Auth::user()->id)->get();
-
-        $users = array();
-        foreach ($userDatas as $userData)
-        {
-            $response = Http::withHeaders([
-                "Accept" => "application/vnd.allegro.public.v1+json",
-                "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/me"); 
-            if(!isset($response["error"])) {   
-                $user[] = json_decode($response);
-                return $user;
-            }
-            else {
-                $user[] = json_decode($response);
-            }  
-        }
-        return response()->json($user);
-    }
+    
 
     public function getOrders(Request $request)
     {
