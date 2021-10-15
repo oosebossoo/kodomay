@@ -10,7 +10,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use AsocialMedia\AllegroApi\AllegroRestApi;
-use App\Repos\AllegroRepo;
+use App\Repositories\IntegrationRepository;
+use App\Repositories\AllegroRepo;
 
 use App\Http\Controllers\MailController;
 
@@ -23,6 +24,8 @@ use App\Models\SentMail;
 use App\Models\Code;
 
 use Auth;
+use JWTAuth;
+
 
 class AllegroController extends Controller
 {
@@ -37,20 +40,13 @@ class AllegroController extends Controller
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
-    // ==================
-    // ========---=======
-    // allegero - account
-    // ========---=======
-    //===================
-
-    public function __construct()
+    public function __construct(IntegrationRepository $integrationRepo, JWTAuth $jwtAuth)
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        //$this->user = $jwtAuth::parseToken()->authenticate();
+        $this->integrationRepo = $integrationRepo;
     }
 
-    //==================
-
-    public function addAllegroUser(Request $request)
+    public function add(Request $request)
     {
         if(isset($request->opt))
         {
@@ -58,23 +54,13 @@ class AllegroController extends Controller
                 'refresh' => true
             ]);
         }
-        return $this->addAllegroUserRepo();
-    }
 
-    public function addAllegroUserRepo()
-    {
-
-        $authUrl = "https://allegro.pl/auth/oauth/authorize?"
-            ."response_type=code&"
-            ."client_id=$this->clientId&"
-            ."redirect_uri=https://kodomat.herokuapp.com/get_token";
-
-        return redirect($authUrl);
+        return $this->integrationRepo::add($this->clientId);
     }
 
     public function getToken(Request $request)
     {
-        return $this->getTokenRepo($request);
+        return $this->integrationRepo::getToken($request);
     }
 
     public function deleteAllegroUser(Request $request)
@@ -120,85 +106,6 @@ class AllegroController extends Controller
 
         return $response;
 
-    }
-
-    public function getTokenRepo($request)
-    {
-        dd("działa");
-        if(!isset($request->code))
-        {
-            return $this->endOfGettingToken($request);
-        }
-
-        $json = true;
-
-        $resource = "https://allegro.pl/auth/oauth/token?"
-            ."grant_type=authorization_code&"
-            ."code=$request->code&"
-            ."redirect_uri=https://kodomat.herokuapp.com/get_token";
-
-        $headers = array();
-        $data = array();
-
-        $options = array(
-            'http' => array(
-                'method'  => strtoupper('POST'),
-                'header'  => $this->parseHeaders($requestHeaders = array_replace(array(
-                    'User-Agent'      => 'Kodomat',
-                    'Authorization'   => 'Basic ' . base64_encode($this->clientId.":".$this->clientSecret),
-                    'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-                    'Accept'          => 'application/vnd.allegro.public.v1+json',
-                    'Accept-Language' => 'pl-PL'
-                ))),
-                'content' => ($json ? json_encode($data) : $data),
-                'ignore_errors' => true
-            )
-        );
-
-        $response = json_decode(file_get_contents(
-            (stristr($resource, 'http') !== false 
-                ? $resource 
-                : $this->getUrl() . '/' . ltrim($resource, '/')
-            ), 
-            false, 
-            stream_context_create($options),
-        ));
-
-        if(UserData::select('refresh')->where('refresh', 1)->exists())
-        {
-            $updates = UserData::where('refresh', 1)->get();
-            $log[] = 'start updating';
-            foreach($updates as $update)
-            {
-                UserData::where('user_id', $update->user_id)->update([
-                    'access_token' => $response->access_token, 
-                    'refresh_token' => $response->refresh_token,
-                    'jti' => $response->jti,
-                    'refresh' => 0
-                ]);
-                $log[] = ['id' => $update->user_id];
-            }
-            return [$log];
-        }
-        else
-        {
-            $userData = new UserData();
-            $userData->user_id = Auth::user()->id;
-            $userData->access_token = $response->access_token;
-            $userData->token_type = $response->token_type;
-            $userData->refresh_token = $response->refresh_token;
-            $userData->expires_in = $response->expires_in;
-            $userData->scope = $response->scope;
-            $userData->allegro_api = $response->allegro_api;
-            $userData->jti = $response->jti;
-            $userData->refresh = 0;
-            $userData->save();
-
-            return [
-                'status' => 0,
-                'desc' => 'added new account'
-            ];
-        }
     }
 
     public function endOfGettingToken(Request $request)

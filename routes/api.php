@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CodesController;
 use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\AllegroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,8 +70,10 @@ Route::group([
     'prefix' => 'allegro'
 
 ], function ($router) {
-    Route::get('/add', [ TemplateController::class, 'add']);
-    Route::get('/get', [ TemplateController::class, 'get']);
-    Route::post('/save', [ TemplateController::class, 'save']);
-    Route::post('/delete', [ TemplateController::class, 'delete']);
+    Route::get('/add', [ AllegroController::class, 'add']);
+    Route::get('/get/info', [ AllegroController::class, 'info']);
+    Route::get('/get/offers', [ AllegroController::class, 'offers']);
+    Route::get('/get/transaction', [ AllegroController::class, 'transaction']);
+    Route::post('/set/listening', [ AllegroController::class, 'setListening']);
+    Route::get('/get/listening/offers/{set}', [ AllegroController::class, 'getListening']);
 });
