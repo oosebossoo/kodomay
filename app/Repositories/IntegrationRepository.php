@@ -4,6 +4,16 @@ namespace App\Repositories;
 
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\MailController;
+
+// use App\Models\Customer;
+use App\Models\UserData;
+// use App\Models\Orders;
+// use App\Models\OrdersTable;
+// use App\Models\Offers;
+// use App\Models\SentMail;
+// use App\Models\Code;
+
 class IntegrationRepository
 {
     static function add($clientId)
@@ -16,7 +26,7 @@ class IntegrationRepository
         return redirect($authUrl);
     }
 
-    static function getToken($request, $clientId, $clientSecret)
+    static function getToken($request, $clientId, $clientSecret, $user_id)
     {
         if(!isset($request->code))
         {
@@ -24,7 +34,7 @@ class IntegrationRepository
         }
 
         // ------------------------------------------------------------------------------
-        
+
         $json = true;
 
         $resource = "https://allegro.pl/auth/oauth/token?"
@@ -80,7 +90,7 @@ class IntegrationRepository
         else
         {
             $userData = new UserData();
-            $userData->user_id = Auth::user()->id;
+            $userData->user_id = $user_id;
             $userData->access_token = $response->access_token;
             $userData->token_type = $response->token_type;
             $userData->refresh_token = $response->refresh_token;

@@ -65,7 +65,7 @@ class AllegroController extends Controller
 
     public function getToken(Request $request)
     {
-        return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret);
+        return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret, 40);
     }
 
     public function deleteAllegroUser(Request $request)
