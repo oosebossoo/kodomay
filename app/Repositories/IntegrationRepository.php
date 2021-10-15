@@ -82,8 +82,6 @@ class IntegrationRepository
 
         // ------------------------------------------------------------
 
-        dd($response['access_token']);
-
         if(UserData::select('refresh')->where('refresh', 1)->exists())
         {
             $updates = UserData::where('refresh', 1)->get();
@@ -104,13 +102,13 @@ class IntegrationRepository
         {
             $userData = new UserData();
             $userData->user_id = $user_id;
-            $userData->access_token = $response->access_token;
-            $userData->token_type = $response->token_type;
-            $userData->refresh_token = $response->refresh_token;
-            $userData->expires_in = $response->expires_in;
-            $userData->scope = $response->scope;
-            $userData->allegro_api = $response->allegro_api;
-            $userData->jti = $response->jti;
+            $userData->access_token = $response['access_token'];
+            $userData->token_type = $response['token_type'];
+            $userData->refresh_token = $response['refresh_token'];
+            $userData->expires_in = $response['expires_in'];
+            $userData->scope = $response['scope'];
+            $userData->allegro_api = $response['allegro_api'];
+            $userData->jti = $response['jti'];
             $userData->refresh = 0;
             $userData->save();
 
