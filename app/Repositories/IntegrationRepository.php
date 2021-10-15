@@ -82,7 +82,7 @@ class IntegrationRepository
 
         // ------------------------------------------------------------
 
-        dd($response);
+        dd($response['access_token']);
 
         if(UserData::select('refresh')->where('refresh', 1)->exists())
         {
