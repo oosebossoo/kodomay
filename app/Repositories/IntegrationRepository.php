@@ -86,6 +86,8 @@ class IntegrationRepository
 
         // ------------------------------------------------------------
 
+        return response()->json($response);
+
         if(UserData::select('refresh')->where('refresh', 1)->exists())
         {
             $updates = UserData::where('refresh', 1)->get();
