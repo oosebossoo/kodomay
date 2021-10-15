@@ -65,7 +65,7 @@ class AllegroController extends Controller
 
     public function deleteAllegroUser(Request $request)
     {
-        return $this->integrationRepo::deleteAllegroUserRepo($request);
+        return $this->integrationRepo::deleteAllegroUser($request);
     }
 
     public function refreshToken(Request $request)

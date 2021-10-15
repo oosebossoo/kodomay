@@ -16,7 +16,7 @@ class IntegrationRepository
         return redirect($authUrl);
     }
 
-    static function getTokenRepo($request)
+    static function getToken($request)
     {
         if(!isset($request->code))
         {
@@ -94,7 +94,7 @@ class IntegrationRepository
         }
     }
 
-    static function deleteAllegroUserRepo($request)
+    static function deleteAllegroUser($request)
     {
         if(isset($request->user_id))
         {
