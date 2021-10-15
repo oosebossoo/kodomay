@@ -82,7 +82,7 @@ class IntegrationRepository
 
         // ------------------------------------------------------------
 
-        //dd([$response['error'], $response]);
+        dd($response);
 
         if(UserData::select('refresh')->where('refresh', 1)->exists())
         {
