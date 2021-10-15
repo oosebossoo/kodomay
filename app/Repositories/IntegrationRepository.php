@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class IntegrationRepository
 {
-    static function add($clientId, $url)
+    static function add($clientId)
     {
-        $authUrl = "$url/auth/oauth/authorize?"
+        $authUrl = "https://allegro.pl/auth/oauth/authorize?"
             ."response_type=code&"
             ."client_id=$clientId&"
             ."redirect_uri=https://kodomat.herokuapp.com/get_token";
@@ -16,7 +16,7 @@ class IntegrationRepository
         return redirect($authUrl);
     }
 
-    static function getToken($request)
+    static function getToken($request, $clientId, $clientSecret)
     {
         if(!isset($request->code))
         {
@@ -38,7 +38,7 @@ class IntegrationRepository
                 'method'  => strtoupper('POST'),
                 'header'  => $this->parseHeaders($requestHeaders = array_replace(array(
                     'User-Agent'      => 'Kodomat',
-                    'Authorization'   => 'Basic ' . base64_encode($this->clientId.":".$this->clientSecret),
+                    'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
                     'Content-Type'    => 'application/vnd.allegro.public.v1+json',
                     'Accept'          => 'application/vnd.allegro.public.v1+json',
                     'Accept-Language' => 'pl-PL'
@@ -117,5 +117,36 @@ class IntegrationRepository
                 'message' => "Can't delete account"
             ], 500);
         }
+    }
+
+    // ----------------------
+        // ----------------------
+            // ----------------------
+                // ----------------------
+                    // ----------------------
+
+
+    public function parseHeaders(array $headers)
+    {
+        // Creating variable for headers
+        $stringHeaders = '';
+        
+        // Loop over each of header
+        foreach ($headers as $header => $value) {
+            
+            // Adding header line
+            $stringHeaders .= "$header: $value\r\n";
+        }
+        
+        // Returning headers
+        return $stringHeaders;
+    }
+
+    public function getUrl()
+    {
+        // Returning correct URL depending on sandbox setting
+        return $this->getSandbox() 
+            ? AllegroRestApi::SANDBOX_URL 
+            : AllegroRestApi::URL;
     }
 }
