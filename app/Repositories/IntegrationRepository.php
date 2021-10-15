@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class IntegrationRepository
 {
-    static function add($clientId)
+    static function add($clientId, $url)
     {
-        $authUrl = "https://allegro.pl/auth/oauth/authorize?"
+        $authUrl = "$url/auth/oauth/authorize?"
             ."response_type=code&"
             ."client_id=$clientId&"
             ."redirect_uri=https://kodomat.herokuapp.com/get_token";

@@ -30,15 +30,15 @@ use JWTAuth;
 class AllegroController extends Controller
 {
     // --- SANDBOX ---
-    // const SANDBOX_URL = 'https://api.allegro.pl.allegrosandbox.pl';
-    // protected $clientId = '1842f4e03d1347d4812246f7439baaa1';
-    // protected $clientSecret = 'JvRLfxOdGmLBNRooPqnxQJOKFnwZ7XW1bW5m7tPCNb1LPaw5ttje2g7Fcz0OS6ri';
+    const SANDBOX_URL = 'https://api.allegro.pl.allegrosandbox.pl';
+    protected $clientId = '1842f4e03d1347d4812246f7439baaa1';
+    protected $clientSecret = 'JvRLfxOdGmLBNRooPqnxQJOKFnwZ7XW1bW5m7tPCNb1LPaw5ttje2g7Fcz0OS6ri';
 
 
     // --- PROD ---
-    const SANDBOX_URL = 'https://api.allegro.pl.';
-    protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
-    protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
+    // const SANDBOX_URL = 'https://api.allegro.pl.';
+    // protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
+    // protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
     public function __construct(IntegrationRepository $integrationRepo, JWTAuth $jwtAuth)
     {
@@ -55,7 +55,7 @@ class AllegroController extends Controller
             ]);
         }
 
-        return $this->integrationRepo::add($this->clientId);
+        return $this->integrationRepo::add($this->clientId, SANBOX_URL);
     }
 
     public function getToken(Request $request)
