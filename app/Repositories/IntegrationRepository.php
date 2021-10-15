@@ -38,9 +38,11 @@ class IntegrationRepository
         // ------------------------------------------------------------------------------
 
         $response = Http::withHeaders([
-            'Authorization'     => 'Basic ' . base64_encode($clientId.":".$clientSecret),
-            'Content-Type'      => 'application/vnd.allegro.public.v1+json',
-            'Accept'            => 'application/vnd.allegro.public.v1+json',
+            'User-Agent'      => 'Kodomat',
+            'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
+            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+            'Accept'          => 'application/vnd.allegro.public.v1+json',
+            'Accept-Language' => 'pl-PL'
         ])->post("https://allegro.pl/auth/oauth/token?
             grant_type=authorization_code&
             code=$request->code&
