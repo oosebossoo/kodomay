@@ -23,6 +23,8 @@ class IntegrationRepository
             return $this->endOfGettingToken($request);
         }
 
+        // ------------------------------------------------------------------------------
+        
         $json = true;
 
         $resource = "https://allegro.pl/auth/oauth/token?"
@@ -36,7 +38,7 @@ class IntegrationRepository
         $options = array(
             'http' => array(
                 'method'  => strtoupper('POST'),
-                'header'  => $this->parseHeaders($requestHeaders = array_replace(array(
+                'header'  => self::parseHeaders($requestHeaders = array_replace(array(
                     'User-Agent'      => 'Kodomat',
                     'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
                     'Content-Type'    => 'application/vnd.allegro.public.v1+json',
@@ -51,11 +53,13 @@ class IntegrationRepository
         $response = json_decode(file_get_contents(
             (stristr($resource, 'http') !== false 
                 ? $resource 
-                : $this->getUrl() . '/' . ltrim($resource, '/')
+                : self::getUrl() . '/' . ltrim($resource, '/')
             ), 
             false, 
             stream_context_create($options),
         ));
+
+        // ------------------------------------------------------------
 
         if(UserData::select('refresh')->where('refresh', 1)->exists())
         {
@@ -126,7 +130,7 @@ class IntegrationRepository
                     // ----------------------
 
 
-    public function parseHeaders(array $headers)
+    static function parseHeaders(array $headers)
     {
         // Creating variable for headers
         $stringHeaders = '';
@@ -142,7 +146,7 @@ class IntegrationRepository
         return $stringHeaders;
     }
 
-    public function getUrl()
+    static function getUrl()
     {
         // Returning correct URL depending on sandbox setting
         return $this->getSandbox() 
