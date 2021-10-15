@@ -86,7 +86,7 @@ class IntegrationRepository
 
         // ------------------------------------------------------------
 
-        return response()->json([$response['error'], $response]);
+        dd([$response['error'], $response]);
 
         if(UserData::select('refresh')->where('refresh', 1)->exists())
         {
