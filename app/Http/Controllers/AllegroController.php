@@ -65,32 +65,7 @@ class AllegroController extends Controller
 
     public function deleteAllegroUser(Request $request)
     {
-        return $this->deleteAllegroUserRepo($request);
-    }
-
-    public function deleteAllegroUserRepo($request)
-    {
-        if(isset($request->user_id))
-        {
-            $user_id = $request->user_id;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-
-        if(UserData::where('user_id', $user_id)->where('id', $request->id)->delete())
-        {
-            return resposne()->json([
-                'message' => "Can't delete account"
-            ], 500);
-        }
-        else
-        {
-            return resposne()->json([
-                'message' => "Can't delete account"
-            ], 500);
-        }
+        return $this->integrationRepo::deleteAllegroUserRepo($request);
     }
 
     public function refreshToken(Request $request)
