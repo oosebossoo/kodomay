@@ -71,7 +71,7 @@ class AllegroController extends Controller
 
     public function refreshToken(Request $request)
     {
-        return $this->integrationRepo::refreshToken(UserData::where('user_id', 40)->select('refresh_token')['refresh_token']->first());
+        return $this->integrationRepo::refreshToken(UserData::where('user_id', 40)->select('refresh_token')->first()['refresh_token']);
     }
 
     public function deleteAllegroUser(Request $request)
