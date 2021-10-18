@@ -207,7 +207,14 @@ class IntegrationRepository
             }
         }
         }
-        return Offers::where('seller_id', $user_id)->get();
+        return response()->json("Offers::where('seller_id', $user_id)->get()");
+    }
+
+    static function offer($offer_id)
+    {
+        $offer = Offers::where('offer_id', $offer_id)->first();
+
+        return response()->json($offer);
     }
 
     // ----------------------
