@@ -72,6 +72,7 @@ Route::group([
 ], function ($router) {
     Route::get('/test', [ AllegroController::class, 'getToken']);
     Route::get('/add', [ AllegroController::class, 'add']);
+    Route::get('/refresh', [ AllegroController::class, 'refreshToken']);
     Route::get('/user/list', [ AllegroController::class, 'list']);
     Route::get('/get/offers', [ AllegroController::class, 'offers']);
     Route::get('/get/transaction', [ AllegroController::class, 'transaction']);

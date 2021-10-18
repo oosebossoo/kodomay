@@ -69,6 +69,11 @@ class AllegroController extends Controller
         return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret, 40, UserData::where('user_id', 40)->select('refresh', 'refresh_token')->first());
     }
 
+    public function refreshToken(Request $request)
+    {
+        return $this->integrationRepo::refreshToken(UserData::where('user_id', 40)->select('refresh_token')['refresh_token']);
+    }
+
     public function deleteAllegroUser(Request $request)
     {
         return $this->integrationRepo::deleteAllegroUser($request);
@@ -79,20 +84,20 @@ class AllegroController extends Controller
         return $this->integrationRepo::list(40);
     }
 
-    public function refreshToken(Request $request)
-    {
-        // return base64_encode($this->clientId.":".$this->clientSecret);
+    // public function refreshToken(Request $request)
+    // {
+    //     // return base64_encode($this->clientId.":".$this->clientSecret);
 
-        $userData = UserData::where('user_id', 14)->first();
-        // dd($userData);
+    //     $userData = UserData::where('user_id', 14)->first();
+    //     // dd($userData);
 
-        $response = Http::withHeaders([
-            "Authorization" => "Basic ".base64_encode($this->clientId.":".$this->clientSecret)
-        ])->post("https://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$userData->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token")->json();
+    //     $response = Http::withHeaders([
+    //         "Authorization" => "Basic ".base64_encode($this->clientId.":".$this->clientSecret)
+    //     ])->post("https://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$userData->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token")->json();
 
-        return $response;
+    //     return $response;
 
-    }
+    // }
 
     public function endOfGettingToken(Request $request)
     {

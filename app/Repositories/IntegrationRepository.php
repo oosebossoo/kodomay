@@ -18,6 +18,9 @@ use App\Models\UserData;
 
 class IntegrationRepository
 {
+    protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
+    protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
+
     static function add($clientId)
     {
         $authUrl = "https://allegro.pl/auth/oauth/authorize?"
@@ -26,6 +29,19 @@ class IntegrationRepository
             ."redirect_uri=https://kodomat.herokuapp.com/get_token";
 
         return redirect($authUrl);
+    }
+
+    static function refreshToken($refresh_token)
+    {
+        $response = Http::withHeaders([
+            'User-Agent'      => 'Kodomat',
+            'Authorization'   => 'Basic ' . base64_encode($this->clientId.":".$this->clientSecret),
+            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+            'Accept'          => 'application/vnd.allegro.public.v1+json',
+            'Accept-Language' => 'pl-PL'
+        ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
+
+        return $response;
     }
 
     static function getToken($request, $clientId, $clientSecret, $user_id, $refresh)
@@ -61,29 +77,32 @@ class IntegrationRepository
             }
         }
 
-        $response = Http::withHeaders([
-            'User-Agent'      => 'Kodomat',
-            'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
-            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-            'Accept'          => 'application/vnd.allegro.public.v1+json',
-            'Accept-Language' => 'pl-PL'
-        ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/get_token"); 
+        if(!$refresh->refresh)
+        {
+            $response = Http::withHeaders([
+                'User-Agent'      => 'Kodomat',
+                'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
+                'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+                'Accept'          => 'application/vnd.allegro.public.v1+json',
+                'Accept-Language' => 'pl-PL'
+            ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/get_token"); 
 
-        $userData = new UserData();
-        $userData->user_id = $user_id;
-        $userData->access_token = $response['access_token'];
-        $userData->token_type = $response['token_type'];
-        $userData->refresh_token = $response['refresh_token'];
-        $userData->expires_in = $response['expires_in'];
-        $userData->scope = $response['scope'];
-        $userData->allegro_api = $response['allegro_api'];
-        $userData->jti = $response['jti'];
-        $userData->refresh = 0;
-        $userData->save();
+            $userData = new UserData();
+            $userData->user_id = $user_id;
+            $userData->access_token = $response['access_token'];
+            $userData->token_type = $response['token_type'];
+            $userData->refresh_token = $response['refresh_token'];
+            $userData->expires_in = $response['expires_in'];
+            $userData->scope = $response['scope'];
+            $userData->allegro_api = $response['allegro_api'];
+            $userData->jti = $response['jti'];
+            $userData->refresh = 0;
+            $userData->save();
 
-        return response()->json([
-            'message' => 'added new account'
-        ], 200);
+            return response()->json([
+                'message' => 'added new account'
+            ], 200);
+        }
     }
 
 
@@ -135,6 +154,10 @@ class IntegrationRepository
                 return response()->json($user);
             }
             else {
+                UserData::where('user_id', $user_id)->update([
+                    'refresh' => 1
+                ]);
+                $this->refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')['refresh_token']);
                 return response()->json(['error' => $response['error']]);
             }  
         }
