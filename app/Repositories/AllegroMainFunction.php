@@ -32,6 +32,7 @@ class AllegroMainFunction
         $details = array();
 
         $log[] = "";
+        echo "test";
 
         $userDatas = UserData::where('user_id', $request->user_id)->get();
 
@@ -57,7 +58,8 @@ class AllegroMainFunction
                 ]);
                 return "refresh_token";
             }
-            return $response["events"];
+            return $response;
+
             if($response["events"] != []) {
                 return $response["events"];
                 $res = $response["events"];
