@@ -52,23 +52,19 @@ class AllegroAccountRepository
                     $date = date("Y-m-d h:i:s", $d);
                     $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
                     $offerDB->sold_last_30d = $soldInTrD;
-                    dd($offer);
+
                     
                     if(isset($offer['sellingMode']['price']['amount']))
                     {
                         $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
-                    }
-                    else
-                    {
+                    } else {
                         $offerDB->price_amount = "null";
                     }
 
                     if(isset($offer['sellingMode']['price']['currency']))
                     {
                         $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
-                    }
-                    else
-                    {
+                    } else {
                         $offerDB->price_currency = "null";
                     }
 
@@ -77,36 +73,28 @@ class AllegroAccountRepository
                     if(isset($offer['publication']['status']))
                     {
                         $offerDB->status_platform = $offer['publication']['status'];
-                    }
-                    else
-                    {
+                    } else {
                         $offerDB->status_platform = "null";
                     }
 
                     if(isset($offer['publication']['startedAt']))
                     {
                         $offerDB->startedAt = $offer['publication']['startedAt'];
-                    }
-                    else
-                    {
+                    } else {
                         $offerDB->startedAt = "null";
                     }
 
                     if(isset($offer['publication']['endingAt']))
                     {
                         $offerDB->endingAt = $offer['publication']['endingAt'];
-                    }
-                    else
-                    {
+                    } else {
                         $offerDB->endingAt = "Neverending offer... :)";
                     }
                     
                     if(isset($offer['publication']['endedAt']))
                     {
                         $offerDB->endingAt = $offer['publication']['endedAt'];
-                    }
-                    else
-                    {
+                    } else {
                         $offerDB->endingAt = "Neverended offer... :)";
                     }
                     
