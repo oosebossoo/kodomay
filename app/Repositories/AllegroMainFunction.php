@@ -62,7 +62,6 @@ class AllegroMainFunction
             }
 
             if($response["events"] != []) {
-                return $response["events"];
                 $res = $response["events"];
                 $lastEvent = $res[0]["id"];
                 if($res[0]["id"] != $userData->last_event) 
@@ -114,8 +113,8 @@ class AllegroMainFunction
                     $desc = "Please... give me some orders :( ";
                 }
                 // zmiana w badzie danych ostatniego eventu
-                $userData->last_event = $lastEvent;
-                $userData->save();
+                // $userData->last_event = $lastEvent;
+                // $userData->save();
             }
             else {
                 $status = 0;
