@@ -61,12 +61,15 @@ class AllegroMainFunction
                 return App\Repositories\IntegrationRepository::refreshToken(UserData::where('id', $userData->id)->select('refresh_token')->first()['refresh_token'], $this->clientId, $this->clientSecret);
             }
 
-            if($response["events"] != []) {
+            if($response["events"] != []) 
+            {
                 $res = $response["events"];
                 $lastEvent = $res[0]["id"];
+
                 if($res[0]["id"] != $userData->last_event) 
                 {
                     $log[] = "new events: ".$res[0]["id"];
+
                     foreach ($res as $order) 
                     {
                         $existOrder = Orders::where('order_id', $order["id"])->get();
@@ -77,7 +80,7 @@ class AllegroMainFunction
                         // if(!isset($existOrder[0]) && $isActive['is_active'] == "YES") 
                         if(1) 
                         {
-                            $log[] = "$userData->id from new order: ".$order["id"];
+                            $log[] = "id = $userData->id || new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
                             $orderModel = new Orders;
                             $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
@@ -105,12 +108,11 @@ class AllegroMainFunction
                             $log[] = "old order: ".$order["id"];
                         }
                     }
-                    $status = 0;
+
                     $desc = "Oh yhee.. some new orders :) ";
                 }
                 else {
                     $log[] = "last order: ".$lastEvent;
-                    $status = 0;
                     $desc = "Please... give me some orders :( ";
                 }
                 // zmiana w badzie danych ostatniego eventu
@@ -118,11 +120,10 @@ class AllegroMainFunction
                 $userData->save();
             }
             else {
-                $status = 0;
                 $desc = "Please... give me some orders :( ";
             }     
             unset($res);
         }
-        return [date("Y-m-d") .'/'. date("H:i:s") => ["status" => $status, "desc" => $desc, $log]];
+        return response()->json([date("Y-m-d") .'T'. date("H:i:s").'==' => ["desc" => $desc, $log]]);
     }
 }
