@@ -54,11 +54,43 @@ class AllegroAccountRepository
                     $offerDB->sold_last_30d = $soldInTrD;
                     dd($offer);
                     
-                    $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
-                    $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
+                    if(isset($offer['sellingMode']['price']['amount']))
+                    {
+                        $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
+                    }
+                    else
+                    {
+                        $offerDB->price_amount = "null";
+                    }
+
+                    if(isset($offer['sellingMode']['price']['currency']))
+                    {
+                        $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
+                    }
+                    else
+                    {
+                        $offerDB->price_currency = "null";
+                    }
+
                     $offerDB->platform = "Allegro";
-                    $offerDB->status_platform = $offer['publication']['status'];
-                    $offerDB->startedAt = $offer['publication']['startedAt'];
+
+                    if(isset($offer['publication']['status']))
+                    {
+                        $offerDB->status_platform = $offer['publication']['status'];
+                    }
+                    else
+                    {
+                        $offerDB->status_platform = "null";
+                    }
+
+                    if(isset($offer['publication']['startedAt']))
+                    {
+                        $offerDB->startedAt = $offer['publication']['startedAt'];
+                    }
+                    else
+                    {
+                        $offerDB->startedAt = "null";
+                    }
 
                     if(isset($offer['publication']['endingAt']))
                     {
