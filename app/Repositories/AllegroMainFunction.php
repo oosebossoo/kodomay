@@ -36,6 +36,8 @@ class AllegroMainFunction
 
         $userDatas = UserData::where('user_id', $request->user_id)->get();
 
+        dd($userDatas);
+
         if(!isset($userDatas))
         {
             return [ 
@@ -46,7 +48,6 @@ class AllegroMainFunction
 
         foreach ($userDatas as $userData)
         {
-            return $userData->access_token;
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
