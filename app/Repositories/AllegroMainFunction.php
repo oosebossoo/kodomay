@@ -52,6 +52,7 @@ class AllegroMainFunction
 
             // return $response;
 
+
             if($response->failed() || $response->clientError())
             {
                 UserData::where('user_id', $request->user_id)->update([
@@ -59,6 +60,7 @@ class AllegroMainFunction
                 ]);
                 return "refresh_token";
             }
+            echo "token - right";
             if($response["events"] != []) {
                 $res = $response["events"];
                 $lastEvent = $res[0]["id"];
@@ -102,10 +104,12 @@ class AllegroMainFunction
                             $log[] = "old order: ".$order["id"];
                         }
                     }
+                    echo "zakończone dodawanie<br>";
                     $status = 0;
                     $desc = "Oh yhee.. some new orders :) ";
                 }
-                else{
+                else {
+                    echo "nie było co dodawać<br>";
                     $log[] = "last order: ".$lastEvent;
                     $status = 0;
                     $desc = "Please... give me some orders :( ";
@@ -115,6 +119,7 @@ class AllegroMainFunction
                 $userData->save();
             }
             else {
+                echo "nie pobrano niczego z allegro<br>";
                 $status = 0;
                 $desc = "Please... give me some orders :( ";
             }     
