@@ -123,6 +123,6 @@ class AllegroMainFunction
             }     
             unset($res);
         }
-        return response()->json($log);
+        return $log;
     }
 }
