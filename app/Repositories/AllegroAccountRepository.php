@@ -12,7 +12,7 @@ use App\Http\Controllers\MailController;
 use App\Models\UserData;
 // use App\Models\Orders;
 // use App\Models\OrdersTable;
-// use App\Models\Offers;
+use App\Models\Offers;
 // use App\Models\SentMail;
 // use App\Models\Code;
 
