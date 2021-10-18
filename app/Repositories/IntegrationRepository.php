@@ -43,8 +43,6 @@ class IntegrationRepository
 
         echo $response;
 
-        echo "<h1>$response->access_token</h1>";
-
         echo '<h1>'.$response['refresh_token'].'</h1>';
 
         UserData::where('user_id', $user_id)->update([
