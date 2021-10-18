@@ -150,74 +150,58 @@ class IntegrationRepository
         {
             $limit = $request->limit;
         }
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-        $userData = UserData::where('user_id', $user_id)->get()[0];
 
-        // dd($request->refresh);
-        if($request->refresh == "set")
-        {
-            $response = Http::withHeaders([
-                "Accept" => "application/vnd.allegro.public.v1+json",
-                "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/sale/offers?limit=100");
 
-            // return $response['offers'];
-            foreach($response['offers'] as $offer)
+        $response = Http::withHeaders([
+            "Accept" => "application/vnd.allegro.public.v1+json",
+            "Authorization" => "Bearer $userData->access_token"
+        ])->get("https://api.allegro.pl/sale/offers?limit=100");
+
+        foreach($response['offers'] as $offer)
+        {
+            $ending[] = $offer;
+            $existOffer = Offers::where('offer_id', $offer['id'])->get();
+            if(!isset($existOffer[0]["id"]))
             {
-                $ending[] = $offer;
-                $existOffer = Offers::where('offer_id', $offer['id'])->get();
-                if(!isset($existOffer[0]["id"]))
+                $offerDB = new Offers();
+                $offerDB->seller_id = $user_id;
+                $offerDB->offer_id = $offer['id'];
+                $offerDB->offer_name = $offer['name'];
+                $offerDB->stock_available = $offer["stock"]["available"];
+                $offerDB->stock_sold = $offer['stock']['sold'];
+                
+                $d=strtotime("-1 Months");
+                $date = date("Y-m-d h:i:s", $d);
+                $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
+                $offerDB->sold_last_30d = $soldInTrD;
+                
+                $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
+                $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
+                $offerDB->platform = "Allegro";
+                $offerDB->status_platform = $offer['publication']['status'];
+                $offerDB->startedAt = $offer['publication']['startedAt'];
+
+                if(isset($offer['publication']['endingAt']))
                 {
-                    $offerDB = new Offers();
-                    $offerDB->seller_id = $user_id;
-                    $offerDB->offer_id = $offer['id'];
-                    $offerDB->offer_name = $offer['name'];
-                    $offerDB->stock_available = $offer["stock"]["available"];
-                    $offerDB->stock_sold = $offer['stock']['sold'];
-
-                    $d=strtotime("-1 Months");
-                    $date = date("Y-m-d h:i:s", $d);
-                    $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
-                    $offerDB->sold_last_30d = $soldInTrD;
-
-                    $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
-                    $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
-                    $offerDB->platform = "Allegro";
-                    $offerDB->status_platform = $offer['publication']['status'];
-                    $offerDB->startedAt = $offer['publication']['startedAt'];
-                    if(isset($offer['publication']['endingAt']))
-                    {
-                        $offerDB->endingAt = $offer['publication']['endingAt'];
-                    }
-                    else
-                    {
-                        $offerDB->endingAt = "Neverending offer... :)";
-                    }
-
-                    if(isset($offer['publication']['endedAt']))
-                    {
-                        $offerDB->endingAt = $offer['publication']['endedAt'];
-                    }
-                    else
-                    {
-                        $offerDB->endingAt = "Neverended offer... :)";
-                    }
-
-                    $offerDB->is_active = 'YES';
-                    $offerDB->save();
+                    $offerDB->endingAt = $offer['publication']['endingAt'];
                 }
+                else
+                {
+                    $offerDB->endingAt = "Neverending offer... :)";
+                }
+                
+                if(isset($offer['publication']['endedAt']))
+                {
+                    $offerDB->endingAt = $offer['publication']['endedAt'];
+                }
+                else
+                {
+                    $offerDB->endingAt = "Neverended offer... :)";
+                }
+                
+                $offerDB->is_active = 'YES';
+                $offerDB->save();
             }
-        }
-        else
-        {
-            return Offers::where('seller_id', $user_id)->get();
         }
         return Offers::where('seller_id', $user_id)->get();
     }
@@ -251,10 +235,5 @@ class IntegrationRepository
         return $this->getSandbox() 
             ? AllegroRestApi::SANDBOX_URL 
             : AllegroRestApi::URL;
-    }
-
-    public static function endOfGettingToken(Request $request)
-    {
-        return $request;
     }
 }
