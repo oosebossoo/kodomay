@@ -88,19 +88,19 @@ class AllegroAccountRepository
 
     static function offer($offer_id)
     {
-        $offer = Offers::where('offer_id', $offer_id)->first();
+        $offer = Offers::where('id', $offer_id)->first();
 
         return response()->json($offer);
     }
 
     static function setListening($offer_id)
     {
-        if(Offers::where('offer_id', $offer_id)->get()['is_active'] == 'NO')
+        if(Offers::where('id', $offer_id)->get()['is_active'] == 'NO')
         {
-            Offers::where('offer_id', $offer_id)->update(['is_active' => 'YES']);
+            Offers::where('id', $offer_id)->update(['is_active' => 'YES']);
             return response()->json(['message' => 'Set to YES']);
         } else {
-            Offers::where('offer_id', $offer_id)->update(['is_active' => 'NO']);
+            Offers::where('id', $offer_id)->update(['is_active' => 'NO']);
             return response()->json(['message' => 'Set to NO']);
         }
     }
