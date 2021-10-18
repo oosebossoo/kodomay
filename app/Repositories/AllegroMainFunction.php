@@ -98,7 +98,7 @@ class AllegroMainFunction
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];
-                            $details[] = $orderModel;
+                            $details[] = [$userData->id, $orderModel];
                         }
                         else {
                             $lastEvent = $order["id"];
