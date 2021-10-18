@@ -57,6 +57,7 @@ class AllegroMainFunction
                 ]);
                 return "refresh_token";
             }
+            return $response["events"];
             if($response["events"] != []) {
                 return $response["events"];
                 $res = $response["events"];
