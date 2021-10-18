@@ -110,7 +110,6 @@ class AllegroController extends Controller
 
     public function mainFunction(Request $request)
     {
-        echo "test";
         return $this->allegroMainFunction::mainFunction($request);
     }
 

@@ -35,7 +35,6 @@ class AllegroMainFunction
         $details = array();
 
         $log[] = "";
-        echo "test";
 
         $userDatas = UserData::where('user_id', $request->user_id)->get();
 
@@ -106,12 +105,10 @@ class AllegroMainFunction
                             $log[] = "old order: ".$order["id"];
                         }
                     }
-                    echo "zakończone dodawanie<br>";
                     $status = 0;
                     $desc = "Oh yhee.. some new orders :) ";
                 }
                 else {
-                    echo "nie było co dodawać<br>";
                     $log[] = "last order: ".$lastEvent;
                     $status = 0;
                     $desc = "Please... give me some orders :( ";
@@ -121,7 +118,6 @@ class AllegroMainFunction
                 $userData->save();
             }
             else {
-                echo "nie pobrano niczego z allegro<br>";
                 $status = 0;
                 $desc = "Please... give me some orders :( ";
             }     
