@@ -31,11 +31,11 @@ class IntegrationRepository
         return redirect($authUrl);
     }
 
-    static function refreshToken($refresh_token)
+    static function refreshToken($refresh_token, $clientId, $clientSecret)
     {
         $response = Http::withHeaders([
             'User-Agent'      => 'Kodomat',
-            'Authorization'   => 'Basic ' . base64_encode($this->clientId.":".$this->clientSecret),
+            'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
             'Accept'          => 'application/vnd.allegro.public.v1+json',
             'Accept-Language' => 'pl-PL'
