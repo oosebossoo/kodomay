@@ -53,65 +53,36 @@ class IntegrationRepository
         ]);
     }
 
-    static function getToken($request, $clientId, $clientSecret, $user_id, $refresh)
+    static function getToken($request, $clientId, $clientSecret, $user_id)
     {
-        // dd($request, $clientId, $clientSecret, $user_id, $refresh);
         if(!isset($request->code))
         {
-            // return $this->endOfGettingToken($request);
-            $response = Http::withHeaders([
-                'User-Agent'      => 'Kodomat',
-                'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
-                'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-                'Accept'          => 'application/vnd.allegro.public.v1+json',
-                'Accept-Language' => 'pl-PL'
-            ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
 
-            if(!isset($response['error']))
-            {
-                UserData::where('user_id', $user_id)->update([
-                    'access_token' => $response->access_token, 
-                    'refresh_token' => $response['refresh_token'],
-                    'jti' => $response['jti'],
-                    'refresh' => 0
-                ]);
-
-                return response()->json([
-                    'message' => 'updated'
-                ], 200);
-            }
-            else
-            {
-                redirect('api/allegro/add');
-            }
         }
 
-        if(!$refresh->refresh)
-        {
-            $response = Http::withHeaders([
-                'User-Agent'      => 'Kodomat',
-                'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
-                'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-                'Accept'          => 'application/vnd.allegro.public.v1+json',
-                'Accept-Language' => 'pl-PL'
-            ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/get_token"); 
+        $response = Http::withHeaders([
+            'User-Agent'      => 'Kodomat',
+            'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
+            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+            'Accept'          => 'application/vnd.allegro.public.v1+json',
+            'Accept-Language' => 'pl-PL'
+        ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/get_token"); 
 
-            $userData = new UserData();
-            $userData->user_id = $user_id;
-            $userData->access_token = $response['access_token'];
-            $userData->token_type = $response['token_type'];
-            $userData->refresh_token = $response['refresh_token'];
-            $userData->expires_in = $response['expires_in'];
-            $userData->scope = $response['scope'];
-            $userData->allegro_api = $response['allegro_api'];
-            $userData->jti = $response['jti'];
-            $userData->refresh = 0;
-            $userData->save();
+        $userData = new UserData();
+        $userData->user_id = $user_id;
+        $userData->access_token = $response['access_token'];
+        $userData->token_type = $response['token_type'];
+        $userData->refresh_token = $response['refresh_token'];
+        $userData->expires_in = $response['expires_in'];
+        $userData->scope = $response['scope'];
+        $userData->allegro_api = $response['allegro_api'];
+        $userData->jti = $response['jti'];
+        $userData->refresh = 0;
+        $userData->save();
 
-            return response()->json([
-                'message' => 'added new account'
-            ], 200);
-        }
+        return response()->json([
+            'message' => 'added new account'
+        ], 200);
     }
 
 
