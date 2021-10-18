@@ -84,6 +84,11 @@ class AllegroController extends Controller
         return $this->integrationRepo::list(40);
     }
 
+    public function offers()
+    {
+        return $this->integrationRepo::offers(40);
+    }
+
     // public function refreshToken(Request $request)
     // {
     //     // return base64_encode($this->clientId.":".$this->clientSecret);
