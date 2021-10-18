@@ -77,7 +77,7 @@ class AllegroMainFunction
                         // if(!isset($existOrder[0]) && $isActive['is_active'] == "YES") 
                         if(1) 
                         {
-                            $log[] = "new order: ".$order["id"];
+                            $log[] = "$userData->id from new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
                             $orderModel = new Orders;
                             $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
