@@ -30,7 +30,6 @@ class AllegroAccountRepository
         $userDatas = UserData::where('user_id', $user_id)->get();
         foreach($userDatas as $userData)
         {
-
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
