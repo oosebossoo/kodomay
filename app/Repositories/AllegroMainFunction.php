@@ -101,16 +101,18 @@ class AllegroMainFunction
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];
+                            $desc = "new order/s";
                         }
                         else {
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
+                            $desc = "waiting for orders";
                         }
                     }
                 }
                 else {
                     $log[] = "last order: ".$lastEvent;
-                    $desc = "waiting for orders ";
+                    $desc = "waiting for orders";
                 }
                 // zmiana w badzie danych ostatniego eventu
                 $userData->last_event = $lastEvent;
