@@ -51,7 +51,7 @@ class AllegroMainFunction
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event&limit=10");
+            ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
             if($response->failed() || $response->clientError())
             {
