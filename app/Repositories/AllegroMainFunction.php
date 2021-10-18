@@ -79,7 +79,6 @@ class AllegroMainFunction
                         $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first()['is_active'];
 
                         if(!isset($existOrder[0]) && $isActive == "YES") 
-                        // if(1) 
                         {
                             $log[] = "id = $userData->id || new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
@@ -102,7 +101,6 @@ class AllegroMainFunction
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];
-                            $details[] = [$userData->id, $orderModel];
                         }
                         else {
                             $lastEvent = $order["id"];
@@ -123,6 +121,6 @@ class AllegroMainFunction
             }     
             unset($res);
         }
-        return $log;
+        return $log+" "+$desc;
     }
 }
