@@ -82,14 +82,6 @@ Route::group([
     Route::get('/get/transaction', [ AllegroController::class, 'transaction']);
     Route::get('/set/listening', [ AllegroController::class, 'setListening']);
     Route::get('/get/listening/offers/{set}', [ AllegroController::class, 'getListening']);
-});
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'allegro'
-
-], function ($router) {
-    // integracje
     Route::get('/main_function', [ AllegroController::class, 'mainFunction']);
-
 });

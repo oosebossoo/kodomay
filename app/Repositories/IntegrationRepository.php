@@ -129,7 +129,6 @@ class IntegrationRepository
                     $response->firstName,
                     $response->lastName,
                 ];
-                return response()->json($user);
             }
             else {
                 UserData::where('user_id', $user_id)->update([
@@ -139,5 +138,6 @@ class IntegrationRepository
                 return response()->json(['error' => $response['error']]);
             }  
         }
+        return response()->json($user);
     }
 }
