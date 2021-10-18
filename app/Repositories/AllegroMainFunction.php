@@ -114,8 +114,8 @@ class AllegroMainFunction
                     $desc = "Please... give me some orders :( ";
                 }
                 // zmiana w badzie danych ostatniego eventu
-                // $userData->last_event = $lastEvent;
-                // $userData->save();
+                $userData->last_event = $lastEvent;
+                $userData->save();
             }
             else {
                 $status = 0;
