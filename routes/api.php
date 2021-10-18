@@ -70,7 +70,7 @@ Route::group([
     'prefix' => 'allegro'
 
 ], function ($router) {
-    Route::get('/test', [ AllegroController::class, 'test']);
+    Route::get('/test', [ AllegroController::class, 'getToken']);
     Route::get('/add', [ AllegroController::class, 'add']);
     Route::get('/user/list', [ AllegroController::class, 'list']);
     Route::get('/get/offers', [ AllegroController::class, 'offers']);

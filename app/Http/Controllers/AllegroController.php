@@ -65,7 +65,8 @@ class AllegroController extends Controller
 
     public function getToken(Request $request)
     {
-        return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret, 40);
+        //return UserData::where('user_id', 40)->select('refresh')->first()['refresh'];
+        return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret, 40, UserData::where('user_id', 40)->select('refresh', 'refresh_token')->first());
     }
 
     public function deleteAllegroUser(Request $request)
@@ -142,81 +143,83 @@ class AllegroController extends Controller
 
     public function getOffer(Request $request)
     {
-        $limit = 100;
-        if(isset($request->limit))
-        {
-            $limit = $request->limit;
-        }
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-        $userData = UserData::where('user_id', $user_id)->get()[0];
 
-        // dd($request->refresh);
-        if($request->refresh == "set")
-        {
-            $response = Http::withHeaders([
-                "Accept" => "application/vnd.allegro.public.v1+json",
-                "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/sale/offers?limit=100");
+        return $this->integrationRepo::offers(40, $request);
+        // $limit = 100;
+        // if(isset($request->limit))
+        // {
+        //     $limit = $request->limit;
+        // }
+        // if(isset($request->dev))
+        // {
+        //     $user_id = 14;
+        // }
+        // else
+        // {
+        //     $user_id = Auth::user()->id;
+        // }
+        // $userData = UserData::where('user_id', $user_id)->get()[0];
 
-            // return $response['offers'];
-            foreach($response['offers'] as $offer)
-            {
-                $ending[] = $offer;
-                $existOffer = Offers::where('offer_id', $offer['id'])->get();
-                if(!isset($existOffer[0]["id"]))
-                {
-                    $offerDB = new Offers();
-                    $offerDB->seller_id = $user_id;
-                    $offerDB->offer_id = $offer['id'];
-                    $offerDB->offer_name = $offer['name'];
-                    $offerDB->stock_available = $offer["stock"]["available"];
-                    $offerDB->stock_sold = $offer['stock']['sold'];
+        // // dd($request->refresh);
+        // if($request->refresh == "set")
+        // {
+        //     $response = Http::withHeaders([
+        //         "Accept" => "application/vnd.allegro.public.v1+json",
+        //         "Authorization" => "Bearer $userData->access_token"
+        //     ])->get("https://api.allegro.pl/sale/offers?limit=100");
 
-                    $d=strtotime("-1 Months");
-                    $date = date("Y-m-d h:i:s", $d);
-                    $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
-                    $offerDB->sold_last_30d = $soldInTrD;
+        //     // return $response['offers'];
+        //     foreach($response['offers'] as $offer)
+        //     {
+        //         $ending[] = $offer;
+        //         $existOffer = Offers::where('offer_id', $offer['id'])->get();
+        //         if(!isset($existOffer[0]["id"]))
+        //         {
+        //             $offerDB = new Offers();
+        //             $offerDB->seller_id = $user_id;
+        //             $offerDB->offer_id = $offer['id'];
+        //             $offerDB->offer_name = $offer['name'];
+        //             $offerDB->stock_available = $offer["stock"]["available"];
+        //             $offerDB->stock_sold = $offer['stock']['sold'];
 
-                    $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
-                    $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
-                    $offerDB->platform = "Allegro";
-                    $offerDB->status_platform = $offer['publication']['status'];
-                    $offerDB->startedAt = $offer['publication']['startedAt'];
-                    if(isset($offer['publication']['endingAt']))
-                    {
-                        $offerDB->endingAt = $offer['publication']['endingAt'];
-                    }
-                    else
-                    {
-                        $offerDB->endingAt = "Neverending offer... :)";
-                    }
+        //             $d=strtotime("-1 Months");
+        //             $date = date("Y-m-d h:i:s", $d);
+        //             $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
+        //             $offerDB->sold_last_30d = $soldInTrD;
 
-                    if(isset($offer['publication']['endedAt']))
-                    {
-                        $offerDB->endingAt = $offer['publication']['endedAt'];
-                    }
-                    else
-                    {
-                        $offerDB->endingAt = "Neverended offer... :)";
-                    }
+        //             $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
+        //             $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
+        //             $offerDB->platform = "Allegro";
+        //             $offerDB->status_platform = $offer['publication']['status'];
+        //             $offerDB->startedAt = $offer['publication']['startedAt'];
+        //             if(isset($offer['publication']['endingAt']))
+        //             {
+        //                 $offerDB->endingAt = $offer['publication']['endingAt'];
+        //             }
+        //             else
+        //             {
+        //                 $offerDB->endingAt = "Neverending offer... :)";
+        //             }
 
-                    $offerDB->is_active = 'YES';
-                    $offerDB->save();
-                }
-            }
-        }
-        else
-        {
-            return Offers::where('seller_id', $user_id)->get();
-        }
-        return Offers::where('seller_id', $user_id)->get();
+        //             if(isset($offer['publication']['endedAt']))
+        //             {
+        //                 $offerDB->endingAt = $offer['publication']['endedAt'];
+        //             }
+        //             else
+        //             {
+        //                 $offerDB->endingAt = "Neverended offer... :)";
+        //             }
+
+        //             $offerDB->is_active = 'YES';
+        //             $offerDB->save();
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     return Offers::where('seller_id', $user_id)->get();
+        // }
+        // return Offers::where('seller_id', $user_id)->get();
 
     }
 

@@ -28,14 +28,38 @@ class IntegrationRepository
         return redirect($authUrl);
     }
 
-    static function getToken($request, $clientId, $clientSecret, $user_id)
+    static function getToken($request, $clientId, $clientSecret, $user_id, $refresh)
     {
+        // dd($request, $clientId, $clientSecret, $user_id, $refresh);
         if(!isset($request->code))
         {
-            return $this->endOfGettingToken($request);
-        }
+            // return $this->endOfGettingToken($request);
+            $response = Http::withHeaders([
+                'User-Agent'      => 'Kodomat',
+                'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
+                'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+                'Accept'          => 'application/vnd.allegro.public.v1+json',
+                'Accept-Language' => 'pl-PL'
+            ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
 
-        // ------------------------------------------------------------------------------
+            if(!isset($response['error']))
+            {
+                UserData::where('user_id', $user_id)->update([
+                    'access_token' => $response->access_token, 
+                    'refresh_token' => $response['refresh_token'],
+                    'jti' => $response['jti'],
+                    'refresh' => 0
+                ]);
+
+                return response()->json([
+                    'message' => 'updated'
+                ], 200);
+            }
+            else
+            {
+                redirect('api/allegro/add');
+            }
+        }
 
         $response = Http::withHeaders([
             'User-Agent'      => 'Kodomat',
@@ -45,79 +69,24 @@ class IntegrationRepository
             'Accept-Language' => 'pl-PL'
         ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/get_token"); 
 
-        // $resource = "https://allegro.pl/auth/oauth/token?"
-        //     ."grant_type=authorization_code&"
-        //     ."code=$request->code&"
-        //     ."redirect_uri=https://kodomat.herokuapp.com/get_token";
+        $userData = new UserData();
+        $userData->user_id = $user_id;
+        $userData->access_token = $response['access_token'];
+        $userData->token_type = $response['token_type'];
+        $userData->refresh_token = $response['refresh_token'];
+        $userData->expires_in = $response['expires_in'];
+        $userData->scope = $response['scope'];
+        $userData->allegro_api = $response['allegro_api'];
+        $userData->jti = $response['jti'];
+        $userData->refresh = 0;
+        $userData->save();
 
-
-        // $json = true;
-
-        // $headers = array();
-        // $data = array();
-
-        // $options = array(
-        //     'http' => array(
-        //         'method'  => strtoupper('POST'),
-        //         'header'  => self::parseHeaders($requestHeaders = array_replace(array(
-        //             'User-Agent'      => 'Kodomat',
-        //             'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
-        //             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-        //             'Accept'          => 'application/vnd.allegro.public.v1+json',
-        //             'Accept-Language' => 'pl-PL'
-        //         ))),
-        //         'content' => ($json ? json_encode($data) : $data),
-        //         'ignore_errors' => true
-        //     )
-        // );
-
-        // $response = json_decode(file_get_contents(
-        //     (stristr($resource, 'http') !== false 
-        //         ? $resource 
-        //         : self::getUrl() . '/' . ltrim($resource, '/')
-        //     ), 
-        //     false, 
-        //     stream_context_create($options),
-        // ));
-
-        // ------------------------------------------------------------
-
-        if(UserData::select('refresh')->where('refresh', 1)->exists())
-        {
-            $updates = UserData::where('refresh', 1)->get();
-            $log[] = 'start updating';
-            foreach($updates as $update)
-            {
-                UserData::where('user_id', $update->user_id)->update([
-                    'access_token' => $response->access_token, 
-                    'refresh_token' => $response->refresh_token,
-                    'jti' => $response->jti,
-                    'refresh' => 0
-                ]);
-                $log[] = ['id' => $update->user_id];
-            }
-            return [$log];
-        }
-        else
-        {
-            $userData = new UserData();
-            $userData->user_id = $user_id;
-            $userData->access_token = $response['access_token'];
-            $userData->token_type = $response['token_type'];
-            $userData->refresh_token = $response['refresh_token'];
-            $userData->expires_in = $response['expires_in'];
-            $userData->scope = $response['scope'];
-            $userData->allegro_api = $response['allegro_api'];
-            $userData->jti = $response['jti'];
-            $userData->refresh = 0;
-            $userData->save();
-
-            return [
-                'status' => 0,
-                'desc' => 'added new account'
-            ];
-        }
+        return response()->json([
+            'message' => 'added new account'
+        ], 200);
     }
+
+
 
     static function deleteAllegroUser($request)
     {
@@ -171,6 +140,85 @@ class IntegrationRepository
         }
     }
 
+    static function offers($user_id)
+    {
+        $limit = 100;
+        if(isset($request->limit))
+        {
+            $limit = $request->limit;
+        }
+        if(isset($request->dev))
+        {
+            $user_id = 14;
+        }
+        else
+        {
+            $user_id = Auth::user()->id;
+        }
+        $userData = UserData::where('user_id', $user_id)->get()[0];
+
+        // dd($request->refresh);
+        if($request->refresh == "set")
+        {
+            $response = Http::withHeaders([
+                "Accept" => "application/vnd.allegro.public.v1+json",
+                "Authorization" => "Bearer $userData->access_token"
+            ])->get("https://api.allegro.pl/sale/offers?limit=100");
+
+            // return $response['offers'];
+            foreach($response['offers'] as $offer)
+            {
+                $ending[] = $offer;
+                $existOffer = Offers::where('offer_id', $offer['id'])->get();
+                if(!isset($existOffer[0]["id"]))
+                {
+                    $offerDB = new Offers();
+                    $offerDB->seller_id = $user_id;
+                    $offerDB->offer_id = $offer['id'];
+                    $offerDB->offer_name = $offer['name'];
+                    $offerDB->stock_available = $offer["stock"]["available"];
+                    $offerDB->stock_sold = $offer['stock']['sold'];
+
+                    $d=strtotime("-1 Months");
+                    $date = date("Y-m-d h:i:s", $d);
+                    $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
+                    $offerDB->sold_last_30d = $soldInTrD;
+
+                    $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
+                    $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
+                    $offerDB->platform = "Allegro";
+                    $offerDB->status_platform = $offer['publication']['status'];
+                    $offerDB->startedAt = $offer['publication']['startedAt'];
+                    if(isset($offer['publication']['endingAt']))
+                    {
+                        $offerDB->endingAt = $offer['publication']['endingAt'];
+                    }
+                    else
+                    {
+                        $offerDB->endingAt = "Neverending offer... :)";
+                    }
+
+                    if(isset($offer['publication']['endedAt']))
+                    {
+                        $offerDB->endingAt = $offer['publication']['endedAt'];
+                    }
+                    else
+                    {
+                        $offerDB->endingAt = "Neverended offer... :)";
+                    }
+
+                    $offerDB->is_active = 'YES';
+                    $offerDB->save();
+                }
+            }
+        }
+        else
+        {
+            return Offers::where('seller_id', $user_id)->get();
+        }
+        return Offers::where('seller_id', $user_id)->get();
+    }
+
     // ----------------------
         // ----------------------
             // ----------------------
@@ -200,5 +248,10 @@ class IntegrationRepository
         return $this->getSandbox() 
             ? AllegroRestApi::SANDBOX_URL 
             : AllegroRestApi::URL;
+    }
+
+    public static function endOfGettingToken(Request $request)
+    {
+        return $request;
     }
 }
