@@ -73,12 +73,13 @@ class AllegroMainFunction
                     foreach ($res as $order) 
                     {
                         $existOrder = Orders::where('order_id', $order["id"])->get();
+
                         $detailsInfo = self::checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
                         
-                        $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first();
+                        $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first()['is_active'];
 
-                        // if(!isset($existOrder[0]) && $isActive['is_active'] == "YES") 
-                        if(1) 
+                        if(!isset($existOrder[0]) && $isActive['is_active'] == "YES") 
+                        // if(1) 
                         {
                             $log[] = "id = $userData->id || new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
@@ -109,21 +110,21 @@ class AllegroMainFunction
                         }
                     }
 
-                    $desc = "Oh yhee.. some new orders :) ";
+                    $desc = "New orders :) ";
                 }
                 else {
                     $log[] = "last order: ".$lastEvent;
-                    $desc = "Please... give me some orders :( ";
+                    $desc = "waiting for orders ";
                 }
                 // zmiana w badzie danych ostatniego eventu
                 $userData->last_event = $lastEvent;
                 $userData->save();
             }
             else {
-                $desc = "Please... give me some orders :( ";
+                $desc = "waiting for orders";
             }     
             unset($res);
         }
-        return response()->json([date("Y-m-d") .'T'. date("H:i:s").'==' => ["desc" => $desc, $log]]);
+        return response()->json([date("Y-m-d") .' T '. date("H:i:s").' == ' => ["desc" => $desc, $log]]);
     }
 }

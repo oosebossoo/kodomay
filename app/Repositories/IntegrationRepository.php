@@ -51,15 +51,14 @@ class IntegrationRepository
             'jti' => $response['jti'],
             'refresh' => 0
         ]);
+
+        return response()->json([
+            'message' => 'updated'
+        ], 200);
     }
 
     static function getToken($request, $clientId, $clientSecret, $user_id)
     {
-        if(!isset($request->code))
-        {
-
-        }
-
         $response = Http::withHeaders([
             'User-Agent'      => 'Kodomat',
             'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
@@ -81,8 +80,8 @@ class IntegrationRepository
         $userData->save();
 
         return response()->json([
-            'message' => 'added new account'
-        ], 200);
+            'message' => 'added'
+        ], 201);
     }
 
     static function deleteAllegroUser($request)
