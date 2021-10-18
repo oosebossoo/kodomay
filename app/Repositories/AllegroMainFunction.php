@@ -123,6 +123,6 @@ class AllegroMainFunction
             }     
             unset($res);
         }
-        return $log+" "+$desc;
+        return $log." ".$desc;
     }
 }
