@@ -74,7 +74,7 @@ class AllegroMainFunction
                         
                         $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first();
 
-                        if(!isset($existOrder[0]["id"]) && $isActive['is_active'] == "YES") 
+                        if(!isset($existOrder[0]) && $isActive['is_active'] == "YES") 
                         {
                             $log[] = "new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
