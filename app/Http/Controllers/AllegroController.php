@@ -570,7 +570,7 @@ class AllegroController extends Controller
 
     public function getLastEvent(Request $request)
     {
-        $userData = UserData::where('id', 7)->get();
+        $userData = UserData::where('id', $request->id)->get();
         return $this->getLastEventRepo($userData[0]["access_token"]);
     }
 
