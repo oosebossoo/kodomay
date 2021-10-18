@@ -36,8 +36,6 @@ class AllegroMainFunction
 
         $userDatas = UserData::where('user_id', $request->user_id)->get();
 
-        dd($userDatas);
-
         if(!isset($userDatas))
         {
             return [ 
