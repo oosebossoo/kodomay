@@ -70,7 +70,7 @@ class AllegroMainFunction
                     foreach ($res as $order) 
                     {
                         $existOrder = Orders::where('order_id', $order["id"])->get();
-                        $detailsInfo = $this->checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
+                        $detailsInfo = self::checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
                         
                         $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first();
 
