@@ -45,8 +45,8 @@ class IntegrationRepository
 
         echo '<h1>'.$response['refresh_token'].'</h1>';
 
-        UserData::where('user_id', $user_id)->update([
-            'access_token' => $response->access_token, 
+        UserData::where('user_id', 40)->update([
+            'access_token' => $response['access_token'], 
             'refresh_token' => $response['refresh_token'],
             'jti' => $response['jti'],
             'refresh' => 0
