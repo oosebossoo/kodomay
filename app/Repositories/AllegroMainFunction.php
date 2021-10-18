@@ -101,28 +101,28 @@ class AllegroMainFunction
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];
-                            $desc = "new order/s";
+                            $log[] = "new order/s";
                         }
                         else {
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
-                            $desc = "waiting for orders";
+                            $log[] = "waiting for orders";
                         }
                     }
                 }
                 else {
                     $log[] = "last order: ".$lastEvent;
-                    $desc = "waiting for orders";
+                    $log[] = "waiting for orders";
                 }
                 // zmiana w badzie danych ostatniego eventu
                 $userData->last_event = $lastEvent;
                 $userData->save();
             }
             else {
-                $desc = "waiting for orders";
+                $log[] = "waiting for orders";
             }     
             unset($res);
         }
-        return $log." ".$desc;
+        return $log;
     }
 }
