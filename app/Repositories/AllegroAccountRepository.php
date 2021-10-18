@@ -52,6 +52,7 @@ class AllegroAccountRepository
                     $date = date("Y-m-d h:i:s", $d);
                     $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
                     $offerDB->sold_last_30d = $soldInTrD;
+                    dd($offer);
                     
                     $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
                     $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
