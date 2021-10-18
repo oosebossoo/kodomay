@@ -50,9 +50,6 @@ class AllegroMainFunction
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
-            // return $response;
-
-
             if($response->failed() || $response->clientError())
             {
                 UserData::where('user_id', $request->user_id)->update([
@@ -60,8 +57,8 @@ class AllegroMainFunction
                 ]);
                 return "refresh_token";
             }
-            echo "token - right";
             if($response["events"] != []) {
+                return $response["events"];
                 $res = $response["events"];
                 $lastEvent = $res[0]["id"];
                 if($res[0]["id"] != $userData->last_event) 
