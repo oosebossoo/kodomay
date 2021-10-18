@@ -151,11 +151,14 @@ class IntegrationRepository
             $limit = $request->limit;
         }
 
+        $userDatas = UserData::where('user_id', $user_id)->get();
+        foreach($userDatas as $userData)
+        {
 
         $response = Http::withHeaders([
             "Accept" => "application/vnd.allegro.public.v1+json",
             "Authorization" => "Bearer $userData->access_token"
-        ])->get("https://api.allegro.pl/sale/offers?limit=100");
+        ])->get("https://api.allegro.pl/sale/offers?limit=$limit");
 
         foreach($response['offers'] as $offer)
         {
@@ -202,6 +205,7 @@ class IntegrationRepository
                 $offerDB->is_active = 'YES';
                 $offerDB->save();
             }
+        }
         }
         return Offers::where('seller_id', $user_id)->get();
     }
