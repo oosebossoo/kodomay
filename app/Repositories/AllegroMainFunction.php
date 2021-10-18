@@ -18,6 +18,9 @@ use App\Models\Offers;
 
 class AllegroMainFunction
 {
+    protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
+    protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
+
     static function checkOut($checkOutFormId, $token)
     {
         $response = Http::withHeaders([
@@ -56,9 +59,8 @@ class AllegroMainFunction
                 UserData::where('user_id', $request->user_id)->update([
                     'refresh' => true
                 ]);
-                return "refresh_token";
+                return App\Repositories\IntegrationRepository::refreshToken(UserData::where('id', $userData->id)->select('refresh_token')->first()['refresh_token'], $this->clientId, $this->clientSecret);
             }
-            return $response;
 
             if($response["events"] != []) {
                 return $response["events"];
@@ -78,22 +80,22 @@ class AllegroMainFunction
                         {
                             $log[] = "new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
-                            $orderModel = new Orders;
-                            $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
-                            $orderModel->order_id = $order["id"];
-                            $orderModel->offer_name = $detailsInfo->lineItems[0]->offer->name;
-                            $orderModel->offer_price = $detailsInfo->lineItems[0]->originalPrice->amount;
-                            $orderModel->offer_currency = $detailsInfo->lineItems[0]->originalPrice->currency;
-                            $orderModel->quantity = $detailsInfo->lineItems[0]->quantity;
-                            $orderModel->order_price = $detailsInfo->lineItems[0]->price->amount;
-                            $orderModel->order_currency = $detailsInfo->lineItems[0]->price->currency;
-                            $orderModel->customer_id = $buyer["id"];
-                            $orderModel->seller_id = $request->user_id;
-                            $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
-                            $orderModel->save();
+                            // $orderModel = new Orders;
+                            // $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                            // $orderModel->order_id = $order["id"];
+                            // $orderModel->offer_name = $detailsInfo->lineItems[0]->offer->name;
+                            // $orderModel->offer_price = $detailsInfo->lineItems[0]->originalPrice->amount;
+                            // $orderModel->offer_currency = $detailsInfo->lineItems[0]->originalPrice->currency;
+                            // $orderModel->quantity = $detailsInfo->lineItems[0]->quantity;
+                            // $orderModel->order_price = $detailsInfo->lineItems[0]->price->amount;
+                            // $orderModel->order_currency = $detailsInfo->lineItems[0]->price->currency;
+                            // $orderModel->customer_id = $buyer["id"];
+                            // $orderModel->seller_id = $request->user_id;
+                            // $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
+                            // $orderModel->save();
 
                             // wyślij maila
-                            MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $buyer["email"]);
+                            // MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $buyer["email"]);
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];
