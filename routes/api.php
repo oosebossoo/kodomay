@@ -75,7 +75,8 @@ Route::group([
     Route::get('/refresh', [ AllegroController::class, 'refreshToken']);
     Route::get('/user/list', [ AllegroController::class, 'list']);
     Route::get('/get/offers', [ AllegroController::class, 'offers']);
+    Route::get('/get/offer', [ AllegroController::class, 'offer']);
     Route::get('/get/transaction', [ AllegroController::class, 'transaction']);
-    Route::post('/set/listening', [ AllegroController::class, 'setListening']);
+    Route::get('/set/listening', [ AllegroController::class, 'setListening']);
     Route::get('/get/listening/offers/{set}', [ AllegroController::class, 'getListening']);
 });

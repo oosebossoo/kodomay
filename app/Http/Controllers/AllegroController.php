@@ -91,6 +91,17 @@ class AllegroController extends Controller
         return $this->allegroAccountRepo::offers(40);
     }
 
+    public function offer(Request $request)
+    {
+        return $this->allegroAccountRepo::offer($request->id);
+    }
+
+    public function setListening(Request $request)
+    {
+        return $this->allegroAccountRepo::setListening($request->id);
+    }
+
+
     // public function refreshToken(Request $request)
     // {
     //     // return base64_encode($this->clientId.":".$this->clientSecret);
