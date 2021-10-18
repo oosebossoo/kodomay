@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use AsocialMedia\AllegroApi\AllegroRestApi;
 use App\Repositories\IntegrationRepository;
+use App\Repositories\AllegroAccountRepository;
 use App\Repositories\AllegroRepo;
 
 use App\Http\Controllers\MailController;
@@ -40,10 +41,11 @@ class AllegroController extends Controller
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
-    public function __construct(IntegrationRepository $integrationRepo, JWTAuth $jwtAuth)
+    public function __construct(IntegrationRepository $integrationRepo, AllegroAccountRepository $allegroAccountRepo, JWTAuth $jwtAuth)
     {
         //$this->user = $jwtAuth::parseToken()->authenticate();
         $this->integrationRepo = $integrationRepo;
+        $this->allegroAccountRepo = $allegroAccountRepo;
     }
 
     public function test(Request $request)
@@ -86,7 +88,7 @@ class AllegroController extends Controller
 
     public function offers()
     {
-        return $this->integrationRepo::offers(40);
+        return $this->allegroAccountRepo::offers(40);
     }
 
     // public function refreshToken(Request $request)
