@@ -109,8 +109,6 @@ class AllegroMainFunction
                             $log[] = "old order: ".$order["id"];
                         }
                     }
-
-                    $desc = "New orders :) ";
                 }
                 else {
                     $log[] = "last order: ".$lastEvent;
@@ -125,6 +123,6 @@ class AllegroMainFunction
             }     
             unset($res);
         }
-        return response()->json([date("Y-m-d") .' T '. date("H:i:s").' == ' => ["desc" => $desc, $log]]);
+        return response()->json($log);
     }
 }
