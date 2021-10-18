@@ -79,18 +79,18 @@ class AllegroMainFunction
                         {
                             $log[] = "new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
-                            // $orderModel = new Orders;
-                            // $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
-                            // $orderModel->order_id = $order["id"];
-                            // $orderModel->offer_name = $detailsInfo->lineItems[0]->offer->name;
-                            // $orderModel->offer_price = $detailsInfo->lineItems[0]->originalPrice->amount;
-                            // $orderModel->offer_currency = $detailsInfo->lineItems[0]->originalPrice->currency;
-                            // $orderModel->quantity = $detailsInfo->lineItems[0]->quantity;
-                            // $orderModel->order_price = $detailsInfo->lineItems[0]->price->amount;
-                            // $orderModel->order_currency = $detailsInfo->lineItems[0]->price->currency;
-                            // $orderModel->customer_id = $buyer["id"];
-                            // $orderModel->seller_id = $request->user_id;
-                            // $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
+                            $orderModel = new Orders;
+                            $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                            $orderModel->order_id = $order["id"];
+                            $orderModel->offer_name = $detailsInfo->lineItems[0]->offer->name;
+                            $orderModel->offer_price = $detailsInfo->lineItems[0]->originalPrice->amount;
+                            $orderModel->offer_currency = $detailsInfo->lineItems[0]->originalPrice->currency;
+                            $orderModel->quantity = $detailsInfo->lineItems[0]->quantity;
+                            $orderModel->order_price = $detailsInfo->lineItems[0]->price->amount;
+                            $orderModel->order_currency = $detailsInfo->lineItems[0]->price->currency;
+                            $orderModel->customer_id = $buyer["id"];
+                            $orderModel->seller_id = $request->user_id;
+                            $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             // $orderModel->save();
 
                             // wyślij maila
