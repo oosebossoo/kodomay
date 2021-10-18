@@ -217,6 +217,18 @@ class IntegrationRepository
         return response()->json($offer);
     }
 
+    static function setListening($offer_id)
+    {
+        if(Offers::where('offer_id', $offer_id)->get()['is_active'] == 'NO')
+        {
+            Offers::where('offer_id', $offer_id)->update(['is_active' => 'YES']);
+            return response()->json(['message' => 'Set to YES']);
+        } else {
+            Offers::where('offer_id', $offer_id)->update(['is_active' => 'NO']);
+            return response()->json(['message' => 'Set to NO']);
+        }
+    }
+
     // ----------------------
         // ----------------------
             // ----------------------
