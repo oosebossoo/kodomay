@@ -26,7 +26,7 @@ Route::get('/', function () {
 Route::get('/dev_test_all_users', [AccountController::class, 'allUsers']);
 
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
-Route::get('/get_token', [AllegroController::class, 'getToken']);
+Route::get('/{user_id}/get_token', [AllegroController::class, 'getToken']);
 Route::get('/refresh_token', [AllegroController::class, 'refreshToken']); 
 Route::get('/delete_allegro_user', [AllegroController::class, 'deleteAllegroUser']);
 Route::get('/get_personal_data', [SettingsController::class, 'getPersonalData']);
