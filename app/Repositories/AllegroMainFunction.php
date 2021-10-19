@@ -58,7 +58,7 @@ class AllegroMainFunction
                 UserData::where('user_id', $request->user_id)->update([
                     'refresh' => true
                 ]);
-                return App\Repositories\IntegrationRepository::refreshToken(UserData::where('id', $userData->id)->select('refresh_token')->first()['refresh_token'], $this->clientId, $this->clientSecret);
+                return IntegrationRepository::refreshToken(UserData::where('id', $userData->id)->select('refresh_token')->first()['refresh_token'], $this->clientId, $this->clientSecret);
             }
 
             if($response["events"] != []) 
@@ -101,12 +101,11 @@ class AllegroMainFunction
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];
-                            $log[] = "new order/s";
                         }
                         else {
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
-                            $log[] = "waiting for orders";
+                            $log[] = "waiting for new orders";
                         }
                     }
                 }
