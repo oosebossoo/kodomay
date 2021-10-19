@@ -57,7 +57,7 @@ class IntegrationRepository
             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
             'Accept'          => 'application/vnd.allegro.public.v1+json',
             'Accept-Language' => 'pl-PL'
-        ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/"); 
+        ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/$user_id/get_token"); 
 
         return $response;
 
