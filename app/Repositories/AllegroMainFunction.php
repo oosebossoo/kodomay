@@ -105,7 +105,6 @@ class AllegroMainFunction
                         else {
                             $lastEvent = $order["id"];
                             $log[] = "old order: ".$order["id"];
-                            $log[] = "waiting for new orders";
                         }
                     }
                 }
