@@ -110,7 +110,6 @@ class AllegroMainFunction
                 }
                 else {
                     $log[] = "last order: ".$lastEvent;
-                    $log[] = "waiting for orders";
                 }
                 // zmiana w badzie danych ostatniego eventu
                 $userData->last_event = $lastEvent;
