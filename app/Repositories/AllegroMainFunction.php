@@ -18,8 +18,8 @@ use App\Models\Offers;
 
 class AllegroMainFunction
 {
-    protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
-    protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
+    protected static $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
+    protected static $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
     static function checkOut($checkOutFormId, $token)
     {
@@ -58,7 +58,7 @@ class AllegroMainFunction
                 UserData::where('user_id', $request->user_id)->update([
                     'refresh' => true
                 ]);
-                return IntegrationRepository::refreshToken(UserData::where('id', $userData->id)->select('refresh_token')->first()['refresh_token'], $this->clientId, $this->clientSecret);
+                return IntegrationRepository::refreshToken(UserData::where('id', $userData->id)->select('refresh_token')->first()['refresh_token'], self::$clientId, self::$clientSecret);
             }
 
             if($response["events"] != []) 
