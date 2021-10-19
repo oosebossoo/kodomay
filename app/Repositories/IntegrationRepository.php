@@ -28,7 +28,7 @@ class IntegrationRepository
             ."client_id=$clientId&"
             ."redirect_uri=https://kodomat.herokuapp.com/get_token";
 
-        return redirect($authUrl);
+        return response()->json(['url' => $authUrl], 200);
     }
 
     static function refreshToken($refresh_token, $clientId, $clientSecret)
