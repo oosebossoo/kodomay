@@ -23,8 +23,6 @@ class IntegrationRepository
 
     static function add($clientId, $user_id)
     {
-        // return ltrim($user_id, $user_id[0]);
-        $user_id = substr(ltrim($user_id, $user_id[0]), 0, -1);
         $authUrl = "https://allegro.pl/auth/oauth/authorize?"
             ."response_type=code&"
             ."client_id=$clientId&"
