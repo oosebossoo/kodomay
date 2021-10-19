@@ -59,6 +59,8 @@ class IntegrationRepository
             'Accept-Language' => 'pl-PL'
         ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/get_token"); 
 
+        return $response;
+
         $userData = new UserData();
         $userData->user_id = $user_id;
         $userData->access_token = $response['access_token'];
