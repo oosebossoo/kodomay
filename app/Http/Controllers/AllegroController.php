@@ -55,22 +55,14 @@ class AllegroController extends Controller
         return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret);
     }
 
-    public function add(Request $request)
-    {
-        if(isset($request->opt))
-        {
-            UserData::where('user_id', Auth::user()->id)->update([
-                'refresh' => true
-            ]);
-        }
-
-        return $this->integrationRepo::add($this->clientId);
+    public function add(Request $request, $user_id)
+    {   
+        return $this->integrationRepo::add($this->clientId, $user_id);
     }
 
-    public function getToken(Request $request)
+    public function getToken(Request $request, $user_id)
     {
-        //return UserData::where('user_id', 40)->select('refresh')->first()['refresh'];
-        return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret, 40, UserData::where('user_id', 40)->select('refresh', 'refresh_token')->first());
+        return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret, $user_id);
     }
 
     public function refreshToken(Request $request)

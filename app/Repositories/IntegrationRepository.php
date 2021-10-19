@@ -21,12 +21,14 @@ class IntegrationRepository
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
-    static function add($clientId)
+    static function add($clientId, $user_id)
     {
+        // return ltrim($user_id, $user_id[0]);
+        $user_id = substr(ltrim($user_id, $user_id[0]), 0, -1);
         $authUrl = "https://allegro.pl/auth/oauth/authorize?"
             ."response_type=code&"
             ."client_id=$clientId&"
-            ."redirect_uri=https://kodomat.herokuapp.com/get_token";
+            ."redirect_uri=https://kodomat.herokuapp.com/$user_id/get_token";
 
         return response()->json(['url' => $authUrl], 200);
     }
@@ -59,6 +61,7 @@ class IntegrationRepository
 
     static function getToken($request, $clientId, $clientSecret, $user_id)
     {
+        return $user_id;
         $response = Http::withHeaders([
             'User-Agent'      => 'Kodomat',
             'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),

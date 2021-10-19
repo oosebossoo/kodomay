@@ -116,7 +116,7 @@ class AllegroMainFunction
                 $userData->save();
             }
             else {
-                $log[] = "waiting for orders";
+                $log[] = "$user_id waiting for orders";
             }     
             unset($res);
         }
