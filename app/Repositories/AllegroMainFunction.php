@@ -94,7 +94,7 @@ class AllegroMainFunction
                             $orderModel->customer_id = $buyer["id"];
                             $orderModel->seller_id = $request->user_id;
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
-                            // $orderModel->save();
+                            $orderModel->save();
 
                             // wyślij maila
                             // MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $buyer["email"]);
