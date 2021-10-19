@@ -59,23 +59,27 @@ class IntegrationRepository
             'Accept-Language' => 'pl-PL'
         ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/$user_id/get_token"); 
 
-        return $response;
+        if(!isset($response["error"]))
+        {
+            $userData = new UserData();
+            $userData->user_id = $user_id;
+            $userData->access_token = $response['access_token'];
+            $userData->token_type = $response['token_type'];
+            $userData->refresh_token = $response['refresh_token'];
+            $userData->expires_in = $response['expires_in'];
+            $userData->scope = $response['scope'];
+            $userData->allegro_api = $response['allegro_api'];
+            $userData->jti = $response['jti'];
+            $userData->refresh = 0;
+            $userData->save();
 
-        $userData = new UserData();
-        $userData->user_id = $user_id;
-        $userData->access_token = $response['access_token'];
-        $userData->token_type = $response['token_type'];
-        $userData->refresh_token = $response['refresh_token'];
-        $userData->expires_in = $response['expires_in'];
-        $userData->scope = $response['scope'];
-        $userData->allegro_api = $response['allegro_api'];
-        $userData->jti = $response['jti'];
-        $userData->refresh = 0;
-        $userData->save();
-
+            return response()->json([
+                'message' => 'added'
+            ], 201);
+        }
         return response()->json([
-            'message' => 'added'
-        ], 201);
+            'message' => 'try later'
+        ], 500);
     }
 
     static function deleteAllegroUser($request)
