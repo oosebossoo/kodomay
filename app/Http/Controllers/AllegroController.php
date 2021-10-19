@@ -28,15 +28,8 @@ use App\Models\Code;
 use Auth;
 use JWTAuth;
 
-
 class AllegroController extends Controller
 {
-    // --- SANDBOX ---
-    // const SANDBOX_URL = 'https://api.allegro.pl.allegrosandbox.pl';
-    // protected $clientId = '1842f4e03d1347d4812246f7439baaa1';
-    // protected $clientSecret = 'JvRLfxOdGmLBNRooPqnxQJOKFnwZ7XW1bW5m7tPCNb1LPaw5ttje2g7Fcz0OS6ri';
-
-
     // --- PROD ---
     const SANDBOX_URL = 'https://api.allegro.pl.';
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
