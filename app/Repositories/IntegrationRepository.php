@@ -59,7 +59,6 @@ class IntegrationRepository
 
     static function getToken($request, $clientId, $clientSecret, $user_id)
     {
-        return $user_id;
         $response = Http::withHeaders([
             'User-Agent'      => 'Kodomat',
             'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
