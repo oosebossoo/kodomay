@@ -43,11 +43,6 @@ class AllegroController extends Controller
         $this->allegroMainFunction = $allegroMainFunction;
     }
 
-    public function test(Request $request)
-    {
-        return $this->integrationRepo::getToken($request, $this->clientId, $this->clientSecret);
-    }
-
     public function add(Request $request, $user_id)
     {   
         return $this->integrationRepo::add($this->clientId, $user_id);
@@ -68,9 +63,9 @@ class AllegroController extends Controller
         return $this->integrationRepo::deleteAllegroUser($request);
     }
 
-    public function list()
+    public function list($user_id)
     {
-        return $this->integrationRepo::list(40);
+        return $this->integrationRepo::list($user_id);
     }
 
     public function offers()
@@ -90,7 +85,16 @@ class AllegroController extends Controller
 
     public function monitoringOn(Request $request)
     {
-        return $this->allegroMainFunction::mainFunction($request);
+        $response = Http::withHeaders([
+            "Accept" => "application/vnd.allegro.public.v1+json",
+        ])->get("http://localhost:3000/listening?user_id=$user_id");
+    }
+
+    public function monitoringOff(Request $request)
+    {
+        $response = Http::withHeaders([
+            "Accept" => "application/vnd.allegro.public.v1+json",
+        ])->get("http://localhost:3000/listening/off?user_id=$user_id");
     }
 
     public function mainFunction(Request $request)
@@ -98,144 +102,23 @@ class AllegroController extends Controller
         return $this->allegroMainFunction::mainFunction($request);
     }
 
+    // ================
+    // ---- OFERTY ----
+    // ================
 
-    // public function refreshToken(Request $request)
-    // {
-    //     // return base64_encode($this->clientId.":".$this->clientSecret);
-
-    //     $userData = UserData::where('user_id', 14)->first();
-    //     // dd($userData);
-
-    //     $response = Http::withHeaders([
-    //         "Authorization" => "Basic ".base64_encode($this->clientId.":".$this->clientSecret)
-    //     ])->post("https://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$userData->refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token")->json();
-
-    //     return $response;
-
-    // }
-
-    // ==============
-    // =======---====
-    // allegro - func
-    // =======---====
-    // ==============
-
-    public function setOffer(Request $request)
+    public function setMonitoring(Request $request)
     {
-        $offer = Offers::where('offer_id', $request->offer_id)->first();
-
-        if($offer->is_active == 'NO')
-        {
-            Offers::where('offer_id', $request->offer_id)->update([ 'is_active' => 'YES' ]);
-            $status = ['YES'];
-        }
-
-        if($offer->is_active == 'YES')
-        {
-            Offers::where('offer_id', $request->offer_id)->update([ 'is_active' => 'NO' ]);
-            $status = ['NO'];
-        }
-
-        if(isset($status))
-        {
-            return resposne()->json([
-                'message' => $status
-            ], 200);
-        }
-        else
-        {
-            return resposne()->json([
-                'message' => 'some goes wrong... :('
-            ], 500);
-        }
+        return $this->allegroAccountRepo::setMonitoring($request->id);
     }
 
-    // ==========================
-    // =======---================
-    // allegro - pobieranie ofert
-    // =======---================
-    // ==========================
+    public function getMonitoring($set)
+    {
+        return $this->allegroAccountRepo::getMonitoring($set);
+    }
 
     public function getOffer(Request $request)
     {
-
         return $this->integrationRepo::offers(40, $request);
-        // $limit = 100;
-        // if(isset($request->limit))
-        // {
-        //     $limit = $request->limit;
-        // }
-        // if(isset($request->dev))
-        // {
-        //     $user_id = 14;
-        // }
-        // else
-        // {
-        //     $user_id = Auth::user()->id;
-        // }
-        // $userData = UserData::where('user_id', $user_id)->get()[0];
-
-        // // dd($request->refresh);
-        // if($request->refresh == "set")
-        // {
-        //     $response = Http::withHeaders([
-        //         "Accept" => "application/vnd.allegro.public.v1+json",
-        //         "Authorization" => "Bearer $userData->access_token"
-        //     ])->get("https://api.allegro.pl/sale/offers?limit=100");
-
-        //     // return $response['offers'];
-        //     foreach($response['offers'] as $offer)
-        //     {
-        //         $ending[] = $offer;
-        //         $existOffer = Offers::where('offer_id', $offer['id'])->get();
-        //         if(!isset($existOffer[0]["id"]))
-        //         {
-        //             $offerDB = new Offers();
-        //             $offerDB->seller_id = $user_id;
-        //             $offerDB->offer_id = $offer['id'];
-        //             $offerDB->offer_name = $offer['name'];
-        //             $offerDB->stock_available = $offer["stock"]["available"];
-        //             $offerDB->stock_sold = $offer['stock']['sold'];
-
-        //             $d=strtotime("-1 Months");
-        //             $date = date("Y-m-d h:i:s", $d);
-        //             $soldInTrD = Orders::where('offer_id', $offer['id'])->where('created_at', '>', $date)->count();
-        //             $offerDB->sold_last_30d = $soldInTrD;
-
-        //             $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
-        //             $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
-        //             $offerDB->platform = "Allegro";
-        //             $offerDB->status_platform = $offer['publication']['status'];
-        //             $offerDB->startedAt = $offer['publication']['startedAt'];
-        //             if(isset($offer['publication']['endingAt']))
-        //             {
-        //                 $offerDB->endingAt = $offer['publication']['endingAt'];
-        //             }
-        //             else
-        //             {
-        //                 $offerDB->endingAt = "Neverending offer... :)";
-        //             }
-
-        //             if(isset($offer['publication']['endedAt']))
-        //             {
-        //                 $offerDB->endingAt = $offer['publication']['endedAt'];
-        //             }
-        //             else
-        //             {
-        //                 $offerDB->endingAt = "Neverended offer... :)";
-        //             }
-
-        //             $offerDB->is_active = 'YES';
-        //             $offerDB->save();
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        //     return Offers::where('seller_id', $user_id)->get();
-        // }
-        // return Offers::where('seller_id', $user_id)->get();
-
     }
 
     public function getCustomers(Request $request)
@@ -419,9 +302,6 @@ class AllegroController extends Controller
     //                     $detailsInfo = $this->checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
                         
     //                     $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first();
-    //                     // dd($existOrder);
-    //                     // dd($detailsInfo);
-    //                     // dd($isActive['is_active'], $detailsInfo->lineItems[0]->offer->id);
     //                     if(!isset($existOrder[0]["id"]) && $isActive['is_active'] == "YES") 
     //                     {
     //                         $log[] = "new order: ".$order["id"];
@@ -451,9 +331,7 @@ class AllegroController extends Controller
     //                                     ->update([
     //                                         'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
     //                                 ]);
-    //                             }
-    //                             else
-    //                             {
+    //                             } else {
     //                                 $order_table = new OrdersTable;
     //                                 $order_table->seller_id = $request->user_id;
     //                                 $order_table->customer_id = $buyer["id"];
@@ -462,9 +340,7 @@ class AllegroController extends Controller
     //                                 $order_table->count = 1;
     //                                 $order_table->save();
     //                             }
-    //                         }
-    //                         else 
-    //                         {
+    //                         } else {
     //                             if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
     //                             {
     //                                 $tests[] = "jeśli ordersTable istnieje";
@@ -473,9 +349,7 @@ class AllegroController extends Controller
     //                                     ->update([
     //                                         'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
     //                                 ]);
-    //                             }
-    //                             else
-    //                             {
+    //                             } else {
     //                                 $order_table = new OrdersTable;
     //                                 $order_table->seller_id = $request->user_id;
     //                                 $order_table->customer_id = $buyer["id"];
@@ -510,8 +384,7 @@ class AllegroController extends Controller
     //                         // $this->checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
     //                         $lastEvent = $order["id"];
     //                         $details[] = $orderModel;
-    //                     }
-    //                     else {
+    //                     } else {
     //                         $lastEvent = $order["id"];
     //                         $log[] = "old order: ".$order["id"];
     //                     }
@@ -520,8 +393,7 @@ class AllegroController extends Controller
     //                 }
     //                 $status = 0;
     //                 $desc = "Oh yhee.. some new orders :) ";
-    //             }
-    //             else{
+    //             } else {
     //                 $log[] = "last order: ".$lastEvent;
     //                 $status = 0;
     //                 $desc = "Please... give me some orders :( ";
@@ -529,8 +401,7 @@ class AllegroController extends Controller
     //             $userData->last_event = $lastEvent;
     //             $userData->save();
     //             // zmiana w badzie danych ostatniego eventu
-    //         }
-    //         else {
+    //         } else {
     //             $status = 0;
     //             $desc = "Please... give me some orders :( ";
     //         }     

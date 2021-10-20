@@ -113,15 +113,38 @@ class AllegroAccountRepository
         return response()->json($offer);
     }
 
-    static function setListening($offer_id)
+    public function setMonitoring($id)
     {
-        if(Offers::where('id', $offer_id)->get()['is_active'] == 'NO')
+        $offer = Offers::where('offer_id', $id)->first();
+
+        if($offer->is_active == 'NO')
         {
-            Offers::where('id', $offer_id)->update(['is_active' => 'YES']);
-            return response()->json(['message' => 'Set to YES']);
-        } else {
-            Offers::where('id', $offer_id)->update(['is_active' => 'NO']);
-            return response()->json(['message' => 'Set to NO']);
+            Offers::where('offer_id', $id)->update([ 'is_active' => 'YES' ]);
+            $status = ['YES'];
         }
+
+        if($offer->is_active == 'YES')
+        {
+            Offers::where('offer_id', $id)->update([ 'is_active' => 'NO' ]);
+            $status = ['NO'];
+        }
+
+        if(isset($status))
+        {
+            return resposne()->json([
+                'message' => $id.':'.$status
+            ], 200);
+        } else {
+            return resposne()->json([
+                'message' => 'some goes wrong... :('
+            ], 500);
+        }
+    }
+
+    static function getMonitoring($set)
+    {
+        $offers = Offers::where('is_active', $set)->get();
+
+        return response()->json($offers);
     }
 }

@@ -74,14 +74,14 @@ Route::group([
     Route::get('/test', [ AllegroController::class, 'getToken']);
     Route::get('/{user_id}/add', [ AllegroController::class, 'add']);
     Route::get('/refresh', [ AllegroController::class, 'refreshToken']);
-    Route::get('/user/list', [ AllegroController::class, 'list']);
+    Route::get('/user/{user_id}/list', [ AllegroController::class, 'list']);
     // oferty
     Route::get('/monitoring/on', [ AllegroController::class, 'monitoringOn']);
     Route::get('/get/offers', [ AllegroController::class, 'offers']);
     Route::get('/get/offer', [ AllegroController::class, 'offer']);
     Route::get('/get/transaction', [ AllegroController::class, 'transaction']);
-    Route::get('/set/listening', [ AllegroController::class, 'setListening']);
-    Route::get('/get/listening/offers/{set}', [ AllegroController::class, 'getListening']);
+    Route::post('/set/monitoring', [ AllegroController::class, 'setMonitoring']);
+    Route::get('/get/monitoring/{set}', [ AllegroController::class, 'getMonitoring']);
 
     Route::get('/main_function', [ AllegroController::class, 'mainFunction']);
 });
