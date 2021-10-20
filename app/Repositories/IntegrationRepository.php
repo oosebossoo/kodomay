@@ -122,9 +122,9 @@ class IntegrationRepository
             if(!isset($response["error"])) {   
                 $response = json_decode($response);
                 $user[] = [
-                    $response->login,
-                    $response->firstName,
-                    $response->lastName,
+                    'id' => $userData->id,
+                    'login' => $response->login,
+                    'fullName' => $response->firstName.' '.$response->lastName,
                 ];
             }
             else {
