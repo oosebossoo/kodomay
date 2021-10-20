@@ -62,6 +62,7 @@ class IntegrationRepository
         if(!isset($response["error"]))
         {
             $userData = new UserData();
+            $userData->ordinal_id = UserData::where('user_id', $user_id)->count() + 1;
             $userData->user_id = $user_id;
             $userData->access_token = $response['access_token'];
             $userData->token_type = $response['token_type'];

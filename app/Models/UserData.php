@@ -12,6 +12,7 @@ class UserData extends Model
     protected $table = "user-data";
 
     protected $fillable = [
+        'ordinal_id',
         'access_token',
         'token_type',
         'refresch_token',

@@ -71,7 +71,7 @@ Route::group([
 
 ], function ($router) {
     // integracje
-    Route::get('/test', [ AllegroController::class, 'getToken']);
+    Route::get('/test', [ AllegroController::class, 'test']);
     Route::get('/{user_id}/add', [ AllegroController::class, 'add']);
     Route::get('/refresh', [ AllegroController::class, 'refreshToken']);
     Route::get('/user/{user_id}/list', [ AllegroController::class, 'list']);

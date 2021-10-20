@@ -43,6 +43,11 @@ class AllegroController extends Controller
         $this->allegroMainFunction = $allegroMainFunction;
     }
 
+    public function test()
+    {
+        return UserData::where('user_id', 40)->count() + 1;
+    }
+
     public function add(Request $request, $user_id)
     {   
         return $this->integrationRepo::add($this->clientId, $user_id);
