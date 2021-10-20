@@ -128,7 +128,8 @@ class IntegrationRepository
                     'id' => $userData->id,
                     'ordinal_id' => $userData->ordinal_id,
                     'login' => $response->login,
-                    'fullName' => $response->firstName.' '.$response->lastName,
+                    'created_at' => $userData->created_at,
+                    'updated_at' => $userData->updated_at
                 ];
             }
             else {
