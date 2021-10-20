@@ -66,7 +66,7 @@ class AllegroMainFunction
 
                 if($res[0]["id"] != $userData->last_event) 
                 {
-                    $log[] = "new events: ".$res[0]["id"];
+                    $log[] = "Allegro user: $userData->id has new events: ".$res[0]["id"];
 
                     foreach ($res as $order) 
                     {
@@ -78,7 +78,7 @@ class AllegroMainFunction
 
                         if(!isset($existOrder[0]) && $isActive == "YES") 
                         {
-                            $log[] = "id = $userData->id || new order: ".$order["id"];
+                            $log[] = "new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
                             $orderModel = new Orders;
                             $orderModel->offer_id = $detailsInfo->lineItems[0]->offer->id;
@@ -114,7 +114,7 @@ class AllegroMainFunction
                 $userData->save();
             }
             else {
-                $log[] = "$userData->id waiting for orders";
+                $log[] = "Allegro user: $userData->id waiting for orders";
             }     
             unset($res);
         }
