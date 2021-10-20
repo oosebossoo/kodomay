@@ -74,6 +74,8 @@ class IntegrationRepository
             $userData->refresh = 0;
             $userData->save();
 
+            return Redirect::to("http://localhost:3000/integrations/allegro");
+
             return response()->json([
                 'message' => 'added'
             ], 201);
