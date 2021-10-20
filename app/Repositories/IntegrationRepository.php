@@ -123,7 +123,8 @@ class IntegrationRepository
             if(!isset($response["error"])) {   
                 $response = json_decode($response);
                 $user[] = [
-                    'id' => $userData->id,
+                    'id' => $userData->_id,
+                    'ordinal_id' => $userData->ordinal_id,
                     'login' => $response->login,
                     'fullName' => $response->firstName.' '.$response->lastName,
                 ];
