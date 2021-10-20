@@ -48,6 +48,7 @@ class AllegroMainFunction
 
         foreach ($userDatas as $userData)
         {
+            $log[] = $userData->user_id;
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
