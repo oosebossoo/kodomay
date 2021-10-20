@@ -114,8 +114,7 @@ class IntegrationRepository
     {
         // --- PRODUKCJA --- 
         $userDatas = UserData::where('user_id', $user_id)->get();
-
-        $users = array();
+        
         foreach ($userDatas as $userData)
         {
             $response = Http::withHeaders([
@@ -140,6 +139,6 @@ class IntegrationRepository
                 return response()->json(['error' => $response['error']]);
             }  
         }
-        return response()->json($user);
+        return response()->json($user, 200);
     }
 }
