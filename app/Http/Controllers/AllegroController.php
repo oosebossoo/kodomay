@@ -539,54 +539,59 @@ class AllegroController extends Controller
             ->get();
         }
 
-        foreach($orders as $order)
+        if(!$orders->isEmpty())
         {
-            $sentMails = SentMail::where('order_id', $order->order_id)->get();
-            if (!isset($sentMails[0]))
+            foreach($orders as $order)
             {
-                $send_status = 'Sending';
-                $sent_date = 'Sending';
-                $codes[] = 'Sending';
-            }
-            else
-            {
-                foreach ($sentMails as $sentMail)
+                $sentMails = SentMail::where('order_id', $order->order_id)->get();
+                if (!isset($sentMails[0]))
                 {
-                    $send_status = 'Sent';
-                    $sent_date = $sentMail->created_at;
-                    $code = Code::where('id', $sentMail->code_id)->first();
-                    $codes[] = $code->code;
+                    $send_status = 'Sending';
+                    $sent_date = 'Sending';
+                    $codes[] = 'Sending';
+                }
+                else
+                {
+                    foreach ($sentMails as $sentMail)
+                    {
+                        $send_status = 'Sent';
+                        $sent_date = $sentMail->created_at;
+                        $code = Code::where('id', $sentMail->code_id)->first();
+                        $codes[] = $code->code;
+                    }
+                }
+
+                // $customer = Customer::where('customer_id', $order->customer_id)->first();
+                $res[] = [
+                    'order' => [ 
+                        $order, 
+                        'link' => "https://allegro.pl/oferta/$order->offer_id",
+                        'platform' => 'Allegro',
+                        'send_status' => $send_status,
+                        'ended' => 'null',
+                        'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
+                        'sent_date' => $sent_date, 
+                        'codes' => $codes
+                    ], 
+                    'customer' => [ 
+                        'name' => 'name_test', 
+                        'login' => 'login_test',
+                        'email' => 'email_test',
+                        // 'name' => $customer->first_name." ".$customer->last_name, 
+                        // 'login' => $customer->login,
+                        // 'email' => $customer->email,
+                    ]
+                ];
+
+                if($codes != 'Sending')
+                {
+                    \array_splice($codes, 0, 1);
                 }
             }
-
-            // $customer = Customer::where('customer_id', $order->customer_id)->first();
-            $res[] = [
-                'order' => [ 
-                    $order, 
-                    'link' => "https://allegro.pl/oferta/$order->offer_id",
-                    'platform' => 'Allegro',
-                    'send_status' => $send_status,
-                    'ended' => 'null',
-                    'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
-                    'sent_date' => $sent_date, 
-                    'codes' => $codes
-                ], 
-                'customer' => [ 
-                    'name' => 'name_test', 
-                    'login' => 'login_test',
-                    'email' => 'email_test',
-                    // 'name' => $customer->first_name." ".$customer->last_name, 
-                    // 'login' => $customer->login,
-                    // 'email' => $customer->email,
-                ]
-            ];
-
-            if($codes != 'Sending')
-            {
-                \array_splice($codes, 0, 1);
-            }
+            return response()->json($res, 200);
         }
-        return $res;
+        $res = [];
+        return response()->json($res, 200);
     }
 
     // --- ---
