@@ -470,7 +470,7 @@ class AllegroController extends Controller
 
     public function getOrders(Request $request)
     {
-        $user_id = 41;
+        $user_id = $request->user_id;
 
         $oderBy = 'desc';
         $limit = 50;
