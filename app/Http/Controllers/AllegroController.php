@@ -10,10 +10,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use AsocialMedia\AllegroApi\AllegroRestApi;
+
 use App\Repositories\IntegrationRepository;
 use App\Repositories\AllegroAccountRepository;
 use App\Repositories\AllegroMainFunction;
-use App\Repositories\AllegroRepo;
 
 use App\Http\Controllers\MailController;
 
@@ -31,21 +31,19 @@ use JWTAuth;
 class AllegroController extends Controller
 {
     // --- PROD ---
+    protected $id;
     const SANDBOX_URL = 'https://api.allegro.pl.';
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
     public function __construct(IntegrationRepository $integrationRepo, AllegroAccountRepository $allegroAccountRepo, AllegroMainFunction $allegroMainFunction, JWTAuth $jwtAuth)
     {
-        //$this->user = $jwtAuth::parseToken()->authenticate();
+        $this->user = $jwtAuth::parseToken()->authenticate();
+        $this->jwtAuth = $jwtAuth;
+        $id = $this->user->id;
         $this->integrationRepo = $integrationRepo;
         $this->allegroAccountRepo = $allegroAccountRepo;
         $this->allegroMainFunction = $allegroMainFunction;
-    }
-
-    public function test()
-    {
-        return UserData::where('user_id', 40)->count() + 1;
     }
 
     public function add(Request $request, $user_id)
@@ -73,9 +71,9 @@ class AllegroController extends Controller
         return $this->integrationRepo::list($user_id);
     }
 
-    public function offers()
+    public function offers(Request $request)
     {
-        return $this->allegroAccountRepo::offers(40);
+        return $this->allegroAccountRepo::offers($request->id);
     }
 
     public function offer(Request $request)
@@ -91,8 +89,18 @@ class AllegroController extends Controller
     public function monitoringOn(Request $request)
     {
         $response = Http::withHeaders([
-            "Accept" => "application/vnd.allegro.public.v1+json",
-        ])->get("http://localhost:3000/listening?user_id=$user_id");
+            "Authorization" => "{jwtAuth::getToken()}"
+            ])
+            ->post("http://localhost:3000/listening", [
+                40
+            ]);
+        return 1;
+    }
+
+    protected static function getJWT()
+    {
+        $token = jwtAuth::getToken();
+        return $token;
     }
 
     public function monitoringOff(Request $request)
@@ -104,6 +112,8 @@ class AllegroController extends Controller
 
     public function mainFunction(Request $request)
     {
+        $user_id = $this->user->id;
+        dd($user_id);
         return $this->allegroMainFunction::mainFunction($request);
     }
 
