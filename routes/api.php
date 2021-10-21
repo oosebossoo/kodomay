@@ -80,9 +80,10 @@ Route::group([
     Route::get('/monitoring/on', [ AllegroController::class, 'monitoringOn']);
     Route::get('/get/offers', [ AllegroController::class, 'offers']);
     Route::get('/get/offer', [ AllegroController::class, 'offer']);
-    Route::get('/get/transaction', [ AllegroController::class, 'transaction']);
     Route::post('/set/monitoring', [ AllegroController::class, 'setMonitoring']);
     Route::get('/get/monitoring/{set}', [ AllegroController::class, 'getMonitoring']);
+    //tranzakcje
+    Route::get('/get/transaction', [ AllegroController::class, 'getOrders']);
 
     Route::get('/main_function', [ AllegroController::class, 'mainFunction']);
 });

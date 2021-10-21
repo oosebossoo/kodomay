@@ -470,14 +470,7 @@ class AllegroController extends Controller
 
     public function getOrders(Request $request)
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
+        $user_id = 40;
 
         $oderBy = 'desc';
         $limit = 50;
