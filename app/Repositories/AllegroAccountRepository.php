@@ -113,7 +113,7 @@ class AllegroAccountRepository
         return response()->json($offer);
     }
 
-    public function setMonitoring($id)
+    static function setMonitoring($id)
     {
         $offer = Offers::where('offer_id', $id)->first();
 
