@@ -107,8 +107,8 @@ class AllegroController extends Controller
     public function mainFunction(Request $request)
     {
         $user_id = $this->user->id;
-        return $user_id;
-        return $this->allegroMainFunction::mainFunction($request);
+        // return $user_id;
+        return $this->allegroMainFunction::mainFunction($user_id);
     }
 
     // ================

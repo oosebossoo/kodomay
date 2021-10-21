@@ -30,9 +30,9 @@ class AllegroMainFunction
         return json_decode($response);
     }
 
-    static function mainFunction($request)
+    static function mainFunction($user_id)
     {
-        $userDatas = UserData::where('user_id', $request->user_id)->get();
+        $userDatas = UserData::where('user_id', $user_id)->get();
 
         if(!isset($userDatas))
         {
@@ -42,7 +42,7 @@ class AllegroMainFunction
             ];
         }
 
-        $log[] = 'User: '.$request->user_id;
+        $log[] = 'User: '.$user_id;
 
         foreach ($userDatas as $userData)
         {
@@ -53,7 +53,7 @@ class AllegroMainFunction
 
             if($response->failed() || $response->clientError())
             {
-                UserData::where('user_id', $request->user_id)->update([
+                UserData::where('user_id', $user_id)->update([
                     'refresh' => true
                 ]);
                 return IntegrationRepository::refreshToken(UserData::where('id', $userData->id)->select('refresh_token')->first()['refresh_token'], self::$clientId, self::$clientSecret);
@@ -90,7 +90,7 @@ class AllegroMainFunction
                             $orderModel->order_price = $detailsInfo->lineItems[0]->price->amount;
                             $orderModel->order_currency = $detailsInfo->lineItems[0]->price->currency;
                             $orderModel->customer_id = $buyer["id"];
-                            $orderModel->seller_id = $request->user_id;
+                            $orderModel->seller_id = $user_id;
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             $orderModel->save();
 
