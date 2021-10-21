@@ -21,14 +21,14 @@ class StatisticsController extends Controller
 
     public function ordersTodayCount(Request $request)
     {
-        $user_id = $this->user->id;
+        $user_id = 40;
 
         return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
     }
 
     public function offersActiveCount(Request $request)
     {
-        $user_id = $this->user->id;
+        $user_id = 40;
 
         return Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count();
     }
