@@ -559,7 +559,7 @@ class AllegroController extends Controller
                 }
             }
 
-            $customer = Customer::where('customer_id', $order->customer_id)->first();
+            // $customer = Customer::where('customer_id', $order->customer_id)->first();
             $res[] = [
                 'order' => [ 
                     $order, 
@@ -572,7 +572,8 @@ class AllegroController extends Controller
                     'codes' => $codes
                 ], 
                 'customer' => [ 
-                    'name' => $customer->first_name." ".$customer->last_name, 
+                    'name' => 'to tylko test', 
+                    // 'name' => $customer->first_name." ".$customer->last_name, 
                     'login' => $customer->login,
                     'email' => $customer->email,
                 ]
