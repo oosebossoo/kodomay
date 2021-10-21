@@ -116,7 +116,7 @@ class IntegrationRepository
                 UserData::where('user_id', $user_id)->update([
                     'refresh' => 1
                 ]);
-                self::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')['refresh_token']);
+                self::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')->first()['refresh_token'], 'e27c3091a67a4edd8015191d4a26c66f', '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro');
                 return response()->json(['error' => $response['error']]);
             }  
         }
