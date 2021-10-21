@@ -117,27 +117,20 @@ class AllegroAccountRepository
     {
         $offer = Offers::where('offer_id', $id)->first();
 
-        if($offer->is_active == 'NO')
+        if(!$offer->isEmpty())
         {
-            Offers::where('offer_id', $id)->update([ 'is_active' => 'YES' ]);
-            $status = ['YES'];
-        }
+            if($offer->is_active == 'NO')
+            {
+                Offers::where('offer_id', $id)->update([ 'is_active' => 'YES' ]);
+            }
 
-        if($offer->is_active == 'YES')
-        {
-            Offers::where('offer_id', $id)->update([ 'is_active' => 'NO' ]);
-            $status = ['NO'];
-        }
-
-        if(isset($status))
-        {
-            return resposne()->json([
-                'message' => $id.':'.$status
-            ], 200);
+            if($offer->is_active == 'YES')
+            {
+                Offers::where('offer_id', $id)->update([ 'is_active' => 'NO' ]);
+            }
+            return response()->json(['message' => 'set'], 200);
         } else {
-            return resposne()->json([
-                'message' => 'some goes wrong... :('
-            ], 500);
+            return response()->json(['message' => "Can't set, check offer id"], 400);
         }
     }
 
