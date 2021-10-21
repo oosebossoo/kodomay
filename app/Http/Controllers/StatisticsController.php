@@ -40,14 +40,7 @@ class StatisticsController extends Controller
 
     public function getTransactionInMonth(Request $request)
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
+        $user_id = 40;
 
         if(isset($request->m) == 1)
         {
@@ -90,14 +83,7 @@ class StatisticsController extends Controller
 
     public function transactionValue(Request $request)
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
+        $user_id = 40;
 
         if(isset($request->m))
         {
