@@ -97,12 +97,6 @@ class AllegroController extends Controller
         return 1;
     }
 
-    protected static function getJWT()
-    {
-        $token = jwtAuth::getToken();
-        return $token;
-    }
-
     public function monitoringOff(Request $request)
     {
         $response = Http::withHeaders([
@@ -113,7 +107,7 @@ class AllegroController extends Controller
     public function mainFunction(Request $request)
     {
         $user_id = $this->user->id;
-        dd($user_id);
+        return $user_id;
         return $this->allegroMainFunction::mainFunction($request);
     }
 
