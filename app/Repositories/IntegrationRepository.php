@@ -33,17 +33,25 @@ class IntegrationRepository
             'Accept-Language' => 'pl-PL'
         ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
 
-        UserData::where('refresh_token', $refresh_token)->update([
-            'access_token' => $response['access_token'], 
-            'refresh_token' => $response['refresh_token'],
-            'jti' => $response['jti'],
-            'refresh' => 0
-        ]);
+        if(!isset($response['error']))
+        {
+            UserData::where('refresh_token', $refresh_token)->update([
+                'access_token' => $response['access_token'], 
+                'refresh_token' => $response['refresh_token'],
+                'jti' => $response['jti'],
+                'refresh' => 0
+            ]);
 
-        return response()->json([
-            'message' => 'updated',
-            $response
-        ], 200);
+            return response()->json([
+                'message' => 'updated',
+                $response
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'error',
+                $response
+            ], 200);
+        }
     }
 
     static function getToken($request, $clientId, $clientSecret, $user_id)
