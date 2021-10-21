@@ -33,10 +33,6 @@ class IntegrationRepository
             'Accept-Language' => 'pl-PL'
         ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
 
-        echo $response;
-
-        echo '<h1>'.$response['refresh_token'].'</h1>';
-
         UserData::where('refresh_token', $refresh_token)->update([
             'access_token' => $response['access_token'], 
             'refresh_token' => $response['refresh_token'],
@@ -45,7 +41,8 @@ class IntegrationRepository
         ]);
 
         return response()->json([
-            'message' => 'updated'
+            'message' => 'updated',
+            $response
         ], 200);
     }
 
@@ -75,11 +72,8 @@ class IntegrationRepository
             $userData->save();
 
             return redirect()->away('http://localhost:3000/integrations/allegro');
-
-            // return response()->json([
-            //     'message' => 'added'
-            // ], 201);
         }
+
         return response()->json([
             'message' => 'try later'
         ], 500);
@@ -87,23 +81,12 @@ class IntegrationRepository
 
     static function deleteAllegroUser($request)
     {
-        if(isset($request->user_id))
-        {
-            $user_id = $request->user_id;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-
         if(UserData::where('user_id', $user_id)->where('id', $request->id)->delete())
         {
             return resposne()->json([
                 'message' => "Can't delete account"
             ], 500);
-        }
-        else
-        {
+        } else {
             return resposne()->json([
                 'message' => "Can't delete account"
             ], 500);
@@ -112,9 +95,8 @@ class IntegrationRepository
 
     static function list($user_id)
     {
-        // --- PRODUKCJA --- 
         $userDatas = UserData::where('user_id', $user_id)->get();
-        
+
         foreach ($userDatas as $userData)
         {
             $response = Http::withHeaders([
@@ -130,12 +112,11 @@ class IntegrationRepository
                     'created_at' => $userData->created_at,
                     'updated_at' => $userData->updated_at
                 ];
-            }
-            else {
+            } else {
                 UserData::where('user_id', $user_id)->update([
                     'refresh' => 1
                 ]);
-                $this->refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')['refresh_token']);
+                self::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')['refresh_token']);
                 return response()->json(['error' => $response['error']]);
             }  
         }
