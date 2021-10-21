@@ -572,10 +572,12 @@ class AllegroController extends Controller
                     'codes' => $codes
                 ], 
                 'customer' => [ 
-                    'name' => 'to tylko test', 
+                    'name' => 'name_test', 
+                    'login' => 'login_test',
+                    'email' => 'email_test',
                     // 'name' => $customer->first_name." ".$customer->last_name, 
-                    'login' => $customer->login,
-                    'email' => $customer->email,
+                    // 'login' => $customer->login,
+                    // 'email' => $customer->email,
                 ]
             ];
 
