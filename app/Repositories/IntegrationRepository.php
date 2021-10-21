@@ -89,11 +89,11 @@ class IntegrationRepository
 
     static function deleteAllegroUser($request)
     {
-        if(UserData::where('user_id', $user_id)->where('id', $request->id)->delete())
+        if(UserData::where('id', $request->id)->delete())
         {
             return resposne()->json([
-                'message' => "Can't delete account"
-            ], 500);
+                'message' => "Account deleted"
+            ], 200);
         } else {
             return resposne()->json([
                 'message' => "Can't delete account"
