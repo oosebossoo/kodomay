@@ -138,7 +138,7 @@ class AllegroController extends Controller
         }
 
         $oderBy = 'desc';
-        $limit = 100;
+        $limit = 50;
         $customerId = ['sign' => '!=', 'id' => ''];
         $canceled = [ 'sign' => '=', 'desc' => ''];
 
