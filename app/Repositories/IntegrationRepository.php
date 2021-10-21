@@ -91,11 +91,11 @@ class IntegrationRepository
     {
         if(UserData::where('id', $request->id)->delete())
         {
-            return resposne()->json([
+            return response()->json([
                 'message' => "Account deleted"
             ], 200);
         } else {
-            return resposne()->json([
+            return response()->json([
                 'message' => "Can't delete account"
             ], 500);
         }
@@ -113,7 +113,7 @@ class IntegrationRepository
             ])->get("https://api.allegro.pl/me"); 
             if(!isset($response["error"])) {   
                 $response = json_decode($response);
-                $user[] = [
+                $res[] = [
                     'id' => $userData->id,
                     'ordinal_id' => $userData->ordinal_id,
                     'login' => $response->login,
@@ -125,9 +125,11 @@ class IntegrationRepository
                     'refresh' => 1
                 ]);
                 self::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')->first()['refresh_token'], 'e27c3091a67a4edd8015191d4a26c66f', '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro');
-                return response()->json(['error' => $response['error']]);
+                $res = [
+                    'error' => $response['error']
+                ];
             }  
         }
-        return response()->json($user, 200);
+        return response()->json($res, 200);
     }
 }
