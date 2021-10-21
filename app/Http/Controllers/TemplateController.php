@@ -38,8 +38,8 @@ class TemplateController extends Controller
 
             return response()->json($res, 200);
         }
-
-        return response()->json(403);
+        $res = [];
+        return response()->json($res, 200);
     }
 
     public function get(Request $request)

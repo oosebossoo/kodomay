@@ -278,8 +278,8 @@ class CodesController extends Controller
 
             return response()->json($res, 200);
         }
-
-        return response()->json(['message' => 'Empty db'], 200);
+        $res = [];
+        return response()->json($res, 200);
     }
 
     public function used(Request $request)
@@ -297,8 +297,8 @@ class CodesController extends Controller
 
             return response()->json($res, 200);
         }
-
-        return response()->json(['message' => 'Empty db'], 200);
+        $res = [];
+        return response()->json($res, 200);
     }
 
     public function delete_codes(Request $request)
