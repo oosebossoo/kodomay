@@ -134,7 +134,7 @@ class IntegrationRepository
             }
             return response()->json($res, 200);
         } else {
-            return response()->json(['message' => 'Empty db'], 200);
+            return response()->json(['message' => 'Empty db'], 500);
         }
     }
 }
