@@ -105,31 +105,36 @@ class IntegrationRepository
     {
         $userDatas = UserData::where('user_id', $user_id)->get();
 
-        foreach ($userDatas as $userData)
+        if(!$userDatas->isEmpty())
         {
-            $response = Http::withHeaders([
-                "Accept" => "application/vnd.allegro.public.v1+json",
-                "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/me"); 
-            if(!isset($response["error"])) {   
-                $response = json_decode($response);
-                $res[] = [
-                    'id' => $userData->id,
-                    'ordinal_id' => $userData->ordinal_id,
-                    'login' => $response->login,
-                    'created_at' => $userData->created_at,
-                    'updated_at' => $userData->updated_at
-                ];
-            } else {
-                UserData::where('user_id', $user_id)->update([
-                    'refresh' => 1
-                ]);
-                self::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')->first()['refresh_token'], 'e27c3091a67a4edd8015191d4a26c66f', '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro');
-                $res = [
-                    'error' => $response['error']
-                ];
-            }  
+            foreach ($userDatas as $userData)
+            {
+                $response = Http::withHeaders([
+                    "Accept" => "application/vnd.allegro.public.v1+json",
+                    "Authorization" => "Bearer $userData->access_token"
+                ])->get("https://api.allegro.pl/me"); 
+                if(!isset($response["error"])) {   
+                    $response = json_decode($response);
+                    $res[] = [
+                        'id' => $userData->id,
+                        'ordinal_id' => $userData->ordinal_id,
+                        'login' => $response->login,
+                        'created_at' => $userData->created_at,
+                        'updated_at' => $userData->updated_at
+                    ];
+                } else {
+                    UserData::where('user_id', $user_id)->update([
+                        'refresh' => 1
+                    ]);
+                    self::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')->first()['refresh_token'], 'e27c3091a67a4edd8015191d4a26c66f', '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro');
+                    $res = [
+                        'error' => $response['error']
+                    ];
+                }  
+            }
+            return response()->json($res, 200);
+        } else {
+            return response()->json(['message' => 'Empty db'], 200);
         }
-        return response()->json($res, 200);
     }
 }
