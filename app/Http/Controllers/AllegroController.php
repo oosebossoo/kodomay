@@ -92,9 +92,9 @@ class AllegroController extends Controller
         $response = Http::withHeaders([
             "Authorization" => "{jwtAuth::getToken()}"
             ])
-            ->post("http://localhost:3000/listening", [
-                40
-            ]);
+            ->post("http://localhost:3000/listening", json_encode([
+                'user_id' => 40
+            ]), 'json');
         return 1;
     }
 
