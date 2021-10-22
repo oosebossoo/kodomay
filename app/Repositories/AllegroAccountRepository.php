@@ -119,7 +119,7 @@ class AllegroAccountRepository
     {
         $offer = Offers::where('offer_id', $id)->first();
 
-        if(count($offer))
+        if(empty($result))
         {
             if($offer->is_active == 'NO')
             {
