@@ -28,6 +28,7 @@ class AllegroAccountRepository
         }
 
         $userDatas = UserData::where('user_id', $user_id)->get();
+        dd($userDatas);
         foreach($userDatas as $userData)
         {
             $response = Http::withHeaders([
