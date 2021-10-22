@@ -38,9 +38,10 @@ class AllegroController extends Controller
 
     public function __construct(IntegrationRepository $integrationRepo, AllegroAccountRepository $allegroAccountRepo, AllegroMainFunction $allegroMainFunction, JWTAuth $jwtAuth)
     {
-        $this->user = $jwtAuth::parseToken()->authenticate();
-        $this->jwtAuth = $jwtAuth;
-        $id = $this->user->id;
+        // $this->user = $jwtAuth::parseToken()->authenticate();
+        // $this->jwtAuth = $jwtAuth;
+        // $id = $this->user->id;
+
         $this->integrationRepo = $integrationRepo;
         $this->allegroAccountRepo = $allegroAccountRepo;
         $this->allegroMainFunction = $allegroMainFunction;
@@ -106,9 +107,9 @@ class AllegroController extends Controller
 
     public function mainFunction(Request $request)
     {
-        $user_id = $this->user->id;
+        // $user_id = $this->user->id;
         // return $user_id;
-        return $this->allegroMainFunction::mainFunction($user_id);
+        return $this->allegroMainFunction::mainFunction($request->user_id);
     }
 
     // ================
