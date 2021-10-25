@@ -94,6 +94,59 @@ class AllegroMainFunction
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             $orderModel->save();
 
+                            if(Customer::where('customer_id', $buyer["id"])->exists())
+                            {
+                                Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
+
+                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
+                                {
+                                    OrdersTable::where('customer_id', $buyer["id"])
+                                        ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
+                                        ->update([
+                                            'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
+                                    ]);
+                                } else {
+                                    $order_table = new OrdersTable;
+                                    $order_table->seller_id = $user_id;
+                                    $order_table->customer_id = $buyer["id"];
+                                    $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->count = 1;
+                                    $order_table->save();
+                                }
+                            } else {
+                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
+                                {
+                                    $tests[] = "jeśli ordersTable istnieje";
+                                    OrdersTable::where('customer_id', $buyer["id"])
+                                        ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
+                                        ->update([
+                                            'count' => Orders::where('customer_id', $buyer["id"])->where('offer_id', $detailsInfo->lineItems[0]->offer->id)->count()
+                                    ]);
+                                } else {
+                                    $order_table = new OrdersTable;
+                                    $order_table->seller_id = $user_id;
+                                    $order_table->customer_id = $buyer["id"];
+                                    $order_table->offer_id = $detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->offer_link = "https://www.allegro.pl/oferta/".$detailsInfo->lineItems[0]->offer->id;
+                                    $order_table->count = 1;
+                                    $order_table->save();
+                                }
+                                $customer = new Customer;
+                                $customer->customer_id = $buyer["id"];
+                                $customer->seller_id = $user_id;
+                                $customer->login = $buyer["login"];
+                                $customer->email = $buyer["email"];
+                                $customer->first_name = $detailsInfo->buyer->firstName;
+                                $customer->last_name = $detailsInfo->buyer->lastName;
+                                $customer->adress = $detailsInfo->buyer->address->street;
+                                $customer->city = $detailsInfo->buyer->address->city;
+                                $customer->no_tel = $detailsInfo->buyer->phoneNumber;
+                                $customer->office = $detailsInfo->buyer->companyName;
+                                $customer->guest = $buyer["guest"];
+                                $customer->orders = 1;
+                                $customer->save();
+                            }
                             // wyślij maila
                             // MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $buyer["email"]);
 
