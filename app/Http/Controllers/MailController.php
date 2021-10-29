@@ -20,6 +20,7 @@ class MailController extends Controller
 {
    public static function sendCode($order_id, $quantity, $email) 
    {
+      dd($order_id, $quantity, $email);
       $email = 'sebek.kasprzak.kodomat@gmail.com';
 
       $order = Orders::where('order_id', $order_id)->first();
