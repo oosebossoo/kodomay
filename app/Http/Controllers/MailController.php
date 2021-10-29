@@ -29,7 +29,7 @@ class MailController extends Controller
       {
          // $code = Code::where('offer_id', $order->offer_id)->where('status', 1)->where('seller_id', $order->seller_id)->first();
          $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->first();
-         dd($code);
+         // dd($code->code);
          $data = array('code' => $code->code);
       }
 
