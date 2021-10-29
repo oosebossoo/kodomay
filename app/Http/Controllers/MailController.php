@@ -21,13 +21,14 @@ class MailController extends Controller
    public static function sendCode($order_id, $quantity, $email) 
    {
       dd($order_id, $quantity, $email);
+      $code->id = 1;
       $email = 'sebek.kasprzak.kodomat@gmail.com';
 
       $order = Orders::where('order_id', $order_id)->first();
 
       for ($i = 0; $i < $quantity; $i++)
       {
-         $code = "1234567890";
+         $code->code = "1234567890";
          // $code = Code::where('offer_id', $order->offer_id)->where('status', 1)->where('seller_id', $order->seller_id)->first();
          $data = array('code' => $code->code);
       }
