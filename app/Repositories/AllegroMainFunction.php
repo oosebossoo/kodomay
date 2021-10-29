@@ -148,7 +148,7 @@ class AllegroMainFunction
                                 $customer->save();
                             }
                             // wyślij maila
-                            // MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $buyer["email"]);
+                            MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $buyer["email"]);
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];

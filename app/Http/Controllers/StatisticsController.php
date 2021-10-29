@@ -33,9 +33,14 @@ class StatisticsController extends Controller
         return Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count();
     }
 
-    public function cashAllegro()
+    public function getCredits()
     {
-        return 0;
+        return response()->json(['credits' => $this->user->credits]);
+    }
+
+    public function getCash()
+    {
+        return response()->json(['cash' => 0]);
     }
 
     public function getTransactionInMonth(Request $request)

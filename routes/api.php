@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CodesController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\AllegroController;
+use App\Http\Controllers\StatisticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,5 +89,16 @@ Route::group([
     //tranzakcje
     Route::get('/get/transaction', [ AllegroController::class, 'getOrders']);
 
+    // glowna funkcja
     Route::get('/main_function', [ AllegroController::class, 'mainFunction']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'stat'
+
+], function ($router) {
+    // statystyki
+    Route::get('/credits', [ StatisticsController::class, 'getCredits']);
+    Route::get('/cash', [ StatisticsController::class, 'getCash']);
 });
