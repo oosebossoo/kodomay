@@ -20,7 +20,7 @@ class MailController extends Controller
 {
    public static function sendCode($order_id, $quantity, $email) 
    {
-      dd($order_id, $quantity, $email);
+      // dd($order_id, $quantity, $email);
       $code->id = 1;
       $email = 'sebek.kasprzak.kodomat@gmail.com';
 
