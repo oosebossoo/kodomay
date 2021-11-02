@@ -102,3 +102,13 @@ Route::group([
     Route::get('/credits', [ StatisticsController::class, 'getCredits']);
     Route::get('/cash', [ StatisticsController::class, 'getCash']);
 });
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'settings'
+
+], function ($router) {
+    // ustawienia
+    Route::get('/get', [SettingsController::class, 'getPersonalData']);
+    Route::post('/save', [SettingsController::class, 'savePersonalData']);
+});

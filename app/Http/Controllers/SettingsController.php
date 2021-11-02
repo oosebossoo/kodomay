@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
+
+use JWTAuth;
 
 use App\Models\PersonalData;
 
 class SettingsController extends Controller
 {
+    protected $user;
+ 
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
     public function getNotification(Request $request)
     {
         if(isset($request->dev))

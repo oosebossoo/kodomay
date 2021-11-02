@@ -10,6 +10,7 @@ use App\Http\Controllers\MailController;
 
 use App\Models\Customer;
 use App\Models\UserData;
+use App\Models\User;
 use App\Models\Orders;
 use App\Models\OrdersTable;
 use App\Models\Offers;
@@ -33,6 +34,13 @@ class AllegroMainFunction
     static function mainFunction($user_id)
     {
         $userDatas = UserData::where('user_id', $user_id)->get();
+
+        $user = User::where('id', $user_id)->first();
+
+        if($user['credits'] == 10)
+        {
+            return response()->json('Credits are empty');
+        }
 
         if(!isset($userDatas))
         {
@@ -149,6 +157,9 @@ class AllegroMainFunction
                             }
                             // wyślij maila
                             MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $buyer["email"]);
+                            
+                            $user['credits'] -= $detailsInfo->lineItems[0]->quantity;
+                            $user->save();
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];

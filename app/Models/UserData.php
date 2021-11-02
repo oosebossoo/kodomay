@@ -21,6 +21,6 @@ class UserData extends Model
         'allegro_api',
         'jti',
         'last_event',
-        'refresh'
+        'refresh',
     ];
 }
