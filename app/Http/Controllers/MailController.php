@@ -27,7 +27,7 @@ class MailController extends Controller
 
       for ($i = 0; $i < $quantity; $i++)
       {
-         $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->where('offer_id', $order->offer_id)->first();
+         $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->first();
          $data = array('code' => $code->code);
       }
 
