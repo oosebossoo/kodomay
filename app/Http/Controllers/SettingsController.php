@@ -72,7 +72,7 @@ class SettingsController extends Controller
     
     public function savePersonalData(Request $request)
     {
-        dd($this->user->id);
+        
         if(PersonalData::where('user_id', $this->user->id)->exists())
         {
             $data = PersonalData::where('user_id', $this->user->id)->first();
@@ -127,6 +127,7 @@ class SettingsController extends Controller
             $data = new PersonalData();
             if($request->type == "private")
             {
+                dd($this->user->id);
                 $data->user_id = $this->user->id;
                 $data->type = $request->accountType;
                 $data->full_name = $request->firstLastName;
