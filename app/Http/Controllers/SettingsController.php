@@ -85,30 +85,11 @@ class SettingsController extends Controller
 
     public function getPersonalData(Request $request)
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-
         return PersonalData::where('user_id', $user_id)->first();
     }
     
     public function savePersonalData(Request $request)
     {
-        
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-
         if(PersonalData::where('user_id', $user_id)->exists())
         {
             $data = PersonalData::where('user_id', $user_id)->first();

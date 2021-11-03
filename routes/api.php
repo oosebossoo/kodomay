@@ -11,6 +11,7 @@ use App\Http\Controllers\CodesController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
