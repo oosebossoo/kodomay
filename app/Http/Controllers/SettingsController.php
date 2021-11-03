@@ -113,25 +113,25 @@ class SettingsController extends Controller
         {
             $data = PersonalData::where('user_id', $user_id)->first();
 
-            if(isset($request->type))
+            if(isset($request->accountType))
             {
-                $data->type = $request->type;
+                $data->type = $request->accountType;
             }
-            if(isset($request->full_name))
+            if(isset($request->firstLastName))
             {
-                $data->full_name = $request->full_name;
+                $data->full_name = $request->firstLastName;
             }
-            if(isset($request->full_office_name))
+            if(isset($request->companyName))
             {
-                $data->full_office_name = $request->full_office_name;
+                $data->full_office_name = $request->companyName;
             }
-            if(isset($request->adress))
+            if(isset($request->address))
             {
-                $data->adress = $request->adress;
+                $data->adress = $request->address;
             }
-            if(isset($request->post_code))
+            if(isset($request->zipCode))
             {
-                $data->post_code = $request->post_code;
+                $data->post_code = $request->zipCode;
             }
             if(isset($request->city))
             {
@@ -141,9 +141,9 @@ class SettingsController extends Controller
             {
                 $data->NIP = $request->NIP;
             }
-            if(isset($request->phone_number))
+            if(isset($request->phoneNumber))
             {
-                $data->phone_number = $request->phone_number;
+                $data->phone_number = $request->phoneNumber;
             }
             if(isset($request->country))
             {

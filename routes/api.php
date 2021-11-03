@@ -114,4 +114,8 @@ Route::group([
     // ustawienia
     Route::get('/get', [SettingsController::class, 'getPersonalData']);
     Route::post('/save', [SettingsController::class, 'savePersonalData']);
+    Route::get('/getData', [SettingsController::class, 'getPersonalData']);
+    Route::post('/saveData', [SettingsController::class, 'savePersonalData']);
+    Route::get('/getNotification', [SettingsController::class, 'getNotification']);
+    Route::post('/saveNotifications', [SettingsController::class, 'saveNotifications']);
 });
