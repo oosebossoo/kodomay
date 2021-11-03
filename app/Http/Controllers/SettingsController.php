@@ -119,15 +119,13 @@ class SettingsController extends Controller
                 $data->full_office_name = "";
                 $data->NIP = "";
             }
-
             $data->save();
         }
         else
         {
             $data = new PersonalData();
-            if($request->type == "private")
+            if($request->accountType == "private")
             {
-                dd($this->user->id);
                 $data->user_id = $this->user->id;
                 $data->type = $request->accountType;
                 $data->full_name = $request->firstLastName;
@@ -138,8 +136,9 @@ class SettingsController extends Controller
                 $data->NIP = "";
                 $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
+                $data->save();
             }
-            if($request->type == "company")
+            if($request->accountType == "company")
             {
                 $data->user_id = $this->user->id;
                 $data->type = $request->accountType;
@@ -151,10 +150,9 @@ class SettingsController extends Controller
                 $data->NIP = $request->NIP;
                 $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
+                $data->save();
             }
-            $data->save();
         }
-        
     }
 
     public function setSessionTime()
