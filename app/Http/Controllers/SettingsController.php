@@ -130,7 +130,7 @@ class SettingsController extends Controller
                 $data->type = $request->accountType;
                 $data->full_name = $request->firstLastName;
                 $data->full_office_name = "";
-                $data->adress = $request->adress;
+                $data->adress = $request->address;
                 $data->post_code = $request->zipCode;
                 $data->city = $request->city;
                 $data->NIP = "";
@@ -143,7 +143,7 @@ class SettingsController extends Controller
                 $data->type = $request->accountType;
                 $data->full_name = $request->firstLastName;
                 $data->full_office_name = $request->companyName;
-                $data->adress = $request->adress;
+                $data->adress = $request->address;
                 $data->post_code = $request->zipCode;
                 $data->city = $request->city;
                 $data->NIP = $request->NIP;
