@@ -20,32 +20,14 @@ class SettingsController extends Controller
 
     public function getNotification(Request $request)
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-
-        return Notification::where('user_id', $user_id)->first();
+        return Notification::where('user_id', $this->user->id)->first();
     }
 
     public function saveNotifications(Request $request)
     {
-        if(isset($request->dev))
+        if(Notification::where('user_id', $this->user->id)->exists())
         {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
-
-        if(Notification::where('user_id', $user_id)->exists())
-        {
-            $data = Notification::where('user_id', $user_id)->first();
+            $data = Notification::where('user_id', $this->user->id)->first();
 
             if(isset($request->send_email_copy_code))
             {
@@ -73,7 +55,7 @@ class SettingsController extends Controller
         else
         {
             $data = new Notification();
-            $data->user_id = $user_id;
+            $data->user_id = $this->user->id;
             $data->send_email_copy_code = $request->send_email_copy_code;
             $data->send_info_new_adv = $request->send_info_new_adv;
             $data->send_info_end_of_credit = $request->send_info_end_of_credit;
@@ -85,14 +67,15 @@ class SettingsController extends Controller
 
     public function getPersonalData(Request $request)
     {
-        return PersonalData::where('user_id', $user_id)->first();
+        return PersonalData::where('user_id', $this->user->id)->first();
     }
     
     public function savePersonalData(Request $request)
     {
-        if(PersonalData::where('user_id', $user_id)->exists())
+        dd($this->user->id);
+        if(PersonalData::where('user_id', $this->user->id)->exists())
         {
-            $data = PersonalData::where('user_id', $user_id)->first();
+            $data = PersonalData::where('user_id', $this->user->id)->first();
 
             if(isset($request->accountType))
             {
@@ -144,7 +127,7 @@ class SettingsController extends Controller
             $data = new PersonalData();
             if($request->type == "private")
             {
-                $data->user_id = $user_id;
+                $data->user_id = $this->user->id;
                 $data->type = $request->accountType;
                 $data->full_name = $request->firstLastName;
                 $data->full_office_name = "";
@@ -157,7 +140,7 @@ class SettingsController extends Controller
             }
             if($request->type == "company")
             {
-                $data->user_id = $user_id;
+                $data->user_id = $this->user->id;
                 $data->type = $request->accountType;
                 $data->full_name = $request->firstLastName;
                 $data->full_office_name = $request->companyName;
