@@ -29,10 +29,10 @@ Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/{user_id}/get_token', [AllegroController::class, 'getToken']);
 Route::get('/refresh_token', [AllegroController::class, 'refreshToken']); 
 Route::get('/delete_allegro_user', [AllegroController::class, 'deleteAllegroUser']);
-Route::get('/get_personal_data', [SettingsController::class, 'getPersonalData']);
-Route::post('/save_personal_data', [SettingsController::class, 'savePersonalData']);
-Route::get('/get_notification', [SettingsController::class, 'getNotification']);
-Route::post('/save_notifications', [SettingsController::class, 'saveNotifications']);
+// Route::get('/get_personal_data', [SettingsController::class, 'getPersonalData']);
+// Route::post('/save_personal_data', [SettingsController::class, 'savePersonalData']);
+// Route::get('/get_notification', [SettingsController::class, 'getNotification']);
+// Route::post('/save_notifications', [SettingsController::class, 'saveNotifications']);
 
 Route::get('/send_notification', [NotificationController::class, 'sendNotification']);
 
