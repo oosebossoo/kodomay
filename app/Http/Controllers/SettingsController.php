@@ -136,7 +136,6 @@ class SettingsController extends Controller
                 $data->NIP = "";
                 $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
-                $data->save();
             }
             if($request->accountType == "company")
             {
@@ -150,8 +149,8 @@ class SettingsController extends Controller
                 $data->NIP = $request->NIP;
                 $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
-                $data->save();
             }
+            $data->save();
         }
     }
 
