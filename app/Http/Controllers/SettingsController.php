@@ -78,7 +78,7 @@ class SettingsController extends Controller
             'city' => $data->city,
             'NIP' => $data->NIP,
             'phoneNumber' => $data->phone_number,
-            'country' => $data->counrty
+            'country' => $data->country
         ];
         return response()->json($res);
     }
