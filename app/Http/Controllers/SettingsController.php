@@ -72,7 +72,6 @@ class SettingsController extends Controller
     
     public function savePersonalData(Request $request)
     {
-        dd($this->user->id);
         if(PersonalData::where('user_id', $this->user->id)->exists())
         {
             $data = PersonalData::where('user_id', $this->user->id)->first();
