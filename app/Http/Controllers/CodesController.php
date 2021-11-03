@@ -408,6 +408,15 @@ class CodesController extends Controller
         return response()->json($res, 200);
     }
 
+    public function join(Request $request)
+    {
+        $offer = Code::where('id', $request->db_id)->first();
+        $offer->offer_id = $request->offer_id;
+        $offer->save();
+    }
+
+
+
     public function getCodesFromOrder(Request $request)
     {
         $codes_id = SentMail::select('code_id')->where('order_id', $request->orderId)->where('customer_id', $request->customerId)->get();
@@ -447,62 +456,6 @@ class CodesController extends Controller
         }
 
         return response()->json(['message' => 'wrong values'], 400);
-    }
-
-    public static function getSellableCode(Request $request)
-    {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = $this->user->id;
-        }
-
-        $result = Code::where('status', 1)->where('user_id', $user_id)->first();
-        return response()->json($result);
-    }
-
-    public static function getSellableCodes(Request $request)
-    {
-        $limit = 100;
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = $this->user->id;
-        }
-
-        if(isset($request->limit))
-        {
-            $limit = $request->limit;
-        }
-
-        $result = Code::where('status', 1)->where('user_id', $user_id)->limit($limit)->get();
-        return response()->json($result);
-    }
-
-    public function getSoldCodes(Request $request)
-    {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = $this->user->id;
-        }
-
-        if(isset($request->count))
-        {
-            Code::where('status', 0)->where('user_id', $user_id)->count();
-        }
-
-        $result = Code::where('status', 0)->where('user_id', $user_id)->get();
-        return response()->json($result);
     }
 
     public static function changeStatusOfCode($id)

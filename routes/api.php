@@ -44,6 +44,7 @@ Route::group([
     Route::get('/list', [ CodesController::class, 'list']);
     Route::get('/shortList', [ CodesController::class, 'shortList']);
     Route::get('/delete', [ CodesController::class, 'delete_db']);
+    Route::get('/join', [ CodesController::class, 'join']);
 });
 
 Route::group([
