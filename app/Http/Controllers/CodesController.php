@@ -21,12 +21,58 @@ class CodesController extends Controller
     {
         $this->user = JWTAuth::parseToken()->authenticate();
     }
+    
+    public function shortList(Request $request)
+    {
+        $codes = $this->user->codes()->get();
+        $dbsUnique = $codes->unique('db_id');
+
+        foreach ($dbsUnique as $dbUnique)
+        {
+            if(!isset($sold[$dbUnique->db_id]))
+            {
+                $sold[$dbUnique->db_id] = 0;
+            }
+
+            if(!isset($available[$dbUnique->db_id]))
+            {
+                $available[$dbUnique->db_id] = 0;
+            }
+
+            $created_at = strtok($dbUnique->created_at, 'T');
+
+            if($dbUnique->db_type == 0)
+            {
+                $db_type = "Zwykła";
+            }
+            else
+            {
+                $db_type = "Rekurencyjna";
+            }
+
+            $response[] = [ 
+                'id' => $dbUnique->db_id, 
+                'name' => $dbUnique->db_name, 
+                'db_type' => $db_type,
+            ];
+        }
+
+        if(isset($response))
+        {
+            return response()->json($response);
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'No data in database',
+            ], 200);
+        }
+    }
 
     public function list(Request $request)
     {
         $codes = $this->user->codes()->get();
         $dbsUnique = $codes->unique('db_id');
-        //dd($dbsUnique);
 
         foreach ($codes as $code) 
         {

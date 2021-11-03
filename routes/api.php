@@ -28,7 +28,7 @@ Route::group([
     'prefix' => 'auth'
 
 ], function ($router) {
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
@@ -42,6 +42,7 @@ Route::group([
 ], function ($router) {
     Route::post('/add', [ CodesController::class, 'add_db']);
     Route::get('/list', [ CodesController::class, 'list']);
+    Route::get('/shortList', [ CodesController::class, 'shortList']);
     Route::get('/delete', [ CodesController::class, 'delete_db']);
 });
 
@@ -67,6 +68,7 @@ Route::group([
     Route::get('/get', [ TemplateController::class, 'get']);
     Route::post('/save', [ TemplateController::class, 'save']);
     Route::post('/delete', [ TemplateController::class, 'delete']);
+    Route::get('/join', [ TemplateController::class, 'join']);
 });
 
 Route::group([
