@@ -67,11 +67,12 @@ class SettingsController extends Controller
 
     public function getPersonalData(Request $request)
     {
-        return PersonalData::where('user_id', $this->user->id)->first();
+        return response()->json(PersonalData::where('user_id', $this->user->id)->first());
     }
     
     public function savePersonalData(Request $request)
     {
+        dd($this->user->id);
         if(PersonalData::where('user_id', $this->user->id)->exists())
         {
             $data = PersonalData::where('user_id', $this->user->id)->first();
