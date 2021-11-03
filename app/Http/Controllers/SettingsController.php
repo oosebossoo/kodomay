@@ -145,27 +145,27 @@ class SettingsController extends Controller
             if($request->type == "private")
             {
                 $data->user_id = $user_id;
-                $data->type = $request->type;
-                $data->full_name = $request->full_name;
+                $data->type = $request->accountType;
+                $data->full_name = $request->firstLastName;
                 $data->full_office_name = "";
                 $data->adress = $request->adress;
-                $data->post_code = $request->post_code;
+                $data->post_code = $request->zipCode;
                 $data->city = $request->city;
                 $data->NIP = "";
-                $data->phone_number = $request->phone_number;
+                $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
             }
-            if($request->type == "business")
+            if($request->type == "company")
             {
                 $data->user_id = $user_id;
-                $data->type = $request->type;
-                $data->full_name = $request->full_name;
-                $data->full_office_name = $request->full_office_name;
+                $data->type = $request->accountType;
+                $data->full_name = $request->firstLastName;
+                $data->full_office_name = $request->companyName;
                 $data->adress = $request->adress;
-                $data->post_code = $request->post_code;
+                $data->post_code = $request->zipCode;
                 $data->city = $request->city;
                 $data->NIP = $request->NIP;
-                $data->phone_number = $request->phone_number;
+                $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
             }
             $data->save();
