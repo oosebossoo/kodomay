@@ -77,7 +77,7 @@ class SettingsController extends Controller
             'zipCode' => $data->post_code,
             'city' => $data->city,
             'NIP' => $data->NIP,
-            'NIP' => $data->phone_number,
+            'phoneNumber' => $data->phone_number,
             'country' => $data->counrty
         ];
         return response()->json($res);
@@ -163,7 +163,12 @@ class SettingsController extends Controller
                 $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
             }
-            $data->save();
+            if($data->save())
+            {
+                return response()->json(['message' => 'Data saved']);
+            } else {
+                return response()->json(['message' => "Can't save"]);
+            }
         }
     }
 
