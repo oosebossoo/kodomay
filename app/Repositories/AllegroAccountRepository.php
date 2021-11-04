@@ -138,13 +138,14 @@ class AllegroAccountRepository
             if($offer->is_active == 'NO')
             {
                 Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'YES' ]);
+                return response()->json(['is_active' => 'YES'], 200);
             }
 
             if($offer->is_active == 'YES')
             {
                 Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'NO' ]);
+                return response()->json(['is_active' => 'NO'], 200);
             }
-            return response()->json(['message' => 'set'], 200);
         } else {
             return response()->json(['message' => "Can't set, check offer id"], 400);
         }
