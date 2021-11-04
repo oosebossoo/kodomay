@@ -14,10 +14,12 @@ use App\Models\Orders;
 // use App\Models\OrdersTable;
 use App\Models\Offers;
 // use App\Models\SentMail;
-// use App\Models\Code;
+use App\Models\Code;
 
 class AllegroAccountRepository
 {
+    // protected $templ_id = null;
+    // protected $db_id = null;
 
     static function offers($user_id)
     {
@@ -115,20 +117,33 @@ class AllegroAccountRepository
         return response()->json($offer);
     }
 
-    static function setMonitoring($id)
+    static function setMonitoring($offer_id, $templ_id = null, $db_id = null)
     {
-        $offer = Offers::where('offer_id', $id)->first();
+        if($templ_id != null && $db_id !=null) 
+        {
+            if(
+                Code::where('db_id', $db_id)->update(['offer_id' => $offer_id]) &&
+                Offers::where('offer_id', $offer_id)->update(['mail_template' => $templ_id, 'is_active' => 'YES'])
+            ) 
+            {
+                return response()->json(['message' => 'set'], 200);
+            }
+            return response()->json(['message' => "Can't set, check offer id"], 400);
+            dd();
+        }
 
-        if(empty($result))
+        $offer = Offers::where('offer_id', $offer_id)->first();
+
+        if(empty($offer))
         {
             if($offer->is_active == 'NO')
             {
-                Offers::where('offer_id', $id)->update([ 'is_active' => 'YES' ]);
+                Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'YES' ]);
             }
 
             if($offer->is_active == 'YES')
             {
-                Offers::where('offer_id', $id)->update([ 'is_active' => 'NO' ]);
+                Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'NO' ]);
             }
             return response()->json(['message' => 'set'], 200);
         } else {

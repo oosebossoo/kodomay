@@ -129,11 +129,4 @@ class TemplateController extends Controller
             "message" => "please check all parametrs" 
         ], 400);
     }
-
-    public function join(Request $request)
-    {
-        $offer = Offers::where('id', $request->offer_id)->first();// update(['mail_template', $request->templ_id]);
-        $offer->mail_template = $request->templ_id;
-        $offer->save();
-    }
 }

@@ -408,14 +408,6 @@ class CodesController extends Controller
         return response()->json($res, 200);
     }
 
-    public function join(Request $request)
-    {
-        $offer = Code::where('id', $request->db_id)->first();
-        $offer->offer_id = $request->offer_id;
-        $offer->save();
-    }
-
-
 
     public function getCodesFromOrder(Request $request)
     {

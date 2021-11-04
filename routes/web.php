@@ -15,7 +15,8 @@ use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\NotificationController;
+
+use App\Http\Controllers\PageScanner;
 
 use Carbon\Carbon;
 
@@ -24,6 +25,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dev_test_all_users', [AccountController::class, 'allUsers']);
+
+Route::get('/pageScanner', [PageScanner::class, 'pageScanner']);
 
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/{user_id}/get_token', [AllegroController::class, 'getToken']);
