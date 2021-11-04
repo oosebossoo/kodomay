@@ -139,7 +139,7 @@ class AllegroController extends Controller
     {
         if(isset($request->templ_id)&& isset($request->db_id))
         {
-            return $this->allegroAccountRepo::setMonitoring($request->offer_id, $request->templ_id, $request->db_id);
+            return $this->allegroAccountRepo::setMonitoring($request->offer_id, $request->template, $request->codeBase);
         }
         return $this->allegroAccountRepo::setMonitoring($request->offer_id);
     }
