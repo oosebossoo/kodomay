@@ -137,7 +137,7 @@ class AllegroController extends Controller
 
     public function setMonitoring(Request $request)
     {
-        if(isset($request->templ_id)&& isset($request->db_id))
+        if(isset($request->template)&& isset($request->codeBase))
         {
             return $this->allegroAccountRepo::setMonitoring($request->offer_id, $request->template, $request->codeBase);
         }

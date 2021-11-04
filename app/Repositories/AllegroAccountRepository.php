@@ -129,7 +129,6 @@ class AllegroAccountRepository
                 return response()->json(['message' => 'set'], 200);
             }
             return response()->json(['message' => "Can't set, check offer id"], 400);
-            dd();
         }
 
         $offer = Offers::where('offer_id', $offer_id)->first();
