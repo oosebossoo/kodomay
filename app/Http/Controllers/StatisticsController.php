@@ -53,10 +53,10 @@ class StatisticsController extends Controller
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/payments/payment-operations");
 
-            $vaule += $response['paymentOperations'][0]['wallet']['balance']['amount'];
+            $value += $response['paymentOperations'][0]['wallet']['balance']['amount'];
         }
 
-        return response()->json(['cash' => $vaule]);
+        return response()->json(['cash' => $value]);
     }
 
     public function getTransactionInMonth(Request $request)
