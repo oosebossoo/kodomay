@@ -44,7 +44,6 @@ class StatisticsController extends Controller
     public function getCash()
     {
         $userDatas = UserData::where('user_id', $this->user->id)->get();
-        dd($userDatas);
         $value = 0;
 
         foreach ($userDatas as $userData)
