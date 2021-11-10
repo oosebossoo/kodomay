@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 use App\Models\Orders;
 use App\Models\Offers;
+use App\Models\UserData;
 
 use Auth;
 use JWTAuth;
