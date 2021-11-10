@@ -48,11 +48,11 @@ class StatisticsController extends Controller
 
         foreach ($userDatas as $userData)
         {
-            dd($userData->access_token);
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/payments/payment-operations");
+            return $response;
 
             $value += $response['paymentOperations'][0]['wallet']['balance']['amount'];
         }
