@@ -52,9 +52,11 @@ class StatisticsController extends Controller
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/payments/payment-operations");
-            return $response['paymentOperations'][0]['wallet']['balance']['amount'];
 
-            $value += $response['paymentOperations'][0]['wallet']['balance']['amount'];
+            if(isset($response['paymentOperations'][0]['wallet']['balance']['amount']))
+            {
+                $value += $response['paymentOperations'][0]['wallet']['balance']['amount'];
+            }
         }
 
         return response()->json(['cash' => $value]);
