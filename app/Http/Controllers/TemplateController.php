@@ -103,9 +103,9 @@ class TemplateController extends Controller
 
             $template = new MailTemplate();
             $template->template_name = $request->template_name;
-            $template->template_subject = $request->subject;
-            $template->replay_email = $request->email;
-            $template->template = $request->body;
+            $template->template_subject = $request->template_subject;
+            $template->replay_email = $request->replay_email;
+            $template->template = $request->template;
             $template->user_id = $user_id;
             $template->save();
 
