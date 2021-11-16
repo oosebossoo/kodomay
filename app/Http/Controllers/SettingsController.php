@@ -183,7 +183,6 @@ class SettingsController extends Controller
 
     public function setPassword(Request $request)
     {
-        $request->email = $this->user->email;
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
@@ -204,8 +203,7 @@ class SettingsController extends Controller
         if (! $token = auth()->attempt($validator->validated())) {
             return response()->json(['message' => 'Login i/lub hasło są nieprawidłowe'], 401);
         }
-
-        dd($this->user->email);
+        
         $user = User::where('email', $this->user->email)->update(['password' => bcrypt($request->password)]);
 
         return $this->createNewToken($token);
