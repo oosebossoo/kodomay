@@ -35,19 +35,19 @@ class StatisticsController extends Controller
     {
         $user_id = $this->user->id;
 
-        return ['todayCount' => Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count()];
+        return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
     }
 
     public function offersActiveCount()
     {
         $user_id = $this->user->id;
 
-        return ['activeCount' => Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count()];
+        return Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count();
     }
 
     public function getCredits()
     {
-        return ['credits' => $this->user->credits];
+        return $this->user->credits;
     }
 
     public function getCash()
@@ -68,7 +68,7 @@ class StatisticsController extends Controller
             }
         }
 
-        return ['cash' => $value];
+        return $value;
     }
 
     public function getTransactionInMonth(Request $request)
