@@ -203,10 +203,10 @@ class SettingsController extends Controller
         if (! $token = auth()->attempt($validator->validated())) {
             return response()->json(['message' => 'Login i/lub hasło są nieprawidłowe'], 401);
         }
-        
+
         $user = User::where('email', $this->user->email)->update(['password' => bcrypt($request->password)]);
 
-        return $this->createNewToken($token);
+        return "test";
     }
 
     public function setSessionTime()
