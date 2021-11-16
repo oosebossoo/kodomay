@@ -201,10 +201,10 @@ class SettingsController extends Controller
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['message' => 'Login i/lub hasło są nieprawidłowe'], 401);
+            return response()->json(['message' => 'Hasło jest nieprawidłowe'], 401);
         }
 
-        $user = User::where('email', $this->user->email)->update(['new_password' => bcrypt($request->password)]);
+        $user = User::where('email', $this->user->email)->update(['password' => bcrypt($request->new_password)]);
 
         return "test";
     }
