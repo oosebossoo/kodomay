@@ -201,12 +201,12 @@ class SettingsController extends Controller
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['message' => 'Hasło jest nieprawidłowe'], 401);
+            return response()->json(['message' => 'Stare hasło jest nieprawidłowe'], 401);
         }
 
         $user = User::where('email', $this->user->email)->update(['password' => bcrypt($request->new_password)]);
 
-        return "test";
+        return response()->json(['message' => 'Hasło zmienione'], 200);
     }
 
     public function setSessionTime()
