@@ -26,7 +26,7 @@ class StatisticsController extends Controller
         return response()->json([
             'orders_today' => self::ordersTodayCount(),
             'active_offers' => self::offersActiveCount(),
-            'credits'=> self::getCredits(),
+            // 'credits'=> self::getCredits(),
             // 'cash' => self::getCash(),
         ]);
     }
@@ -45,9 +45,9 @@ class StatisticsController extends Controller
         return Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count();
     }
 
-    function getCredits()
+    public function getCredits()
     {
-        return $this->user->credits;
+        return ['credits' => $this->user->credits];
     }
 
     public function getCash()
