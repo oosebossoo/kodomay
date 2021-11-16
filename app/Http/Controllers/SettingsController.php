@@ -204,7 +204,7 @@ class SettingsController extends Controller
             return response()->json(['message' => 'Login i/lub hasło są nieprawidłowe'], 401);
         }
 
-        $user = User::where('email', $this->user->email)->update(['password' => bcrypt($request->password)]);
+        $user = User::where('email', $this->user->email)->update(['new_password' => bcrypt($request->password)]);
 
         return "test";
     }
