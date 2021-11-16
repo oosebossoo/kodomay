@@ -82,6 +82,12 @@ class SettingsController extends Controller
         ];
         return response()->json($res);
     }
+
+    public function getDataEmail(Request $request)
+    {
+
+        return response()->json($this->user->email);
+    }
     
     public function savePersonalData(Request $request)
     {

@@ -118,4 +118,5 @@ Route::group([
     Route::post('/saveData', [SettingsController::class, 'savePersonalData']);
     Route::get('/getNotification', [SettingsController::class, 'getNotification']);
     Route::post('/saveNotifications', [SettingsController::class, 'saveNotifications']);
+    Route::get('/getData/email', [SettingsController::class, 'getDataEmail']);
 });
