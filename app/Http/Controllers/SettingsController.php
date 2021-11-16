@@ -185,6 +185,7 @@ class SettingsController extends Controller
     {
         $request->email = $this->user->email;
         $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
             'password' => 'required',
             'new_password' => [
                 'required', 
