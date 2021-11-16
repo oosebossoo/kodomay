@@ -184,9 +184,11 @@ class SettingsController extends Controller
     public function setPassword(Request $request)
     {
         return $this->createNewToken($token);
+
+
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
+            'current_pass' => 'required|string|min:6',
+            'new_pass' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
