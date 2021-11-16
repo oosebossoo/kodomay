@@ -184,8 +184,15 @@ class SettingsController extends Controller
     public function setPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'current_pass' => 'required|string|min:6',
-            'new_pass' => 'required|string|min:6',
+            'current_pass' => 'required',
+            'password' => [
+                'required', 
+                'min:6',              // musi zawierać co najmniej 6 znaków
+                'regex:/[a-z]/',      // musi zawierać jedną małą litere
+                'regex:/[A-Z]/',      // musi zawierać jedną dużą litere
+                'regex:/[0-9]/',      // musi zawierać jedną cyfre
+                'confirmed',
+            ],
         ]);
 
         if ($validator->fails()) {
