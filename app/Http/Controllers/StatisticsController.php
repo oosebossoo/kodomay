@@ -28,7 +28,6 @@ class StatisticsController extends Controller
             'active_offers' => self::offersActiveCount(),
             'credits'=> self::getCredits(),
             'cash' => self::getCash(),
-            'transaction_amount' => self::transactionValue($request->m)
         ]);
     }
 
@@ -115,13 +114,13 @@ class StatisticsController extends Controller
         return $data;
     }
 
-    function transactionValue($request_m)
+    public function transactionValue(Request $request)
     {
         $user_id = 40;
 
-        if(isset($request_m))
+        if(isset($request->m))
         {
-            $m = $request_m;
+            $m = $request->m;
         }
         else
         {
