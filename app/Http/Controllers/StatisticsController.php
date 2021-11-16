@@ -24,11 +24,11 @@ class StatisticsController extends Controller
     public function getDashboard(Request $request)
     {
         return response()->json([
-            'orders_today_quantity' => self::ordersTodayCount(),
-            'active_offers_quantity' => self::offersActiveCount(),
-            'credits_quantity'=> self::getCredits(),
-            'cash_quantity' => getCash(),
-            'transaction_amount' => transactionValue($request->m)
+            'orders_today' => self::ordersTodayCount(),
+            'active_offers' => self::offersActiveCount(),
+            'credits'=> self::getCredits(),
+            'cash' => self::getCash(),
+            'transaction_amount' => self::transactionValue($request->m)
         ]);
     }
 
