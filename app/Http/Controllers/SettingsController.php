@@ -184,8 +184,8 @@ class SettingsController extends Controller
     public function setPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'current_pass' => 'required',
-            'password' => [
+            'password' => 'required',
+            'new_password' => [
                 'required', 
                 'min:6',              // musi zawierać co najmniej 6 znaków
                 'regex:/[a-z]/',      // musi zawierać jedną małą litere
