@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Validator;
+
 use JWTAuth;
 
 use App\Models\PersonalData;
@@ -85,7 +89,6 @@ class SettingsController extends Controller
 
     public function getDataEmail(Request $request)
     {
-
         return response()->json($this->user->email);
     }
     
@@ -176,6 +179,25 @@ class SettingsController extends Controller
                 return response()->json(['message' => "Can't save"]);
             }
         }
+    }
+
+    public function setPassword(Request $request)
+    {
+        return $this->createNewToken($token);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if (! $token = auth()->attempt($validator->validated())) {
+            
+        }
+
+        return $this->createNewToken($token);
     }
 
     public function setSessionTime()
