@@ -48,7 +48,7 @@ class StatisticsController extends Controller
 
     function getCredits()
     {
-        return response()->json(['credits' => $this->user->credits]);
+        return $this->user->credits;
     }
 
     function getCash()
@@ -69,7 +69,7 @@ class StatisticsController extends Controller
             }
         }
 
-        return response()->json(['cash' => $value]);
+        return $value;
     }
 
     public function getTransactionInMonth(Request $request)
