@@ -183,7 +183,7 @@ class SettingsController extends Controller
 
     public function setPassword(Request $request)
     {
-        dd($this->user->email);
+        $request->email = $this->user->email;
         $validator = Validator::make($request->all(), [
             'password' => 'required',
             'new_password' => [
