@@ -35,7 +35,7 @@ class StatisticsController extends Controller
     {
         $user_id = $this->user->id;
 
-        return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
+        return ['todayCount' => Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count()];
     }
 
     public function offersActiveCount()
