@@ -27,7 +27,7 @@ class StatisticsController extends Controller
             'orders_today' => self::ordersTodayCount(),
             'active_offers' => self::offersActiveCount(),
             'credits'=> self::getCredits(),
-            'cash' => self::getCash(),
+            // 'cash' => self::getCash(),
         ]);
     }
 
@@ -50,7 +50,7 @@ class StatisticsController extends Controller
         return $this->user->credits;
     }
 
-    function getCash()
+    public function getCash()
     {
         $userDatas = UserData::where('user_id', $this->user->id)->get();
         $value = 0;
@@ -68,7 +68,7 @@ class StatisticsController extends Controller
             }
         }
 
-        return $value;
+        return ['cash' => $value];
     }
 
     public function getTransactionInMonth(Request $request)
