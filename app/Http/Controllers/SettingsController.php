@@ -197,7 +197,7 @@ class SettingsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json($validator->errors(), 401);
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
