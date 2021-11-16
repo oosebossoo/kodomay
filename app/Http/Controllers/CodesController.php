@@ -187,7 +187,6 @@ class CodesController extends Controller
         $validator = Validator::make($request->all(), [
             'db_name' => 'required|unique:code',
             'db_type' => 'required',
-            'offer_id' => 'required',
             'codes' => 'required',
         ]);
 
