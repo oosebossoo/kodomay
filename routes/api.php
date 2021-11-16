@@ -103,6 +103,7 @@ Route::group([
 
 ], function ($router) {
     // statystyki
+    Route::get('/dashboard', [ StatisticsController::class, 'getDashboard']);
     Route::get('/credits', [ StatisticsController::class, 'getCredits']);
     Route::get('/cash', [ StatisticsController::class, 'getCash']);
 });

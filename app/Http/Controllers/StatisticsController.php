@@ -21,27 +21,37 @@ class StatisticsController extends Controller
         $this->user = JWTAuth::parseToken()->authenticate();
     }
 
-    public function ordersTodayCount(Request $request)
+    public function getDashboard(Request $request)
     {
-        $user_id = 40;
+        return response()->json([
+            'orders_today_quantity' => self::ordersTodayCount(),
+            'active_offers_quantity' => self::offersActiveCount(),
+            'credits_quantity'=> self::getCredits(),
+            'cash_quantity' => getCash(),
+            'transaction_amount' => transactionValue($request->m)
+        ]);
+    }
+
+    function ordersTodayCount()
+    {
+        $user_id = $this->user->id;
 
         return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
     }
 
-    public function offersActiveCount(Request $request)
+    function offersActiveCount()
     {
-        $user_id = 40;
+        $user_id = $this->user->id;
 
         return Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count();
     }
 
-    public function getCredits()
+    function getCredits()
     {
-        
         return response()->json(['credits' => $this->user->credits]);
     }
 
-    public function getCash()
+    function getCash()
     {
         $userDatas = UserData::where('user_id', $this->user->id)->get();
         $value = 0;
@@ -105,13 +115,13 @@ class StatisticsController extends Controller
         return $data;
     }
 
-    public function transactionValue(Request $request)
+    function transactionValue($request_m)
     {
         $user_id = 40;
 
-        if(isset($request->m))
+        if(isset($request_m))
         {
-            $m = $request->m;
+            $m = $request_m;
         }
         else
         {
@@ -143,6 +153,8 @@ class StatisticsController extends Controller
         }
         return $data;
     }
+
+    
 
     function days_in_month($month, $year){
         return $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);

@@ -95,7 +95,6 @@ class TemplateController extends Controller
                 'template_subject' => 'required',
                 'replay_email' => 'required',
                 'template' => 'required',
-                'user_id' => 'required',
             ]);
     
             if($validator->fails()){
