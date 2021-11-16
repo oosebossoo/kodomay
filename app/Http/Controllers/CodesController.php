@@ -182,13 +182,17 @@ class CodesController extends Controller
 
     public function add_db(Request $request) 
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = $this->user->id;
+        $user_id = $this->user->id;
+
+        $validator = Validator::make($request->all(), [
+            'db_name' => 'required|unique:code',
+            'db_type' => 'required',
+            'offer_id' => 'required',
+            'codes' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
         }
 
         if($request->db_type == 0)
