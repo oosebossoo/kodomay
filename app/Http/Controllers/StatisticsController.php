@@ -42,7 +42,7 @@ class StatisticsController extends Controller
     {
         $user_id = $this->user->id;
 
-        return Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count();
+        return ['activeCount' => Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count()];
     }
 
     public function getCredits()
