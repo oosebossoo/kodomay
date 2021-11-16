@@ -24,21 +24,21 @@ class StatisticsController extends Controller
     public function getDashboard(Request $request)
     {
         return response()->json([
-            'orders_today' => self::ordersTodayCount(),
-            'active_offers' => self::offersActiveCount(),
+            // 'orders_today' => self::ordersTodayCount(),
+            // 'active_offers' => self::offersActiveCount(),
             // 'credits'=> self::getCredits(),
             // 'cash' => self::getCash(),
         ]);
     }
 
-    function ordersTodayCount()
+    public function ordersTodayCount()
     {
         $user_id = $this->user->id;
 
         return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
     }
 
-    function offersActiveCount()
+    public function offersActiveCount()
     {
         $user_id = $this->user->id;
 
