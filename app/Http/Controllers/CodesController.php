@@ -29,24 +29,19 @@ class CodesController extends Controller
 
         foreach ($dbsUnique as $dbUnique)
         {
-            if(!isset($sold[$dbUnique->db_id]))
-            {
+            if(!isset($sold[$dbUnique->db_id])) {
                 $sold[$dbUnique->db_id] = 0;
             }
 
-            if(!isset($available[$dbUnique->db_id]))
-            {
+            if(!isset($available[$dbUnique->db_id])) {
                 $available[$dbUnique->db_id] = 0;
             }
 
             $created_at = strtok($dbUnique->created_at, 'T');
 
-            if($dbUnique->db_type == 0)
-            {
+            if($dbUnique->db_type == 0) {
                 $db_type = "Zwykła";
-            }
-            else
-            {
+            } else {
                 $db_type = "Rekurencyjna";
             }
 
@@ -57,12 +52,9 @@ class CodesController extends Controller
             ];
         }
 
-        if(isset($response))
-        {
+        if(isset($response)) {
             return response()->json($response);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'message' => 'No data in database',
             ], 200);
@@ -76,71 +68,47 @@ class CodesController extends Controller
 
         foreach ($codes as $code) 
         {
-            if(isset($ids[$code->db_id]))
-            {
+            if(isset($ids[$code->db_id])) {
                 $ids[$code->db_id] = $ids[$code->db_id] + 1;
 
-                if(isset($sold[$code->db_id]))
-                {
-                    if($code->status == 0)
-                    {
+                if(isset($sold[$code->db_id])) {
+                    if($code->status == 0) {
                         $sold[$code->db_id] ++;
-                    }
-                    else
-                    {
+                    } else {
                         $available[$code->db_id] ++;
                     }
-                }
-                else
-                {
-                    if($code->status == 0)
-                    {
+                } else {
+                    if($code->status == 0) {
                         $sold[$code->db_id] = 1;
-                    }
-                    else
-                    {
+                    } else {
                         $available[$code->db_id] = 1;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $ids[$code->db_id] = 1;
 
-                if(isset($sold[$code->db_id]))
-                {
-                    if($code->status == 0)
-                    {
+                if(isset($sold[$code->db_id])) {
+                    if($code->status == 0) {
                         $sold[$code->db_id] ++;
-                    }
-                    else
-                    {
+                    } else {
                         $available[$code->db_id] ++;
                     }
-                }
-                else
-                {
-                    if($code->status == 0)
-                    {
+                } else {
+                    if($code->status == 0) {
                         $sold[$code->db_id] = 1;
-                    }
-                    else
-                    {
+                    } else {
                         $available[$code->db_id] = 1;
                     }
                 }
             }
         }
-
         foreach ($dbsUnique as $dbUnique)
         {
-            if(!isset($sold[$dbUnique->db_id]))
-            {
+            if(!isset($sold[$dbUnique->db_id])) {
                 $sold[$dbUnique->db_id] = 0;
             }
 
-            if(!isset($available[$dbUnique->db_id]))
-            {
+            if(!isset($available[$dbUnique->db_id])) {
                 $available[$dbUnique->db_id] = 0;
             }
             // $dbUnique->created_at = substr($dbUnique->created_at, 0, strpos($dbUnique->created_at, "T"));
@@ -148,12 +116,9 @@ class CodesController extends Controller
 
             $created_at = strtok($dbUnique->created_at, 'T');
 
-            if($dbUnique->db_type == 0)
-            {
+            if($dbUnique->db_type == 0) {
                 $db_type = "Zwykła";
-            }
-            else
-            {
+            } else {
                 $db_type = "Rekurencyjna";
             }
 
@@ -168,12 +133,9 @@ class CodesController extends Controller
             ];
         }
 
-        if(isset($response))
-        {
+        if(isset($response)){
             return response()->json($response);
-        }
-        else
-        {
+        } else {
             return response()->json([], 200);
         }
     }
@@ -185,25 +147,20 @@ class CodesController extends Controller
         $validator = Validator::make($request->all(), [
             'db_name' => 'required|unique:code',
             'db_type' => 'required',
-            'codes' => 'required_without_all:codes_txt',
-            'codes_txt' => 'required_without_all:codes',
+            'codes' => 'required', //_without_all:codes_txt
+            // 'codes_txt' => 'required_without_all:codes',
         ]);
-
-        if($request->codes === null)
-        {
-            $codes = $request->codes_txt;
-        }
-        else
-        {
-            $codes = $request->codes;
-        }
-
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        if($request->db_type == 0)
-        {
+        // if($request->codes === null){
+        //     $codes = $request->codes_txt;
+        // } else {
+        //     $codes = $request->codes;
+        // }
+
+        if($request->db_type == 0){
             // baza zwykła
             $dbName = $request->db_name;
             $dbType = $request->db_type;
@@ -220,9 +177,7 @@ class CodesController extends Controller
                 $cddb->status = 1;
                 $cddb->save();
             }
-        }
-        elseif($request->db_type == 1)
-        {
+        } elseif ($request->db_type == 1) {
             // baza rek.
             $dbName = $request->db_name;
             $dbType = $request->db_type;
@@ -239,9 +194,7 @@ class CodesController extends Controller
                 $cddb->status = 1;
                 $cddb->save();
             }
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'message' => 'choose type of db... im not a clairvoyant ^-^'
             ], 200);
@@ -323,8 +276,7 @@ class CodesController extends Controller
     {
         $codes = Code::where('db_id', $request->db_id)->where('status', 1)->get();
 
-        if(!$codes->isEmpty())
-        {
+        if(!$codes->isEmpty()) {
             foreach ($codes as $code) 
             {
                 $res[] = [
@@ -332,7 +284,6 @@ class CodesController extends Controller
                     'key' => $code->code,
                 ];
             }
-
             return response()->json($res, 200);
         }
         return response()->json([], 200);
@@ -342,15 +293,13 @@ class CodesController extends Controller
     {
         $codes = Code::where('db_id', $request->db_id)->where('status', 0)->get();
 
-        if(!$codes->isEmpty())
-        {
+        if(!$codes->isEmpty()) {
             foreach ($codes as $code) 
             {
                 $res[] = [
                     'key' => $code->code,
                 ];
             }
-
             return response()->json($res, 200);
         }
         return response()->json([], 200);
@@ -476,15 +425,5 @@ class CodesController extends Controller
         
         if(count($result) == 0) return false;
         return true;
-    }
-
-    public function deleteFile($file)
-    { 
-        if (!unlink($file)) {  
-            return [
-                'msg' => 'File cannot be deleted due to an error',
-                'path' => $file
-            ];  
-        }  
     }
 }
