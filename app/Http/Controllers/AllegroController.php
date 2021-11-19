@@ -462,7 +462,7 @@ class AllegroController extends Controller
             return response()->json($res, 200);
         }
         $res = [];
-        return response()->json($res, 200);
+        return response()->json([], 200);
     }
 
     // --- ---
