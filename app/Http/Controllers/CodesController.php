@@ -187,7 +187,7 @@ class CodesController extends Controller
             'db_type' => 'required',
         ]);
 
-        if(!isset($request->codes))
+        if($request->codes == null)
         {
             $codes = $request->codes_txt;
         }
