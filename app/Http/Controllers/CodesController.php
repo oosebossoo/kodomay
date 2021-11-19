@@ -185,8 +185,12 @@ class CodesController extends Controller
         $validator = Validator::make($request->all(), [
             'db_name' => 'required|unique:code',
             'db_type' => 'required',
-            'codes' => 'required',
         ]);
+
+        if(!isset($codes))
+        {
+            $codes = $request->codes_txt;
+        }
 
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
