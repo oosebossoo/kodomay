@@ -24,10 +24,18 @@ class StatisticsController extends Controller
     public function getDashboard(Request $request)
     {
         return response()->json([
-            // 'orders_today' => self::ordersTodayCount(),
-            // 'active_offers' => self::offersActiveCount(),
-            // 'credits'=> self::getCredits(),
-            // 'cash' => self::getCash(),
+            'orders_today' => StatisticsController::ordersTodayCount(),
+            'active_offers' => StatisticsController::offersActiveCount(),
+            'credits'=> StatisticsController::getCredits(),
+            'cash' => StatisticsController::getCash(),
+            'transaction_in_month' => StatisticsController::getTransactionInMonth(),
+            'transaction_value' => StatisticsController::transactionValue(),
+            'avg_send_time' => StatisticsController::avgSendTime(),
+            'income_today' => StatisticsController::incomeToday(),
+            'income_this_mounth' => StatisticsController::incomeThisMounth(),
+            'send_codes_today' => StatisticsController::sendCodesToday(),
+            'send_codes_this_mounth' => StatisticsController::sendCodesThisMounth(),
+            'customers_quantity' => StatisticsController::customersQuantity(),
         ]);
     }
 
@@ -153,7 +161,37 @@ class StatisticsController extends Controller
         return $data;
     }
 
-    
+    // ---------------------------------------------------------
+
+    public function avgSendTime()
+    {
+        return 0;
+    }
+
+    public function incomeToday()
+    {
+        return 0;
+    }
+
+    public function incomeThisMounth()
+    {
+        return 0;
+    }
+
+    public function sendCodesToday()
+    {
+        return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
+    }
+
+    public function sendCodesThisMounth()
+    {
+        return 0;
+    }
+
+    public function customersQuantity()
+    {
+        return 0;
+    }
 
     function days_in_month($month, $year){
         return $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);

@@ -208,9 +208,4 @@ class SettingsController extends Controller
 
         return response()->json(['message' => 'Hasło zmienione'], 200);
     }
-
-    public function setSessionTime()
-    {
-
-    }
 }
