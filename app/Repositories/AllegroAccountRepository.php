@@ -111,7 +111,7 @@ class AllegroAccountRepository
 
         }
         // dd(response()->json(Offers::where('seller_id', $user_id)->get()));
-        return response()->json(Offers::where('seller_id', $user_id)->get());
+    return response()->json([]/*Offers::where('seller_id', $user_id)->get()*/);
     }
 
     static function offer($offer_id)
@@ -157,7 +157,7 @@ class AllegroAccountRepository
 
     static function getMonitoring($set)
     {
-        $offers = []; // Offers::where('is_active', $set)->get();
+        $offers = Offers::where('is_active', $set)->get();
 
         return response()->json($offers);
     }
