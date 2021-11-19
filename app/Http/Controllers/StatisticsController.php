@@ -185,7 +185,7 @@ class StatisticsController extends Controller
 
     public function sendCodesThisMounth()
     {
-        return 0;
+        return Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->sum('quantity');
     }
 
     public function customersQuantity()
