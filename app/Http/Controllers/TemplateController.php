@@ -32,6 +32,7 @@ class TemplateController extends Controller
             {
                 foreach($templates as $template)
                 {
+                    dd($template->id, $template->template_name);
                     $res[] = [
                         'id' => $template->id, 
                         'template_name' => $template->template_name,
