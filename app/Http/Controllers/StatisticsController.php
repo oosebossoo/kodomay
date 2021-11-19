@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+use App\Models\Customer;
 use App\Models\Orders;
 use App\Models\Offers;
 use App\Models\UserData;
@@ -190,7 +191,7 @@ class StatisticsController extends Controller
 
     public function customersQuantity()
     {
-        return 0;
+        return Customer::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->sum('quantity');
     }
 
     function days_in_month($month, $year){
