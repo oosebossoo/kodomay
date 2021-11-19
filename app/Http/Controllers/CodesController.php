@@ -143,6 +143,7 @@ class CodesController extends Controller
     public function add_db(Request $request) 
     {
         dd(['codes_txt' => $request->codes_txt, 'codes' => $request->codes]);
+        
         $user_id = $this->user->id;
 
         $validator = Validator::make($request->all(), [

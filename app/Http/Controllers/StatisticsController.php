@@ -180,7 +180,7 @@ class StatisticsController extends Controller
 
     public function sendCodesToday()
     {
-        return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
+        return Orders::where('seller_id', $user_id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->sun('order_price');
     }
 
     public function sendCodesThisMounth()
