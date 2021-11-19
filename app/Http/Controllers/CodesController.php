@@ -187,12 +187,9 @@ class CodesController extends Controller
             'db_type' => 'required',
             'codes' => 'required_without_all:codes_txt',
             'codes_txt' => 'required_without_all:codes',
-        ],[
-            'codes' => 'required codes or codes_txt',
-            'codes_txt' => 'required codes or codes_txt',
         ]);
 
-        if($request->codes == null)
+        if($request->codes === null)
         {
             $codes = $request->codes_txt;
         }
