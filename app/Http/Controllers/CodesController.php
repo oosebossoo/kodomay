@@ -180,6 +180,7 @@ class CodesController extends Controller
 
     public function add_db(Request $request) 
     {
+        return $request->codes_txt;
         $user_id = $this->user->id;
 
         $validator = Validator::make($request->all(), [
@@ -333,8 +334,7 @@ class CodesController extends Controller
 
             return response()->json($res, 200);
         }
-        $res = [];
-        return response()->json($res, 200);
+        return response()->json([], 200);
     }
 
     public function used(Request $request)
@@ -352,8 +352,7 @@ class CodesController extends Controller
 
             return response()->json($res, 200);
         }
-        $res = [];
-        return response()->json($res, 200);
+        return response()->json([], 200);
     }
 
     public function delete_codes(Request $request)
