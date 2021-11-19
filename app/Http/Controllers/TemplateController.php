@@ -40,7 +40,7 @@ class TemplateController extends Controller
                 return response()->json($res, 200);
             }
 
-            return response()->json(['message' => 'Empty db'], 200);
+            return response()->json(['message' => 'No data in database'], 200);
         }
 
         return response()->json("", 403);
