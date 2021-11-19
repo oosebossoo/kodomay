@@ -170,7 +170,7 @@ class CodesController extends Controller
 
         if(isset($response))
         {
-            return $response;
+            return response()->json($response);
         }
         else
         {

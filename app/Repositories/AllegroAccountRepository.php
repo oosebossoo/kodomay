@@ -157,7 +157,7 @@ class AllegroAccountRepository
 
     static function getMonitoring($set)
     {
-        $offers = Offers::where('is_active', $set)->get();
+        $offers = []; // Offers::where('is_active', $set)->get();
 
         return response()->json($offers);
     }
