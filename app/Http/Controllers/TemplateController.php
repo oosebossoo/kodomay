@@ -28,18 +28,22 @@ class TemplateController extends Controller
 
             $templates = MailTemplate::where('user_id', $user_id)->get();
 
-            foreach($templates as $template)
+            if(isset($templates))
             {
-                $res[] = [
-                    'id' => $template->id, 
-                    'template_name' => $template->template_name
-                ];
+                foreach($templates as $template)
+                {
+                    $res[] = [
+                        'id' => $template->id, 
+                        'template_name' => $template->template_name,
+                    ];
+                }
+                return response()->json($res, 200);
             }
 
-            return response()->json($res, 200);
+            return response()->json(['message' => 'Empty db'], 200);
         }
-        $res = [];
-        return response()->json($res, 200);
+
+        return response()->json("", 403);
     }
 
     public function get(Request $request)
@@ -52,7 +56,7 @@ class TemplateController extends Controller
                 'template_name' => $template->template_name,
                 'subject' =>$template->template_subject,
                 'body' => $template->template,
-                'email' => $template->replay_email
+                'email' => $template->replay_email,
             ];
 
             return response()->json($res, 200);
