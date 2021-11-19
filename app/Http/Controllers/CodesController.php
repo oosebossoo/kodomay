@@ -174,9 +174,7 @@ class CodesController extends Controller
         }
         else
         {
-            return response()->json([
-                'message' => 'No data in database',
-            ], 200);
+            return response()->json([], 200);
         }
     }
 
