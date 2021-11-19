@@ -180,13 +180,13 @@ class CodesController extends Controller
 
     public function add_db(Request $request) 
     {
-        return $request->codes;
         $user_id = $this->user->id;
 
         $validator = Validator::make($request->all(), [
             'db_name' => 'required|unique:code',
             'db_type' => 'required',
         ]);
+
 
         if($request->codes == null)
         {
@@ -208,6 +208,7 @@ class CodesController extends Controller
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
+            dd($codes);
             foreach ($codes as $code)
             {
                 $cddb = new Code();
