@@ -191,7 +191,7 @@ class StatisticsController extends Controller
 
     public function customersQuantity()
     {
-        return Customer::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->sum('quantity');
+        return Customer::where('seller_id', $this->user->id)->whereBetween('updated_at', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->count();
     }
 
     function days_in_month($month, $year){
