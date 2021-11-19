@@ -187,9 +187,13 @@ class CodesController extends Controller
             'db_type' => 'required',
         ]);
 
-        if(!isset($codes))
+        if(!isset($request->codes))
         {
             $codes = $request->codes_txt;
+        }
+        else
+        {
+            $codes = $request->codes;
         }
 
         if($validator->fails()){
@@ -203,7 +207,7 @@ class CodesController extends Controller
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
-            foreach ($request->codes as $code)
+            foreach ($codes as $code)
             {
                 $cddb = new Code();
                 $cddb->db_id = $db_id;
@@ -222,7 +226,7 @@ class CodesController extends Controller
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
-            foreach ($request->codes as $code)
+            foreach ($codes as $code)
             {
                 $cddb = new Code();
                 $cddb->db_id = $db_id;
