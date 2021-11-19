@@ -32,13 +32,15 @@ class TemplateController extends Controller
             {
                 foreach($templates as $template)
                 {
-                    dd($template->id, $template->template_name);
                     $res[] = [
                         'id' => $template->id, 
                         'template_name' => $template->template_name,
                     ];
                 }
-                return response()->json($res, 200);
+                if(isset($res))
+                {
+                    return response()->json($res, 200);
+                }
             }
 
             return response()->json(['message' => 'Empty db'], 200);
