@@ -208,7 +208,6 @@ class CodesController extends Controller
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
-            dd($codes);
             foreach ($codes as $code)
             {
                 $cddb = new Code();
