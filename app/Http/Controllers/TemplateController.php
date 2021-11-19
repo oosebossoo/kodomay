@@ -28,19 +28,16 @@ class TemplateController extends Controller
 
             $templates = MailTemplate::where('user_id', $user_id)->get();
 
-            if(isset($templates))
+            foreach($templates as $template)
             {
-                foreach($templates as $template)
-                {
-                    $res[] = [
-                        'id' => $template->id, 
-                        'template_name' => $template->template_name,
-                    ];
-                }
-                if(isset($res))
-                {
-                    return response()->json($res, 200);
-                }
+                $res[] = [
+                    'id' => $template->id, 
+                    'template_name' => $template->template_name,
+                ];
+            }
+            if(isset($res))
+            {
+                return response()->json($res, 200);
             }
 
             return response()->json(['message' => 'Empty db'], 200);
