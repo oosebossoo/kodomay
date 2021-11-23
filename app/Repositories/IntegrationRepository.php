@@ -136,5 +136,6 @@ class IntegrationRepository
         } else {
             return response()->json([], 200);
         }
+        return response()->json([], 200);
     }
 }
