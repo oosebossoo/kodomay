@@ -9,7 +9,7 @@ class AdminController extends Controller
 {
     public function showUsers()
     {
-        return User::all();
+        return response()->json(User::select('login', 'email', 'credits', 'activate as activated', 'created_at')->get(), 200);
     }
 
     public function editUser()

@@ -12,6 +12,7 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,4 +121,15 @@ Route::group([
     Route::post('/saveNotifications', [SettingsController::class, 'saveNotifications']);
     Route::get('/getData/email', [SettingsController::class, 'getDataEmail']);
     Route::post('/setPassword', [SettingsController::class, 'setPassword']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'payment'
+
+], function ($router) {
+    // płatności
+    Route::get('/history', [PaymentController::class, 'history']);
+    // Route::get('/history', [PaymentController::class, 'history']);
+    // Route::get('/history', [PaymentController::class, 'history']);
 });
