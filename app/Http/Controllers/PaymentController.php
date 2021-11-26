@@ -38,7 +38,7 @@ class PaymentController extends Controller
 
     public function history()
     {
-        $res = Payment::where('user_id', $this->user->id)->get();
+        $res = Payment::select('ordinal_id', 'date', 'amount', 'credits', 'status', 'info')->where('user_id', $this->user->id)->get();
         return response()->json($res, 200);
     }
 }
