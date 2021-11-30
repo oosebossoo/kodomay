@@ -15,6 +15,12 @@ class PaymentController extends Controller
         $this->user = JWTAuth::parseToken()->authenticate();
     }
 
+    public function pay(Request $request)
+    {
+        
+        return response()->json('', $status);
+    }
+
     public function add(Request $request)
     {
         $payment = new Payment();
