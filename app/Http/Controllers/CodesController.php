@@ -19,7 +19,15 @@ class CodesController extends Controller
  
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        try {
+            $this->user = JWTAuth::parseToken()->authenticate();
+        } catch (TokenInvalidException $e) {
+            dd('token_invalid');
+        } catch (TokenExpiredException $e) {
+            dd('token_expired');
+        } catch (JWTException $e) {
+            dd('token_invalid ws');
+        }
     }
     
     public function shortList(Request $request)
