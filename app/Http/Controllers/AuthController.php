@@ -66,6 +66,8 @@ class AuthController extends Controller
 
         $this->sendActivationEmail($email, $name, $token);
 
+        Notification::create(['user_id' => $user->id]);
+
         return response()->json([
             'message' => 'User successfully registered',
         ], 201);

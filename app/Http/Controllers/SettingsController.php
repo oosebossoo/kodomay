@@ -75,7 +75,7 @@ class SettingsController extends Controller
             $data->user_id = $this->user->id;
             $data->copy_email = $request->copy_email;
             $data->email = $request->email;
-            $data->new_adv = $request->new_adv;
+            $data->new_complaint = $request->new_complaint;
             $data->end_of_credit = $request->end_of_credit;
             $data->empty_credit = $request->empty_credit;
             $data->empty_code = $request->empty_code;
