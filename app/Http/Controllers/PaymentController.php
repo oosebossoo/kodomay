@@ -39,10 +39,12 @@ class PaymentController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        return response()->json(['url' => "dajmi.hajs/szybko
-            ?payment_svc=$request->payment_service
-            &credits=$request->credits
-        "], 200);
+        return response()->json(['url' => "google.com"], 200);
+
+        // return response()->json(['url' => "dajmi.hajs/szybko
+        //     ?payment_svc=$request->payment_service
+        //     &credits=$request->credits
+        // "], 200);
     }
 
     public function add(Request $request)
