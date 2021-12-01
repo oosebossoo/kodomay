@@ -20,11 +20,11 @@ class PaymentController extends Controller
     {
         try {
             $this->user = JWTAuth::parseToken()->authenticate();
-        } catch(TokenInvalidException $e) {
+        } catch (TokenInvalidException $e) {
             dd('token_invalid');
-        }catch(TokenExpiredException $e) {
-            dd('token_expired');
-        }catch(JWTException $e){
+        } catch (TokenExpiredException $e) {
+            dd ('token_expired');
+        } catch (JWTException $e){
             dd('token_invalid ws');
         }
     }

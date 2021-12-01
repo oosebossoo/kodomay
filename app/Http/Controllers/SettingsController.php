@@ -19,12 +19,20 @@ class SettingsController extends Controller
  
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        try {
+            $this->user = JWTAuth::parseToken()->authenticate();
+        } catch (TokenInvalidException $e) {
+            dd('token_invalid');
+        } catch (TokenExpiredException $e) {
+            dd('token_expired');
+        } catch (JWTException $e) {
+            dd('token_invalid ws');
+        }
     }
 
     public function getNotification(Request $request)
     {
-        return Notification::where('user_id', $this->user->id)->first();
+        return response()->json(Notification::where('user_id', $this->user->id)->first());
     }
 
     public function saveNotifications(Request $request)
@@ -33,25 +41,25 @@ class SettingsController extends Controller
         {
             $data = Notification::where('user_id', $this->user->id)->first();
 
-            if(isset($request->send_email_copy_code))
+            if(isset($request->copy_email))
             {
-                $data->send_email_copy_code = $request->send_email_copy_code;
+                $data->copy_email = $request->copy_email;
             }
-            if(isset($request->send_info_new_adv))
+            if(isset($request->new_adv))
             {
-                $data->send_info_new_adv = $request->send_info_new_adv;
+                $data->new_adv = $request->new_adv;
             }
-            if(isset($request->send_info_end_of_credit))
+            if(isset($request->end_of_credit))
             {
-                $data->send_info_end_of_credit = $request->send_info_end_of_credit;
+                $data->end_of_credit = $request->end_of_credit;
             }
-            if(isset($request->send_info_zero_credit))
+            if(isset($request->empty_credit))
             {
-                $data->send_info_zero_credit = $request->adrsend_info_zero_creditess;
+                $data->empty_credit = $request->empty_credit;
             }
-            if(isset($request->send_info_end_of_code))
+            if(isset($request->empty_code))
             {
-                $data->send_info_end_of_code = $request->send_info_end_of_code;
+                $data->empty_code = $request->empty_code;
             }
 
             $data->save();
@@ -60,11 +68,11 @@ class SettingsController extends Controller
         {
             $data = new Notification();
             $data->user_id = $this->user->id;
-            $data->send_email_copy_code = $request->send_email_copy_code;
-            $data->send_info_new_adv = $request->send_info_new_adv;
-            $data->send_info_end_of_credit = $request->send_info_end_of_credit;
-            $data->send_info_zero_credit = $request->send_info_zero_credit;
-            $data->send_info_end_of_code = $request->send_info_end_of_code;
+            $data->copy_email = $request->copy_email;
+            $data->new_adv = $request->new_adv;
+            $data->end_of_credit = $request->end_of_credit;
+            $data->empty_credit = $request->empty_credit;
+            $data->empty_code = $request->empty_code;
             $data->save();
         }
     }
