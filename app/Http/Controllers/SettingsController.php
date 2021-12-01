@@ -11,6 +11,7 @@ use Validator;
 
 use JWTAuth;
 
+use App\Models\Notification;
 use App\Models\PersonalData;
 
 class SettingsController extends Controller
@@ -30,9 +31,9 @@ class SettingsController extends Controller
         }
     }
 
-    public function getNotification(Request $request)
+    public function getNotifications(Request $request)
     {
-        return response()->json(Notification::where('user_id', $this->user->id)->first());
+        return response()->json(Notification::where('user_id', $this->user->id)->first(), 200);
     }
 
     public function saveNotifications(Request $request)
@@ -44,6 +45,10 @@ class SettingsController extends Controller
             if(isset($request->copy_email))
             {
                 $data->copy_email = $request->copy_email;
+            }
+            if(isset($request->email))
+            {
+                $data->email = $request->email;
             }
             if(isset($request->new_adv))
             {
@@ -69,12 +74,15 @@ class SettingsController extends Controller
             $data = new Notification();
             $data->user_id = $this->user->id;
             $data->copy_email = $request->copy_email;
+            $data->email = $request->email;
             $data->new_adv = $request->new_adv;
             $data->end_of_credit = $request->end_of_credit;
             $data->empty_credit = $request->empty_credit;
             $data->empty_code = $request->empty_code;
             $data->save();
         }
+
+        return response()->json([], 200);
     }
 
     public function getPersonalData(Request $request)
