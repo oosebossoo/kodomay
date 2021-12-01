@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 use App\Models\Payment;
+
 use JWTAuth;
 
 class PaymentController extends Controller
@@ -12,13 +18,28 @@ class PaymentController extends Controller
  
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        try {
+            $this->user = JWTAuth::parseToken()->authenticate();
+        } catch(TokenInvalidException $e) {
+            dd('token_invalid');
+        }catch(TokenExpiredException $e) {
+            dd('token_expired');
+        }catch(JWTException $e){
+            dd('token_invalid ws');
+        }
     }
 
     public function pay(Request $request)
     {
-        
-        return response()->json('', $status);
+        $validator = Validator::make($request->all(), [
+            'quantity' => 'required',
+            'payment_service' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        return response()->json([$this->user->id, $request->quantity, $request->payment_service], 200);
     }
 
     public function add(Request $request)

@@ -130,6 +130,6 @@ Route::group([
 ], function ($router) {
     // płatności
     Route::get('/history', [PaymentController::class, 'history']);
-    // Route::get('/history', [PaymentController::class, 'history']);
+    Route::post('/pay', [PaymentController::class, 'pay']);
     // Route::get('/history', [PaymentController::class, 'history']);
 });
