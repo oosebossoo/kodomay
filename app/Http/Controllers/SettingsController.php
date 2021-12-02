@@ -33,7 +33,15 @@ class SettingsController extends Controller
 
     public function getNotifications(Request $request)
     {
-        return response()->json(Notification::where('user_id', $this->user->id)->first(), 200);
+        $not = Notification::where('user_id', $this->user->id)->first();
+
+        return response()->json([
+            'copy_email' => boolval($not->copy_email) ? 'true' : 'false',
+            'email' => $not->email,
+            'end_of_credit' => boolval($not->end_of_credit) ? 'true' : 'false',
+            'empty_credit' => boolval($not->empty_credit) ? 'true' : 'false',
+            'empty_code' => boolval($not->empty_code) ? 'true' : 'false',
+        ], 200);
     }
 
     public function saveNotifications(Request $request)
