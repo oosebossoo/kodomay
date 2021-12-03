@@ -38,9 +38,9 @@ class SettingsController extends Controller
         return response()->json([
             'copy_email' => boolval($not->copy_email) ? true : false,
             'email' => $not->email,
-            'end_of_credit' => boolval($not->end_of_credit) ? 'true' : 'false',
-            'empty_credit' => boolval($not->empty_credit) ? 'true' : 'false',
-            'empty_code' => boolval($not->empty_code) ? 'true' : 'false',
+            'end_of_credit' => boolval($not->end_of_credit) ? true : false,
+            'empty_credit' => boolval($not->empty_credit) ? true : false,
+            'empty_code' => boolval($not->empty_code) ? true : false,
         ], 200);
     }
 
