@@ -36,7 +36,7 @@ class SettingsController extends Controller
         $not = Notification::where('user_id', $this->user->id)->first();
 
         return response()->json([
-            'copy_email' => boolval($not->copy_email) ? 'true' : 'false',
+            'copy_email' => boolval($not->copy_email) ? true : false,
             'email' => $not->email,
             'end_of_credit' => boolval($not->end_of_credit) ? 'true' : 'false',
             'empty_credit' => boolval($not->empty_credit) ? 'true' : 'false',
