@@ -40,7 +40,7 @@ class SettingsController extends Controller
             'email' => $not->email,
             'end_of_credit' => boolval($not->end_of_credit) ? true : false,
             'empty_credit' => boolval($not->empty_credit) ? true : false,
-            'empty_code' => boolval($not->empty_code) ? true : false,
+            'empty_dbs' => boolval($not->empty_dbs) ? true : false,
         ], 200);
     }
 
@@ -70,9 +70,9 @@ class SettingsController extends Controller
             {
                 $data->empty_credit = $request->empty_credit;
             }
-            if(isset($request->empty_code))
+            if(isset($request->empty_dbs))
             {
-                $data->empty_code = $request->empty_code;
+                $data->empty_dbs = $request->empty_dbs;
             }
 
             $data->save();
@@ -86,7 +86,7 @@ class SettingsController extends Controller
             $data->new_complaint = $request->new_complaint;
             $data->end_of_credit = $request->end_of_credit;
             $data->empty_credit = $request->empty_credit;
-            $data->empty_code = $request->empty_code;
+            $data->empty_dbs = $request->empty_dbs;
             $data->save();
         }
 
