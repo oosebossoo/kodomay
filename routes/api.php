@@ -136,7 +136,7 @@ Route::group([
 
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'test'
+    'prefix' => 'testtest'
 
 ], function ($router) {
     // płatności
