@@ -133,3 +133,14 @@ Route::group([
     Route::post('/pay', [PaymentController::class, 'pay']);
     // Route::get('/history', [PaymentController::class, 'history']);
 });
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'test'
+
+], function ($router) {
+    // płatności
+    Route::get('/test', [PaymentController::class, 'test']);
+    Route::post('/pay', [PaymentController::class, 'pay']);
+    // Route::get('/history', [PaymentController::class, 'history']);
+});

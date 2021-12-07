@@ -7,6 +7,10 @@ use App\Models\User;
 
 class AdminController extends Controller
 {
+    public function test()
+    {
+        return User::all();
+    }
     public function showUsers()
     {
         return response()->json(User::select('login', 'email', 'credits', 'activate as activated', 'created_at')->get(), 200);
@@ -16,7 +20,7 @@ class AdminController extends Controller
     {
 
     }
-
+    
     public function deleteUser(Request $request)
     {
         $user = User::where('id', $request->id)->first();
