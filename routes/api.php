@@ -14,6 +14,9 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PaymentController;
 
+
+use App\Http\Controllers\AdminController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
