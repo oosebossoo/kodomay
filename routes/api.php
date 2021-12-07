@@ -140,7 +140,7 @@ Route::group([
 
 ], function ($router) {
     // płatności
-    Route::get('/test', [PaymentController::class, 'test']);
+    Route::get('/test', [AdminController::class, 'test']);
     Route::post('/pay', [PaymentController::class, 'pay']);
     // Route::get('/history', [PaymentController::class, 'history']);
 });
