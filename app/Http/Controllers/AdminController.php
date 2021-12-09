@@ -87,7 +87,7 @@ class AdminController extends Controller
 
     public function getExcel()
     {
-        
+        return 1;
     }
 
     function days_in_month($month, $year){
