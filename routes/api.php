@@ -144,6 +144,6 @@ Route::group([
 ], function ($router) {
     // płatności
     Route::get('/test', [AdminController::class, 'test']);
-    Route::post('/pay', [PaymentController::class, 'pay']);
+    Route::post('/dash', [PaymentController::class, 'dash']);
     // Route::get('/history', [PaymentController::class, 'history']);
 });

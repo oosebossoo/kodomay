@@ -11,6 +11,11 @@ class AdminController extends Controller
     {
         return User::all();
     }
+
+    public function dash()
+    {
+        return Orders::where('seller_id', 40)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
+    }
     public function showUsers()
     {
         return response()->json(User::select('login', 'email', 'credits', 'activate as activated', 'created_at')->get(), 200);
