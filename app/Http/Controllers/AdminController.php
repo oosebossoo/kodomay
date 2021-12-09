@@ -15,7 +15,45 @@ class AdminController extends Controller
 
     public function dash()
     {
-        return Orders::where('seller_id', 40)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->count();
+        $user_id = 40;
+
+        if(isset($request->m) == 1)
+        {
+            $m = $request->m;
+        }
+        else
+        {
+            $m = (int)date("m");
+        }
+
+        for($i = 0; $i < $this->days_in_month($m, (int)date("Y")); $i++)
+        {
+            if(isset($request->m) == 1)
+            {
+                $m = $request->m;
+            }
+            else
+            {
+                $m = (int)date("m");
+            }
+
+            $j = $i;
+            $d = $j + 1;
+            if($d < 10)
+            {
+                $d = "0".$d;
+            }
+
+            if($m < 10)
+            {
+                $m = "0".$m;
+            }
+            
+            $date = (int)date("Y")."-".$m."-".$d;
+            $data[$date] = Orders::where('seller_id', $user_id)->whereBetween('order_date', [$date."T00:00:00.000Z", $date."T23:59:59.999Z"])->count();
+
+        }
+        return $data;
     }
     public function showUsers()
     {
