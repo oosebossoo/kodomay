@@ -114,7 +114,7 @@ class AllegroController extends Controller
             ->withBody(json_encode([
                 'user_id' => 40
             ]), 'json')
-            ->post("http://localhost:3000/listening", );
+            ->post("https://test-kodomat-node-js.herokuapp.com/listening", );
         return 1;
     }
 
