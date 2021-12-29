@@ -134,7 +134,7 @@ Route::group([
     // płatności
     Route::get('/history', [PaymentController::class, 'history']);
     Route::post('/pay', [PaymentController::class, 'pay']);
-    // Route::get('/history', [PaymentController::class, 'history']);
+    Route::get('/testAPI', [PaymentController::class, 'testAPI']);
 });
 
 Route::group([
