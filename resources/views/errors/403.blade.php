@@ -13,9 +13,9 @@
             font-family: 'Licorice', cursive;
             background-color: rgb(245, 203, 205);
             background-image: url({{ URL::asset('unicorn.jpg') }});
-            background-position: top center;
+            background-position: 50% 30%;
             background-repeat: no-repeat;
-            background-size: 40%;
+            background-size: 16%;
         }
 
         p {
@@ -29,11 +29,10 @@
 </head>
 <body>
 	<div>
+        <div style="height: 250px;"></div>
 		<div>
 			<p>Jednorożec zjadł ponczka</p>
-
-			<p>Server Error: 997 (Forbidden)</p>
-
+			<p style='font-size: 40px;'>Server Error: 997 (Forbidden)</p>
 		</div>
 	</div>
 </body>
