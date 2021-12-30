@@ -41,11 +41,6 @@ class PaymentController extends Controller
         }
 
         return response()->json(['url' => "https://www.google.com", 'crd' => $request->credits, 'payment_svc'=> $request->payment_service], 200);
-
-        // return response()->json(['url' => "dajmi.hajs/szybko
-        //     ?payment_svc=$request->payment_service
-        //     &credits=$request->credits
-        // "], 200);
     }
 
     public function add(Request $request)
