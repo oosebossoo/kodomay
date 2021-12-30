@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+
 
 use Response;
 use JWTAuth;
-
+use Exception;
 use App\Models\Code;
 use App\Models\SentMail;
 
@@ -22,10 +24,13 @@ class CodesController extends Controller
         try {
             $this->user = JWTAuth::parseToken()->authenticate();
         } catch (TokenInvalidException $e) {
+            header("Location: /unauthorized"); 
             dd('token_invalid');
         } catch (TokenExpiredException $e) {
+            header("Location: /unauthorized"); 
             dd('token_expired');
         } catch (JWTException $e) {
+            header("Location: /unauthorized"); 
             dd('token_invalid ws');
         }
     }

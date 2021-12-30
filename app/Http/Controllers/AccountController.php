@@ -26,11 +26,12 @@ class AccountController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        User::where('activate_code', $token)->update(['activate' => 1,'activate_code' => ""]);
-
-        return response()->json([
-            'message' => 'User successfully activated',
-        ], 201);
+        if(User::where('activate_code', $token)->update(['activate' => 1,'activate_code' => ""]))
+        {
+            return response()->json([
+                'message' => 'User successfully activated',
+            ], 201);
+        }
 
         return response()->json([
             'message' => "Can't activate account"
@@ -40,7 +41,7 @@ class AccountController extends Controller
     public function resetPasswordMail(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:100',
+            'email' => 'required|string|email|max:255',
         ]);
 
         if($validator->fails()){
@@ -70,9 +71,7 @@ class AccountController extends Controller
             return response()->json([
                 'message' => "Can't send email"
                 ], 500);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'message' => "Email sent"
             ], 200);
@@ -104,9 +103,7 @@ class AccountController extends Controller
             return response()->json([
                 'message' => 'User successfully reset password',
             ], 201);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'message' => "Can't update db or find user",
             ], 500);
@@ -119,7 +116,6 @@ class AccountController extends Controller
 
     public function allUsers()
     {
-        // return User::all();
         return "User::all()";
     }
 }

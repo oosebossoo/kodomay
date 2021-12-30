@@ -18,10 +18,12 @@ use App\Http\Controllers\SettingsController;
 use Carbon\Carbon;
 
 Route::get('/', function () {
-    return Auth::user()->id;
+    return response()->json([], 200);
 });
 
-Route::get('/dev_test_all_users', [AccountController::class, 'allUsers']);
+Route::get('/unauthorized', function () {
+    return view('errors.403');
+});
 
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/{user_id}/get_token', [AllegroController::class, 'getToken']);
