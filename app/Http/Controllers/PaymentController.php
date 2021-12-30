@@ -17,18 +17,18 @@ class PaymentController extends Controller
 {
     protected $user;
  
-    // public function __construct()
-    // {
-    //     try {
-    //         $this->user = JWTAuth::parseToken()->authenticate();
-    //     } catch (TokenInvalidException $e) {
-    //         dd('token_invalid');
-    //     } catch (TokenExpiredException $e) {
-    //         dd ('token_expired');
-    //     } catch (JWTException $e){
-    //         dd('token_invalid ws');
-    //     }
-    // }
+    public function __construct()
+    {
+        try {
+            $this->user = JWTAuth::parseToken()->authenticate();
+        } catch (TokenInvalidException $e) {
+            dd('token_invalid');
+        } catch (TokenExpiredException $e) {
+            dd ('token_expired');
+        } catch (JWTException $e){
+            dd('token_invalid ws');
+        }
+    }
 
     public function pay(Request $request)
     {

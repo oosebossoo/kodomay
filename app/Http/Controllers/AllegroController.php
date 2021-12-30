@@ -131,10 +131,6 @@ class AllegroController extends Controller
         return $this->allegroMainFunction::mainFunction($request->user_id);
     }
 
-    // ================
-    // ---- OFERTY ----
-    // ================
-
     public function setMonitoring(Request $request)
     {
         if(isset($request->template)&& isset($request->codeBase))
@@ -337,8 +333,6 @@ class AllegroController extends Controller
         return json_decode($response);
     }
 
-    
-
     public function getOrders(Request $request)
     {
         $user_id = $request->user_id;
@@ -463,35 +457,5 @@ class AllegroController extends Controller
         }
         $res = [];
         return response()->json([], 200);
-    }
-
-    // --- ---
-    // --- ---
-    // --- ---
-    // --- ---
-    // --- ---
-
-    public function parseHeaders(array $headers)
-    {
-        // Creating variable for headers
-        $stringHeaders = '';
-        
-        // Loop over each of header
-        foreach ($headers as $header => $value) {
-            
-            // Adding header line
-            $stringHeaders .= "$header: $value\r\n";
-        }
-        
-        // Returning headers
-        return $stringHeaders;
-    }
-
-    public function getUrl()
-    {
-        // Returning correct URL depending on sandbox setting
-        return $this->getSandbox() 
-            ? AllegroRestApi::SANDBOX_URL 
-            : AllegroRestApi::URL;
     }
 }
