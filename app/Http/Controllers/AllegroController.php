@@ -1,7 +1,4 @@
 <?php
-// --- [SANDBOX] PRODUKT DO TESTÓW
-// https://allegro.pl.allegrosandbox.pl/oferta/uun2-8gb-srebrny-usb2-0-7680166142
-
 // db_password: e8khH0BUfi
 // pass: DCF268D263E2DE84
 

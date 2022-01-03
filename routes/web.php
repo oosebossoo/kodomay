@@ -18,7 +18,7 @@ use App\Http\Controllers\SettingsController;
 use Carbon\Carbon;
 
 Route::get('/', function () {
-    return response()->json([], 200);
+    return view('errors.403');
 });
 
 Route::get('/unauthorized', function () {

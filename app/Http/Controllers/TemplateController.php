@@ -33,8 +33,7 @@ class TemplateController extends Controller
 
     public function list(Request $request)
     {
-        if(isset($this->user))
-        {
+        if(isset($this->user)) {
             $user_id = $this->user->id;
 
             $templates = MailTemplate::where('user_id', $user_id)->get();
@@ -46,21 +45,17 @@ class TemplateController extends Controller
                     'template_name' => $template->template_name,
                 ];
             }
-            if(isset($res))
-            {
+            if(isset($res)) {
                 return response()->json($res, 200);
             }
-
             return response()->json([], 200);
         }
-
         return response()->json("", 403);
     }
 
     public function get(Request $request)
     {
-        if(isset($request->id))
-        {
+        if(isset($request->id)) {
             $template = MailTemplate::where('id', $request->id)->first();
             $res = [
                 'id' => $template->id, 
@@ -69,7 +64,6 @@ class TemplateController extends Controller
                 'body' => $template->template,
                 'email' => $template->replay_email,
             ];
-
             return response()->json($res, 200);
         }
         return response()->json([ 
@@ -79,20 +73,16 @@ class TemplateController extends Controller
 
     public function delete(Request $request)
     {
-        if(!isset($request->id))
-        {
+        if(!isset($request->id)) {
             return response()->json([
                 "message" => "Template id is null"
             ], 400);
         }
-        if(MailTemplate::where('id', $request->id)->delete())
-        {
+        if(MailTemplate::where('id', $request->id)->delete()) {
             return response()->json([
                 "message" => "Template deleted"
             ], 200);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 "message" => "Can't delete"
             ], 500);
@@ -103,8 +93,7 @@ class TemplateController extends Controller
     {
         $user_id = $this->user->id;
 
-        if(isset($request->new))
-        {
+        if(isset($request->new)) {
             $validator = Validator::make($request->all(), [
                 'template_name' => 'required|unique:mail_template',
                 'template_subject' => 'required',
@@ -112,7 +101,7 @@ class TemplateController extends Controller
                 'template' => 'required',
             ]);
     
-            if($validator->fails()){
+            if($validator->fails()) {
                 return response()->json($validator->errors()->toJson(), 400);
             }
 
@@ -127,16 +116,13 @@ class TemplateController extends Controller
             return response()->json([
                 'message' => 'Template added'
             ], 201);
-        }
-        else
-        {
+        } else {
             if(MailTemplate::where('id', $request->id)
                 ->update([
                     "template_name" => $request->template_name, 
                     "template_subject" => $request->subject, 
                     "template" => $request->body,
-                ]))
-            {
+                ])) {
                 return response()->json([
                     'message' => 'updated'
                 ], 201);

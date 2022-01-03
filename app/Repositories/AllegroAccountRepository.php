@@ -24,8 +24,7 @@ class AllegroAccountRepository
     static function offers($user_id)
     {
         $limit = 100;
-        if(isset($request->limit))
-        {
+        if(isset($request->limit)) {
             $limit = $request->limit;
         }
 
@@ -38,14 +37,12 @@ class AllegroAccountRepository
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/sale/offers?limit=$limit");
 
-            if(isset($response['offers']))
-            {
+            if(isset($response['offers'])) {
                 foreach($response['offers'] as $offer)
                 {
                     $ending[] = $offer;
                     $existOffer = Offers::where('offer_id', $offer['id'])->get();
-                    if(!isset($existOffer[0]["id"]))
-                    {
+                    if(!isset($existOffer[0]["id"])) {
                         $offerDB = new Offers();
                         $offerDB->seller_id = $user_id;
                         $offerDB->offer_id = $offer['id'];
@@ -59,15 +56,13 @@ class AllegroAccountRepository
                         $offerDB->sold_last_30d = $soldInTrD;
 
                         
-                        if(isset($offer['sellingMode']['price']['amount']))
-                        {
+                        if(isset($offer['sellingMode']['price']['amount'])) {
                             $offerDB->price_amount = $offer['sellingMode']['price']['amount'];
                         } else {
                             $offerDB->price_amount = "null";
                         }
 
-                        if(isset($offer['sellingMode']['price']['currency']))
-                        {
+                        if(isset($offer['sellingMode']['price']['currency'])) {
                             $offerDB->price_currency = $offer['sellingMode']['price']['currency'];
                         } else {
                             $offerDB->price_currency = "null";
@@ -75,29 +70,25 @@ class AllegroAccountRepository
 
                         $offerDB->platform = "Allegro";
 
-                        if(isset($offer['publication']['status']))
-                        {
+                        if(isset($offer['publication']['status'])) {
                             $offerDB->status_platform = $offer['publication']['status'];
                         } else {
                             $offerDB->status_platform = "null";
                         }
 
-                        if(isset($offer['publication']['startedAt']))
-                        {
+                        if(isset($offer['publication']['startedAt'])) {
                             $offerDB->startedAt = $offer['publication']['startedAt'];
                         } else {
                             $offerDB->startedAt = "null";
                         }
 
-                        if(isset($offer['publication']['endingAt']))
-                        {
+                        if(isset($offer['publication']['endingAt'])) {
                             $offerDB->endingAt = $offer['publication']['endingAt'];
                         } else {
                             $offerDB->endingAt = "Neverending offer... :)";
                         }
                         
-                        if(isset($offer['publication']['endedAt']))
-                        {
+                        if(isset($offer['publication']['endedAt'])) {
                             $offerDB->endingAt = $offer['publication']['endedAt'];
                         } else {
                             $offerDB->endingAt = "Neverended offer... :)";
@@ -108,7 +99,6 @@ class AllegroAccountRepository
                     }
                 }
             }
-
         }
         // dd(response()->json(Offers::where('seller_id', $user_id)->get()));
     return response()->json(Offers::where('seller_id', $user_id)->get());
@@ -123,13 +113,11 @@ class AllegroAccountRepository
 
     static function setMonitoring($offer_id, $templ_id = null, $db_id = null)
     {
-        if($templ_id != null && $db_id !=null) 
-        {
+        if($templ_id != null && $db_id !=null) {
             if(
                 Code::where('db_id', $db_id)->update(['offer_id' => $offer_id]) &&
                 Offers::where('offer_id', $offer_id)->update(['mail_template' => $templ_id, 'is_active' => 'YES'])
-            ) 
-            {
+            ) {
                 return response()->json(['message' => 'set'], 200);
             }
             return response()->json(['message' => "Can't set, check offer id"], 400);
@@ -137,16 +125,13 @@ class AllegroAccountRepository
 
         $offer = Offers::where('offer_id', $offer_id)->first();
 
-        if(!empty($offer))
-        {
-            if($offer->is_active == 'NO')
-            {
+        if(!empty($offer)) {
+            if($offer->is_active == 'NO') {
                 Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'YES' ]);
                 return response()->json(['is_active' => 'YES'], 200);
             }
 
-            if($offer->is_active == 'YES')
-            {
+            if($offer->is_active == 'YES') {
                 Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'NO' ]);
                 return response()->json(['is_active' => 'NO'], 200);
             }

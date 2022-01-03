@@ -33,8 +33,7 @@ class IntegrationRepository
             'Accept-Language' => 'pl-PL'
         ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
 
-        if(!isset($response['error']))
-        {
+        if(!isset($response['error'])) {
             UserData::where('refresh_token', $refresh_token)->update([
                 'access_token' => $response['access_token'], 
                 'refresh_token' => $response['refresh_token'],
@@ -64,8 +63,7 @@ class IntegrationRepository
             'Accept-Language' => 'pl-PL'
         ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/$user_id/get_token"); 
 
-        if(!isset($response["error"]))
-        {
+        if(!isset($response["error"])) {
             $userData = new UserData();
             $userData->ordinal_id = UserData::where('user_id', $user_id)->count() + 1;
             $userData->user_id = $user_id;
@@ -89,8 +87,7 @@ class IntegrationRepository
 
     static function deleteAllegroUser($request)
     {
-        if(UserData::where('id', $request->id)->delete())
-        {
+        if(UserData::where('id', $request->id)->delete()) {
             return response()->json([
                 'message' => "Account deleted"
             ], 200);
@@ -105,8 +102,7 @@ class IntegrationRepository
     {
         $userDatas = UserData::where('user_id', $user_id)->get();
 
-        if(!$userDatas->isEmpty())
-        {
+        if(!$userDatas->isEmpty()) {
             foreach ($userDatas as $userData)
             {
                 $response = Http::withHeaders([

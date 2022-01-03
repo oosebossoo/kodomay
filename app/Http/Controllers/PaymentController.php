@@ -39,7 +39,7 @@ class PaymentController extends Controller
             'quantity' => 'required',
             'payment_service' => 'required',
         ]);
-        if($validator->fails()){
+        if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 

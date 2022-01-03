@@ -37,13 +37,11 @@ class AllegroMainFunction
 
         $user = User::where('id', $user_id)->first();
 
-        if($user['credits'] == 10)
-        {
+        if($user['credits'] == 10) {
             return response()->json('Credits are empty');
         }
 
-        if(!isset($userDatas))
-        {
+        if(!isset($userDatas)) {
             return [ 
                 'status' => 1,
                 'desc' => 'any allegro account does not exist in database' 
@@ -59,21 +57,18 @@ class AllegroMainFunction
                 "Authorization" => "Bearer $userData->access_token"
             ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
 
-            if($response->failed() || $response->clientError())
-            {
+            if($response->failed() || $response->clientError()) {
                 UserData::where('user_id', $user_id)->update([
                     'refresh' => true
                 ]);
                 return IntegrationRepository::refreshToken(UserData::where('id', $userData->id)->select('refresh_token')->first()['refresh_token'], self::$clientId, self::$clientSecret);
             }
 
-            if($response["events"] != []) 
-            {
+            if($response["events"] != []) {
                 $res = $response["events"];
                 $lastEvent = $res[0]["id"];
 
-                if($res[0]["id"] != $userData->last_event) 
-                {
+                if($res[0]["id"] != $userData->last_event) {
                     $log[] = "Allegro user: $userData->id has new events: ".$res[0]["id"];
 
                     foreach ($res as $order) 
@@ -84,8 +79,7 @@ class AllegroMainFunction
                         
                         $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first()['is_active'];
 
-                        if(!isset($existOrder[0]) && $isActive == "YES") 
-                        {
+                        if(!isset($existOrder[0]) && $isActive == "YES") {
                             $log[] = "new order: ".$order["id"];
                             $buyer = $order["order"]["buyer"];
                             $orderModel = new Orders;
@@ -102,12 +96,10 @@ class AllegroMainFunction
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             $orderModel->save();
 
-                            if(Customer::where('customer_id', $buyer["id"])->exists())
-                            {
+                            if(Customer::where('customer_id', $buyer["id"])->exists()) {
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
 
-                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
-                                {
+                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists()) {
                                     OrdersTable::where('customer_id', $buyer["id"])
                                         ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)
                                         ->update([
@@ -123,8 +115,7 @@ class AllegroMainFunction
                                     $order_table->save();
                                 }
                             } else {
-                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists())
-                                {
+                                if(OrdersTable::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->where('customer_id',  $buyer["id"])->exists()) {
                                     $tests[] = "jeśli ordersTable istnieje";
                                     OrdersTable::where('customer_id', $buyer["id"])
                                         ->where('offer_id', $detailsInfo->lineItems[0]->offer->id)

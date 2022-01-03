@@ -49,39 +49,30 @@ class SettingsController extends Controller
 
     public function saveNotifications(Request $request)
     {
-        if(Notification::where('user_id', $this->user->id)->exists())
-        {
+        if(Notification::where('user_id', $this->user->id)->exists()) {
             $data = Notification::where('user_id', $this->user->id)->first();
 
-            if(isset($request->copy_email))
-            {
+            if(isset($request->copy_email)) {
                 $data->copy_email = $request->copy_email;
             }
-            if(isset($request->email))
-            {
+            if(isset($request->email)) {
                 $data->email = $request->email;
             }
-            if(isset($request->new_adv))
-            {
+            if(isset($request->new_adv)) {
                 $data->new_adv = $request->new_adv;
             }
-            if(isset($request->end_of_credit))
-            {
+            if(isset($request->end_of_credit)) {
                 $data->end_of_credit = $request->end_of_credit;
             }
-            if(isset($request->empty_credit))
-            {
+            if(isset($request->empty_credit)) {
                 $data->empty_credit = $request->empty_credit;
             }
-            if(isset($request->empty_dbs))
-            {
+            if(isset($request->empty_dbs)) {
                 $data->empty_dbs = $request->empty_dbs;
             }
 
             $data->save();
-        }
-        else
-        {
+        } else {
             $data = new Notification();
             $data->user_id = $this->user->id;
             $data->copy_email = $request->copy_email;
@@ -122,59 +113,45 @@ class SettingsController extends Controller
     public function savePersonalData(Request $request)
     {
         
-        if(PersonalData::where('user_id', $this->user->id)->exists())
-        {
+        if(PersonalData::where('user_id', $this->user->id)->exists()) {
             $data = PersonalData::where('user_id', $this->user->id)->first();
 
-            if(isset($request->accountType))
-            {
+            if(isset($request->accountType)) {
                 $data->type = $request->accountType;
             }
-            if(isset($request->firstLastName))
-            {
+            if(isset($request->firstLastName)) {
                 $data->full_name = $request->firstLastName;
             }
-            if(isset($request->companyName))
-            {
+            if(isset($request->companyName)) {
                 $data->full_office_name = $request->companyName;
             }
-            if(isset($request->address))
-            {
+            if(isset($request->address)) {
                 $data->adress = $request->address;
             }
-            if(isset($request->zipCode))
-            {
+            if(isset($request->zipCode)) {
                 $data->post_code = $request->zipCode;
             }
-            if(isset($request->city))
-            {
+            if(isset($request->city)) {
                 $data->city = $request->city;
             }
-            if(isset($request->NIP))
-            {
+            if(isset($request->NIP)) {
                 $data->NIP = $request->NIP;
             }
-            if(isset($request->phoneNumber))
-            {
+            if(isset($request->phoneNumber)) {
                 $data->phone_number = $request->phoneNumber;
             }
-            if(isset($request->country))
-            {
+            if(isset($request->country)) {
                 $data->country = $request->country;
             }
 
-            if($request->type == "private")
-            {
+            if($request->type == "private") {
                 $data->full_office_name = "";
                 $data->NIP = "";
             }
             $data->save();
-        }
-        else
-        {
+        } else {
             $data = new PersonalData();
-            if($request->accountType == "private")
-            {
+            if($request->accountType == "private") {
                 $data->user_id = $this->user->id;
                 $data->type = $request->accountType;
                 $data->full_name = $request->firstLastName;
@@ -186,8 +163,7 @@ class SettingsController extends Controller
                 $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
             }
-            if($request->accountType == "company")
-            {
+            if($request->accountType == "company") {
                 $data->user_id = $this->user->id;
                 $data->type = $request->accountType;
                 $data->full_name = $request->firstLastName;
@@ -199,8 +175,7 @@ class SettingsController extends Controller
                 $data->phone_number = $request->phoneNumber;
                 $data->country = $request->country;
             }
-            if($data->save())
-            {
+            if($data->save()) {
                 return response()->json(['message' => 'Data saved']);
             } else {
                 return response()->json(['message' => "Can't save"]);

@@ -22,12 +22,11 @@ class AccountController extends Controller
             'token' => 'required',
         ]);
 
-        if($validator->fails()){
+        if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        if(User::where('activate_code', $token)->update(['activate' => 1,'activate_code' => ""]))
-        {
+        if(User::where('activate_code', $token)->update(['activate' => 1,'activate_code' => ""])) {
             return response()->json([
                 'message' => 'User successfully activated',
             ], 201);
@@ -44,7 +43,7 @@ class AccountController extends Controller
             'email' => 'required|string|email|max:255',
         ]);
 
-        if($validator->fails()){
+        if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -66,8 +65,7 @@ class AccountController extends Controller
             $message->from('noreplay@kodo.mat','Kodomat');
         });
 
-        if(Mail::failures())
-        {
+        if(Mail::failures()) {
             return response()->json([
                 'message' => "Can't send email"
                 ], 500);
@@ -91,15 +89,14 @@ class AccountController extends Controller
             ],
         ]);
 
-        if($validator->fails()){
+        if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
         $char = array(':');
         $token = str_replace($char, "", $request->token);
         
-        if(User::where('remember_token', $token)->update(['password' => bcrypt($request->password), 'remember_token' => ""]))
-        {
+        if(User::where('remember_token', $token)->update(['password' => bcrypt($request->password), 'remember_token' => ""])) {
             return response()->json([
                 'message' => 'User successfully reset password',
             ], 201);

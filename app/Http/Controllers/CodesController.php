@@ -146,7 +146,7 @@ class CodesController extends Controller
             ];
         }
 
-        if(isset($response)){
+        if(isset($response)) {
             return response()->json($response);
         } else {
             return response()->json([], 200);
@@ -165,7 +165,7 @@ class CodesController extends Controller
             'codes' => 'required', //_without_all:codes_txt
             // 'codes_txt' => 'required_without_all:codes',
         ]);
-        if($validator->fails()){
+        if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -175,7 +175,7 @@ class CodesController extends Controller
         //     $codes = $request->codes;
         // }
 
-        if($request->db_type == 0){
+        if($request->db_type == 0) {
             // baza zwykła
             $dbName = $request->db_name;
             $dbType = $request->db_type;
@@ -224,8 +224,7 @@ class CodesController extends Controller
     {
         $user_id = $this->user->id;
 
-        if(Code::where('db_id', $request->db_id)->delete())
-        {
+        if(Code::where('db_id', $request->db_id)->delete()) {
             return response()->json(['status' => 'database deleted'], 200);
         }
 
@@ -234,8 +233,7 @@ class CodesController extends Controller
 
     public function add_code(Request $request) 
     {
-        if(null !== $request->db_id || null !== $request->code)
-        {
+        if(null !== $request->db_id || null !== $request->code) {
             $user_id = $this->user->id;
 
             $db = Code::where('db_id', $request->db_id)->first();
@@ -244,8 +242,7 @@ class CodesController extends Controller
             $offerId = $db->offer_id;
             $db_id = $request->db_id;
 
-            if($dbType == 0)
-            {
+            if($dbType == 0) {
                 // baza zwykła
                 $cddb = new Code();
                 $cddb->db_id = $db_id;
@@ -255,10 +252,7 @@ class CodesController extends Controller
                 $cddb->seller_id = $user_id;
                 $cddb->status = 1;
                 $cddb->save();
-
-            }
-            elseif($db_type == 1)
-            {
+            } elseif($db_type == 1) {
                 // baza rek
                 $cddb = new Code();
                 $cddb->db_id = $db_id;
@@ -268,20 +262,16 @@ class CodesController extends Controller
                 $cddb->seller_id = $user_id;
                 $cddb->status = 1;
                 $cddb->save();
-            }
-            else
-            {
+            } else {
                 return response()->json([
                     'message' => 'something goes wrong',
                     'db_id' => $request->db_id
                 ], 200);
             }
-
             return response()->json([
                 'message' => 'new key added'
             ], 201);
         }
-
         return response()->json([
             'message' => 'db_id = null'
         ], 400);
@@ -325,16 +315,12 @@ class CodesController extends Controller
         $user_id = $this->user->id;
         //dd($request->code_ids);
 
-        if(null !== $request->code_ids)
-        {
+        if(null !== $request->code_ids) {
             // foreach($request->code_ids as $id)
             // {
-                if(!Code::where('seller_id', $user_id)->where('id', $request->code_ids)->delete())
-                {
+                if(!Code::where('seller_id', $user_id)->where('id', $request->code_ids)->delete()) {
                     return response()->json(['message' => "Can't delete code from database"], 500);
-                }
-                else
-                {
+                } else {
                     return response()->json(['message' => "Codes deleted from database"], 200);
                 }
             // }
@@ -348,23 +334,19 @@ class CodesController extends Controller
         $user_id = $this->user->id;
         $db = Code::where('seller_id', $user_id)->where('db_id', $request->db_id)->first();
 
-        if($db->db_type == 0)
-        {
+        if($db->db_type == 0) {
             $res = [
                 'db_id' => $db->db_id,
                 'db_name' => $db->db_name,
                 'db_type' => "Zwykła",
             ];
-        }
-        else
-        {
+        } else {
             $res = [
                 // 'db_id' => $db->db_id,
                 'db_name' => $db->db_name,
                 'db_type' => "Rekurencyjna",
             ];
         }
-
         return response()->json($res, 200);
     }
 
@@ -397,21 +379,13 @@ class CodesController extends Controller
     {
         $user_id = $this->user->id;
 
-        // db_id
-        // code_id
-        // limit
-
-        if(null !== $request->limit && null !== $request->db_id)
-        {
-            if(null !== $request->id)
-            {
+        if(null !== $request->limit && null !== $request->db_id) {
+            if(null !== $request->id) {
                 return response()->json(Code::where('seller_id', $user_id)
                     ->where('db_id', $request->db_id)
                     ->limit($limit)
                     ->get(), 200);
-            }
-            else
-            {
+            } else {
                 return response()->json(Code::where('seller_id', $user_id)
                     ->where('db_id', $request->db_id)
                     ->where('id', '>', $request->code_id)
@@ -419,7 +393,6 @@ class CodesController extends Controller
                     ->get(), 200);
             }
         }
-
         return response()->json(['message' => 'wrong values'], 400);
     }
 
@@ -427,8 +400,7 @@ class CodesController extends Controller
     {
         $code = Code::where('id', $id)->get();
 
-        if($code[0]->status == 1)
-        {
+        if($code[0]->status == 1) {
             Code::where('id', $id)->update(['status' => 0]);
         }
         return response()->json(Code::where('id', $id)->get());

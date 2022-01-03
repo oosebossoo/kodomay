@@ -70,23 +70,20 @@ class MailController extends Controller
    {
       $email = 'sebek.kasprzak.kodomat@gmail.com';
 
-      if(!isset($request->order_id))
-      {
+      if(!isset($request->order_id)) {
          return [
             'status' => 1 ,
             'desc' => 'please give me order id... :/'
          ];
       }
 
-      if(isset($request->email))
-      {
+      if(isset($request->email)) {
          $email = $request->email;
       }
 
       $order = Orders::where('order_id', $request->order_id)->first();
 
-      if(!isset($order->id))
-      {
+      if(!isset($order->id)) {
          return [
             'status' => 1 ,
             'desc' => 'please check order id... i cant find any order :/'
