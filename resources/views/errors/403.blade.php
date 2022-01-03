@@ -3,11 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Error 666 - Forbidden</title>
+	<title>Error 997 - Forbidden</title>
 	<meta name="viewport" content="width=device-width">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Licorice&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Licorice&display=swap" rel="stylesheet">
     <style>
         body  {
             font-family: 'Licorice', cursive;
