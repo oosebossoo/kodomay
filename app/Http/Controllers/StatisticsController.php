@@ -22,10 +22,13 @@ class StatisticsController extends Controller
         try {
             $this->user = JWTAuth::parseToken()->authenticate();
         } catch (TokenInvalidException $e) {
+            header("Location: /unauthorized"); 
             dd('token_invalid');
         } catch (TokenExpiredException $e) {
+            header("Location: /unauthorized"); 
             dd('token_expired');
         } catch (JWTException $e) {
+            header("Location: /unauthorized"); 
             dd('token_invalid ws');
         }
     }
