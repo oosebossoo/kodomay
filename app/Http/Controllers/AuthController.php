@@ -102,7 +102,7 @@ class AuthController extends Controller
             'expires_in' => auth("api")->factory()->getTTL() * 60,
             'id' => $user->id,
             'first_name' => $fullname[0],
-            'last_name' => $fullname[1],
+            // 'last_name' => $fullname[1],
             'email'=> $user->email,
         ]);
     }
