@@ -17,7 +17,9 @@ return [
 
     'paths' => [
         '/api*',  
-        '/stat*'],
+        '/stat*',
+        '/get_customers*'
+    ],
     'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     'allowed_origins' => ['https://kodomat-front-end.herokuapp.com'],
     'allowed_origins_patterns' => [],
