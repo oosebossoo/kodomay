@@ -24,13 +24,13 @@ class SettingsController extends Controller
             $this->user = JWTAuth::parseToken()->authenticate();
         } catch (TokenInvalidException $e) {
             header("Location: /unauthorized"); 
-            dd('token_invalid');
+            die;
         } catch (TokenExpiredException $e) {
             header("Location: /unauthorized"); 
-            dd('token_expired');
+            die;
         } catch (JWTException $e) {
             header("Location: /unauthorized"); 
-            dd('token_invalid ws');
+            die;
         }
     }
 
