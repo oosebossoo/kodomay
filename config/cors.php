@@ -16,7 +16,7 @@ return [
     */
 
     'paths' => ['/api/auth/login'],
-    'allowed_methods' => ['GET, POST'],
+    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     'allowed_origins' => ['https://kodomat-front-end.herokuapp.com'],
     'allowed_origins_patterns' => [],
     'allowed_headers' => [
