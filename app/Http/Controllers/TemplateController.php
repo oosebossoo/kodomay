@@ -33,24 +33,21 @@ class TemplateController extends Controller
 
     public function list(Request $request)
     {
-        if(isset($this->user)) {
-            $user_id = $this->user->id;
+        $user_id = $this->user->id;
 
-            $templates = MailTemplate::where('user_id', $user_id)->get();
+        $templates = MailTemplate::where('user_id', $user_id)->get();
 
-            foreach($templates as $template)
-            {
-                $res[] = [
-                    'id' => $template->id, 
-                    'template_name' => $template->template_name,
-                ];
-            }
-            if(isset($res)) {
-                return response()->json($res, 200);
-            }
-            return response()->json([], 200);
+        foreach($templates as $template)
+        {
+            $res[] = [
+                'id' => $template->id, 
+                'template_name' => $template->template_name,
+            ];
         }
-        return response()->json([], 403);
+        if(isset($res)) {
+            return response()->json($res, 200);
+        }
+        return response()->json([], 200);
     }
 
     public function get(Request $request)
