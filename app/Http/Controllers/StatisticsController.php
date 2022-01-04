@@ -62,12 +62,12 @@ class StatisticsController extends Controller
     {
         $user_id = $this->user->id;
 
-        return Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count();
+        return response()->json(Offers::where('seller_id', $user_id)->where('is_active', 'YES')->count());
     }
 
     public function getCredits()
     {
-        return $this->user->credits;
+        return response()->json($this->user->credits);
     }
 
     public function getCash()
@@ -87,7 +87,7 @@ class StatisticsController extends Controller
             }
         }
 
-        return $value;
+        return response()->json($value);
     }
 
     public function getTransactionInMonth(Request $request)
@@ -121,7 +121,7 @@ class StatisticsController extends Controller
             $date = (int)date("Y")."-".$m."-".$d;
             $data[$date] = Orders::where('seller_id', $user_id)->whereBetween('order_date', [$date."T00:00:00.000Z", $date."T23:59:59.999Z"])->count();
         }
-        return $data;
+        return response()->json($data);
     }
 
     public function transactionValue(Request $request)
@@ -155,39 +155,39 @@ class StatisticsController extends Controller
             }
             $data[$date] = round($value, 2);
         }
-        return $data;
+        return response()->json($data);
     }
 
     // ---------------------------------------------------------
 
     public function avgSendTime()
     {
-        return 0;
+        return response()->json(0);
     }
 
     public function incomeToday()
     {
-        return Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->sum('order_price');
+        return response()->json(Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->sum('order_price'));
     }
 
     public function incomeThisMounth()
     {
-        return Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->sum('order_price');
+        return response()->json(Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->sum('order_price'));
     }
 
     public function sendCodesToday()
     {
-        return Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->sum('quantity');
+        return response()->json(Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m-d')."T00:00:00.000Z", date('Y-m-d')."T23:59:59.999Z"])->sum('quantity'));
     }
 
     public function sendCodesThisMounth()
     {
-        return Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->sum('quantity');
+        return response()->json(Orders::where('seller_id', $this->user->id)->whereBetween('order_date', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->sum('quantity'));
     }
 
     public function customersQuantity()
     {
-        return Customer::where('seller_id', $this->user->id)->whereBetween('updated_at', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->count();
+        return response()->json(Customer::where('seller_id', $this->user->id)->whereBetween('updated_at', [date('Y-m')."-01T00:00:00.000Z", date('Y-m')."-31T23:59:59.999Z"])->count());
     }
 
     function days_in_month($month, $year){
