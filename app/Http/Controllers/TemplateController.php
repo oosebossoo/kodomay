@@ -9,6 +9,7 @@ use App\Models\MailTemplate;
 use App\Models\Offers;
 
 use Validator;
+use Auth;
 use JWTAuth;
 
 class TemplateController extends Controller
