@@ -50,7 +50,7 @@ class TemplateController extends Controller
             }
             return response()->json([], 200);
         }
-        return response()->json("", 403);
+        return response()->json([], 403);
     }
 
     public function get(Request $request)
