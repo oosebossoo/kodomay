@@ -24,14 +24,20 @@ class CodesController extends Controller
         try {
             $this->user = JWTAuth::parseToken()->authenticate();
         } catch (TokenInvalidException $e) {
+            // var_dump($e);
             header("Location: /unauthorized"); 
-            dd('token_invalid');
+            //echo('token_invalid');
+            die;
         } catch (TokenExpiredException $e) {
+            // var_dump($e);
             header("Location: /unauthorized"); 
-            dd('token_expired');
+            //echo('token_expired');
+            die;
         } catch (JWTException $e) {
+            // var_dump($e);
             header("Location: /unauthorized"); 
-            dd('token_invalid ws');
+            //echo('token_invalid ws');
+            die;
         }
     }
     
