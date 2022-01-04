@@ -19,7 +19,17 @@ return [
     'allowed_methods' => ['GET, POST'],
     'allowed_origins' => ['localhost:3000', 'http://kodomat-front-end.herokuapp.com/', 'https://kodomat-front-end.herokuapp.com/'],
     'allowed_origins_patterns' => [],
-    'allowed_headers' => ['X-Custom-Header', 'Upgrade-Insecure-Requests', '*'],
+    'allowed_headers' => [
+        'Origin', 
+        'Content-Type', 
+        'Accept', 
+        'Authorization', 
+        'X-Request-With', 
+        'sec-ch-ua', 
+        'sec-ch-ua-mobile', 
+        'sec-ch-ua-platform', 
+        'User-Agent'
+    ],
     'exposed_headers' => [],
     'max_age' => 0,
     'supports_credentials' => true,
