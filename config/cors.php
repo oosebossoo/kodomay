@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', '*'],
+    'paths' => ['api/auth/login'],
     'allowed_methods' => ['GET, POST'],
     'allowed_origins' => ['localhost:3000', 'http://kodomat-front-end.herokuapp.com/', 'https://kodomat-front-end.herokuapp.com/'],
     'allowed_origins_patterns' => [],
