@@ -95,16 +95,30 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $fullname = explode(" ", $user->name);
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'expires_in' => auth("api")->factory()->getTTL() * 60,
-            'id' => $user->id,
-            'first_name' => $fullname[0],
-            // 'last_name' => $fullname[1],
-            'email'=> $user->email,
-        ]);
+        if(isset($fullname[1]))
+        {
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+                'expires_in' => auth("api")->factory()->getTTL() * 60,
+                'id' => $user->id,
+                'first_name' => $fullname[0],
+                'last_name' => $fullname[1],
+                'email'=> $user->email,
+            ]);
+        } else {
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+                'expires_in' => auth("api")->factory()->getTTL() * 60,
+                'id' => $user->id,
+                'first_name' => $fullname[0],
+                'email'=> $user->email,
+            ]);
+        }
+        
     }
 
     protected function sendActivationEmail($email, $name, $token)
