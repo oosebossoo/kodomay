@@ -96,6 +96,9 @@ class AllegroMainFunction
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             $orderModel->save();
 
+                            $userData->last_event = $order["id"];
+                            $userData->save();
+
                             if(Customer::where('customer_id', $buyer["id"])->exists()) {
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
 
@@ -163,8 +166,8 @@ class AllegroMainFunction
                     $log[] = "last order: ".$lastEvent;
                 }
                 // zmiana w badzie danych ostatniego eventu
-                $userData->last_event = $lastEvent;
-                $userData->save();
+                // $userData->last_event = $lastEvent;
+                // $userData->save();
             } else {
                 $log[] = "Allegro user: $userData->id waiting for orders";
             }     
