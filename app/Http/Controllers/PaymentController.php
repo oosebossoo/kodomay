@@ -54,14 +54,28 @@ class PaymentController extends Controller
         $payment = self::add($data);
         if($payment[0])
         {
-            $text = array($payment[1]["payment_key"],147909,1000,"PLN","e60802a4a646c6df");
-            // dd(hash("sha384", serialize($text)));
-            $response = Http::withBasicAuth('147909', '27c0faf8dafc7c1324d9adad921ffb3a')
+            $session_id = "99";
+            $merchantId = 147909;
+            $amount = 1000;
+            $currency = "PLN";
+            $crc = "6e90910d3ed81115";
+
+            $code = [
+                "session_id" => "99",
+                "merchantId" => 147909,
+                "amount" => 2500,
+                "currency" => "PLN",
+                "crc" => "6e90910d3ed81115"
+            ];
+
+            $sign = hash('sha384',json_encode($code, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+            $response = Http::withBasicAuth($merchantId, "27c0faf8dafc7c1324d9adad921ffb3a")
                 ->post('https://sandbox.przelewy24.pl/api/v1/transaction/register', [
-                    "merchantId" =>  147909,
+                    "merchantId" => 147909,
                     "posId"=> 147909,
-                    "sessionId" => $payment[1]["payment_key"],
-                    "amount" => 1000,
+                    "sessionId" => "99",
+                    "amount" => 2500,
                     "currency" => "PLN",
                     "description" => "testowa tranzakcja",
                     "email" => "sebek.kasprzak@gmail.com",
@@ -69,9 +83,9 @@ class PaymentController extends Controller
                     "country" => "PL",
                     "language" => "pl",
                     "urlReturn" => "https://kodomat.herokuapp.com/api/payment/pay-return",
-                    "urlStatus" => "string",
+                    "urlStatus" => "https://kodomat.herokuapp.com/api/payment/pay-return",
                     "waitForResult" => false,
-                    "sign" => hash("sha384", serialize($text)),
+                    "sign" => $sign,
                 ]);
             return response()->json(json_decode($response));
         }
