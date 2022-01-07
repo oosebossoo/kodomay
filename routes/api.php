@@ -134,6 +134,7 @@ Route::group([
     // płatności
     Route::get('/history', [PaymentController::class, 'history']);
     Route::post('/pay', [PaymentController::class, 'pay']);
+    Route::post('/pay-return/{token}', [PaymentController::class, 'payReturn']);
     Route::get('/testAPI', [PaymentController::class, 'testAPI']);
 });
 
