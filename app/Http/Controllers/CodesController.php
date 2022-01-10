@@ -161,7 +161,7 @@ class CodesController extends Controller
         $validator = Validator::make($request->all(), [
             'db_name' => 'required|unique:code',
             'db_type' => 'required',
-            'codes' => 'required', //_without_all:codes_txt
+            'codes' => 'required_without_all:codes_txt', //_without_all:codes_txt
             'codes_txt' => 'required_without_all:codes',
         ]);
         if($validator->fails()) {
