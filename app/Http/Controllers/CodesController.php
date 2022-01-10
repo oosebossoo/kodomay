@@ -170,11 +170,11 @@ class CodesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        // if($request->codes === null){
-        //     $codes = $request->codes_txt;
-        // } else {
-        //     $codes = $request->codes;
-        // }
+        if($request->codes === null){
+            $codes = $request->codes_txt;
+        } else {
+            $codes = $request->codes;
+        }
 
         if($request->db_type == 0) {
             // baza zwykła
