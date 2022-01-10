@@ -162,13 +162,19 @@ class CodesController extends Controller
             'db_name' => 'required|unique:code',
             'db_type' => 'required',
             'codes' => 'required', //_without_all:codes_txt
-            // 'codes_txt' => 'required_without_all:codes',
+            'codes_txt' => 'required_without_all:codes',
         ]);
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
+        if($request->has('codes'))
+        {
+            $codes = $request->codes;
+        } else {
+            $codes = $request->codes_txt;
+        }
 
-        $codes = $request->codes;
+        
 
         if($request->db_type == 0) {
             // baza zwykła
