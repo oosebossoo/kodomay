@@ -85,13 +85,13 @@ class AllegroAccountRepository
                         if(isset($offer['publication']['endingAt'])) {
                             $offerDB->endingAt = $offer['publication']['endingAt'];
                         } else {
-                            $offerDB->endingAt = "Neverending offer... :)";
+                            $offerDB->endingAt = "Do wyczerpania zapasów";
                         }
                         
                         if(isset($offer['publication']['endedAt'])) {
-                            $offerDB->endingAt = $offer['publication']['endedAt'];
+                            $offerDB->endedAt = $offer['publication']['endedAt'];
                         } else {
-                            $offerDB->endingAt = "Neverended offer... :)";
+                            $offerDB->endedAt = "Do wyczerpania zapasów";
                         }
                         
                         $offerDB->is_active = 'YES';
