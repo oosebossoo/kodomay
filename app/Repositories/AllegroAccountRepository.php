@@ -101,7 +101,7 @@ class AllegroAccountRepository
             }
         }
         // dd(response()->json(Offers::where('seller_id', $user_id)->get()));
-        return response()->json(Offers::where('seller_id', $user_id)->get());
+        return response()->json(Offers::where('seller_id', $user_id)->where('is_active', 'YES')->get());
     }
 
     static function offersOff($user_id)
