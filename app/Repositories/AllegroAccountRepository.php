@@ -104,7 +104,7 @@ class AllegroAccountRepository
         return response()->json(Offers::where('seller_id', $user_id)->get());
     }
 
-    static function offersOff()
+    static function offersOff($user_id)
     {
         return response()->json(Offers::where('seller_id', $user_id)->where('is_active', 'NO')->get(), 200);
     }
