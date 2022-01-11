@@ -91,6 +91,7 @@ Route::group([
     // oferty
     Route::get('/monitoring/on', [ AllegroController::class, 'monitoringOn']);
     Route::get('/get/offers', [ AllegroController::class, 'offers']);
+    Route::get('/get/offers/off', [ AllegroController::class, 'offersOff']);
     Route::get('/get/offer', [ AllegroController::class, 'offer']);
     Route::post('/set/monitoring', [ AllegroController::class, 'setMonitoring']);
     Route::get('/get/monitoring/{set}', [ AllegroController::class, 'getMonitoring']);

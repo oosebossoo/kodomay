@@ -93,6 +93,11 @@ class AllegroController extends Controller
         return $this->allegroAccountRepo::offers(40);
     }
 
+    public function offersOff(Request $request)
+    {
+        return $this->allegroAccountRepo::offersOff(40);
+    }
+
     public function offer(Request $request)
     {
         return $this->allegroAccountRepo::offer($request->id);
