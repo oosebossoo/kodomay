@@ -21,9 +21,11 @@ use App\Models\OrdersTable;
 use App\Models\Offers;
 use App\Models\SentMail;
 use App\Models\Code;
+use App\Models\User;
 
 use Auth;
 use JWTAuth;
+use Carbon\Carbon;
 
 class AllegroController extends Controller
 {
@@ -43,24 +45,28 @@ class AllegroController extends Controller
         $this->allegroAccountRepo = $allegroAccountRepo;
         $this->allegroMainFunction = $allegroMainFunction;
     }
+
+    // public function testAllegro()
+    // {
+    //     $credenctial = $this->allegroAccountRepo->testAllegro("PROD");
+    //     return $credenctial['secret'];
+    // }
     
     public function test()
     {
         $response = Http::withHeaders([
             "Accept" => "application/vnd.allegro.public.v1+json",
-            "Authorization" => "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzU4ODUwOTgsInVzZXJfbmFtZSI6IjEwMTAyNTEwNyIsImp0aSI6IjJlNzMyZjc2LTgzNWQtNDVlYS1iZDBlLTgyMDc4ZWI0ZDM4NCIsImNsaWVudF9pZCI6ImUyN2MzMDkxYTY3YTRlZGQ4MDE1MTkxZDRhMjZjNjZmIiwic2NvcGUiOlsiYWxsZWdybzphcGk6b3JkZXJzOnJlYWQiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOndyaXRlIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTpiaWxsaW5nOnJlYWQiLCJhbGxlZ3JvOmFwaTpjYW1wYWlnbnMiLCJhbGxlZ3JvOmFwaTpkaXNwdXRlcyIsImFsbGVncm86YXBpOnNhbGU6b2ZmZXJzOnJlYWQiLCJhbGxlZ3JvOmFwaTpiaWRzIiwiYWxsZWdybzphcGk6b3JkZXJzOndyaXRlIiwiYWxsZWdybzphcGk6YWRzIiwiYWxsZWdybzphcGk6cGF5bWVudHM6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOnNldHRpbmdzOndyaXRlIiwiYWxsZWdybzphcGk6cHJvZmlsZTpyZWFkIiwiYWxsZWdybzphcGk6cmF0aW5ncyIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6cmVhZCIsImFsbGVncm86YXBpOnBheW1lbnRzOnJlYWQiLCJhbGxlZ3JvOmFwaTptZXNzYWdpbmciXSwiYWxsZWdyb19hcGkiOnRydWV9.0LV_O4_Rw4u6vYiSNSpUCW9gQYjZ0C8zYoZAE7nl-y0Kqk6U9pSO9oXuMkKmBwYpKBu2ZgZDjY1gS8KcE0bPoust8LyefnTmsASg_IZvlorO9PJ96v5M7T-QTyfHa58GcrZnicAzoXkLdi-bl9KVWcIKfKBNkYZocyFSbrf1gFuoRIGGE5v-l_gy1KphPE71wZi0Uq0Je5YBO2s9YxEGbcrx4YUPrRveLZwUTUg-ZS1B6r9dKa1GwBWIjcCIki5n4-Fv3NxAGfodx3tCavgp1GyAgQNNqx26ueJMclyGGdDMT0YFRp1aKW3joY8mm3P9D51bjjtzXN_qmttEZobCuw"
-        ])->get("https://api.allegro.pl/payments/payment-operations?occurredAt.gte=2021-10-30T11:06:50.935Z");
+            'Accept-Language' => 'pl-PL',
+            "Authorization" => "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDYzOTU4MjMsInVzZXJfbmFtZSI6IjEwMTAyNTEwNyIsImp0aSI6ImQxMDA2M2VlLWE4OTMtNGU2Mi05MzgxLTE5MDdhN2Y0ZjAxNSIsImNsaWVudF9pZCI6ImUyN2MzMDkxYTY3YTRlZGQ4MDE1MTkxZDRhMjZjNjZmIiwic2NvcGUiOlsiYWxsZWdybzphcGk6b3JkZXJzOnJlYWQiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOndyaXRlIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTpiaWxsaW5nOnJlYWQiLCJhbGxlZ3JvOmFwaTpjYW1wYWlnbnMiLCJhbGxlZ3JvOmFwaTpkaXNwdXRlcyIsImFsbGVncm86YXBpOnNhbGU6b2ZmZXJzOnJlYWQiLCJhbGxlZ3JvOmFwaTpiaWRzIiwiYWxsZWdybzphcGk6b3JkZXJzOndyaXRlIiwiYWxsZWdybzphcGk6YWRzIiwiYWxsZWdybzphcGk6cGF5bWVudHM6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOnNldHRpbmdzOndyaXRlIiwiYWxsZWdybzphcGk6cHJvZmlsZTpyZWFkIiwiYWxsZWdybzphcGk6cmF0aW5ncyIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6cmVhZCIsImFsbGVncm86YXBpOnBheW1lbnRzOnJlYWQiLCJhbGxlZ3JvOmFwaTptZXNzYWdpbmciXSwiYWxsZWdyb19hcGkiOnRydWV9.xrjUIyFWZEMAMKmnd_4d3dIJuhqq666wPQPgwhDqSuVz2g16cecTAZvL-jzKi6FClKNtV-my9W31Ks9POAU8sp2zbXd3Wk8-gFwRmFEAo4GygR-VHewT1PWDd7h2mYKJ_4Z_GNbm54WsWfpFoMZLlkIrB58tVFh9kEMYl2L-rz0VDeMnvxXvkm6gjiJAXfTLg4kvphcyC467uJIHyRPxKTmHPUX7kDum3tQ_A8LVYq8QpYbDmBmthSLNFjszE9cJXRJEibXD5H7RjpSmC45FuYW_KEQRdUxGaQZkursR3W-vnhZRunFgjtcOFsAevg3RqrX2C00gSYMSUBF5HIVdfg",
+            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+            ])
+        // ->withBody('{ "email" : "cybersent.noreply@gmail.com" }', 'vnd')
+        ->post("https://api.allegro.pl/account/additional-emails", ['email' => 'cybersent.noreply@gmail.com']);
 
-        $responseTwo = Http::withHeaders([
-            "Accept" => "application/vnd.allegro.public.v1+json",
-            "Authorization" => "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzU4ODUyMTgsInVzZXJfbmFtZSI6IjY3MjMyODc4IiwianRpIjoiZjZjMWEyZTktOWJhZC00NDYxLTg5MTgtYzllMmFhZWMxZDdmIiwiY2xpZW50X2lkIjoiZTI3YzMwOTFhNjdhNGVkZDgwMTUxOTFkNGEyNmM2NmYiLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnByb2ZpbGU6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOm9mZmVyczp3cml0ZSIsImFsbGVncm86YXBpOmJpbGxpbmc6cmVhZCIsImFsbGVncm86YXBpOmNhbXBhaWducyIsImFsbGVncm86YXBpOmRpc3B1dGVzIiwiYWxsZWdybzphcGk6YmlkcyIsImFsbGVncm86YXBpOnNhbGU6b2ZmZXJzOnJlYWQiLCJhbGxlZ3JvOmFwaTpvcmRlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTphZHMiLCJhbGxlZ3JvOmFwaTpwYXltZW50czp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6d3JpdGUiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOnJlYWQiLCJhbGxlZ3JvOmFwaTpyYXRpbmdzIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczpyZWFkIiwiYWxsZWdybzphcGk6cGF5bWVudHM6cmVhZCIsImFsbGVncm86YXBpOm1lc3NhZ2luZyJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZX0.Dp3GusPimbVJiK6YeoFd3oR1uJ-pbrMmenLizYRuOYFNXIIyQFZ5WkVyCOAKZaFPozsNlS2HooGNQrIfZPCbAqikHzeFeOgTD4etP7bMGaVF1nT5eJvLSHuXDPI9iLGLLJwvUc6LJXEBi_06Gkt_ZZ8yRdzvb0xPC5iesSTmAVb6oJ1Redk3cNJ2gYIJguEairf31N4mVgK2iRb4dsmNeZ7YIcRZuKr2WU4XlB-i4Fj4HIj-ZFyV_rSZeF0EWtn4njnxgr995qd-44nwbufUf2OnlkCtPWWVBHEjimEMrgLbF8NhZL50UGwtVo2sOA4PN5R-dI_FdZYTPja2lfaOzg"
-        ])->get("https://api.allegro.pl/payments/payment-operations?occurredAt.gte=2021-10-30T11:06:50.935Z");
+        $response = json_decode($response);
 
-        $vauleOne = $response['paymentOperations'][0]['wallet']['balance']['amount'];
 
-        $valueTwo = $responseTwo['paymentOperations'][0]['wallet']['balance']['amount'];
-
-        return $vauleOne + $valueTwo;
+        return response()->json($response, 200);
     }
 
     public function add(Request $request, $user_id)
@@ -75,7 +81,9 @@ class AllegroController extends Controller
 
     public function refreshToken(Request $request)
     {
-        return $this->integrationRepo::refreshToken(UserData::where('user_id', 40)->select('refresh_token')->first()['refresh_token'], $this->clientId, $this->clientSecret);
+        // $user_id = $request->user_id;
+        $user_id = 40;
+        return $this->integrationRepo::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')->first()['refresh_token'], $this->clientId, $this->clientSecret);
     }
 
     public function deleteAllegroUser(Request $request)
@@ -90,16 +98,22 @@ class AllegroController extends Controller
 
     public function offers(Request $request)
     {
-        return $this->allegroAccountRepo::offers(40);
+        // $user_id = $request->user_id;
+        $user_id = 40;
+        return $this->allegroAccountRepo::offers($user_id);
     }
 
     public function offersOff(Request $request)
     {
-        return $this->allegroAccountRepo::offersOff(40);
+        // $user_id = $request->user_id;
+        $user_id = 40;
+        return $this->allegroAccountRepo::offersOff($user_id);
     }
 
     public function offer(Request $request)
     {
+        // $user_id = $request->user_id;
+        $user_id = 40;
         return $this->allegroAccountRepo::offer($request->id);
     }
 
@@ -108,16 +122,30 @@ class AllegroController extends Controller
         return $this->allegroAccountRepo::setListening($request->id);
     }
 
-    public function monitoringOn(Request $request)
+    public static function monitoringOnAuto($user_id)
     {
+        // $user = User::where('id', $user_id)->first();
         $response = Http::withHeaders([
             "Authorization" => "{jwtAuth::getToken()}"
             ])
             ->withBody(json_encode([
-                'user_id' => 40
+                'user_id' => $user_id
             ]), 'json')
-            ->post("https://test-kodomat-node-js.herokuapp.com/listening", );
-        return 1;
+            ->post("http://localhost:3000/listening", );
+        return $response;
+    }
+
+    public static function monitoringOn(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        $response = Http::withHeaders([
+            "Authorization" => "{jwtAuth::getToken()}"
+            ])
+            ->withBody(json_encode([
+                'user_id' => $user->id
+            ]), 'json')
+            ->post("http://localhost:3000/listening", );
+        return $response;
     }
 
     public function monitoringOff(Request $request)
@@ -135,11 +163,12 @@ class AllegroController extends Controller
 
     public function setMonitoring(Request $request)
     {
-        if(isset($request->template)&& isset($request->codeBase))
-        {
-            return $this->allegroAccountRepo::setMonitoring($request->offer_id, $request->template, $request->codeBase);
-        }
-        return $this->allegroAccountRepo::setMonitoring($request->offer_id);
+        return $this->allegroAccountRepo::setMonitoring($request->offer_id, $request->template, $request->codeBase);
+    }
+
+    public function offMonitoring(Request $request)
+    {
+        return $this->allegroAccountRepo::offMonitoring($request->offer_id);
     }
 
     public function getMonitoring($set)
@@ -154,19 +183,13 @@ class AllegroController extends Controller
 
     public function getCustomers(Request $request)
     {
-        if(isset($request->dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
+        // $user_id = $request->user_id;
+        $user_id = 40;
 
         $oderBy = 'desc';
         $limit = 50;
         $customerId = ['sign' => '!=', 'id' => ''];
-        $canceled = [ 'sign' => '=', 'desc' => ''];
+        $canceled = ['sign' => '=', 'desc' => ''];
 
         if(isset($request->oderBy))
         {
@@ -221,25 +244,46 @@ class AllegroController extends Controller
 
         foreach($customers as $customer)
         {
-            $response[] = [ 
-                'customer' => $customer, 
-                'customer_orders' => $this->getCustomerOrders($customer->customer_id, $request->dev)
-            ];
+            $response[] = ['customer' => [
+                'customer_id' => $customer->customer_id,
+                'name' => $customer->login,
+                'fullname' => $customer->first_name." ".$customer->last_name,
+                'city' => $customer->city,
+                'email' => $customer->email
+            ]];
         }
 
-        return $response;
+        return response()->json($response, 200);
     }
 
-    public function getCustomerOrders($customer_id, $dev)
+    public function getCustomer(Request $request)
     {
-        if(isset($dev))
-        {
-            $user_id = 14;
-        }
-        else
-        {
-            $user_id = Auth::user()->id;
-        }
+        // $user_id = $request->user_id;
+        $user_id = 40;
+        $customer = Customer::where('seller_id', $user_id)->where('customer_id', $request->customer_id)->get();
+        $total_amount = Orders::where('seller_id', $user_id)->where('customer_id', $request->customer_id)->count('order_price');
+        $first_order_date = Orders::where('seller_id', $user_id)->where('customer_id', $request->customer_id)->orderBy('order_date', 'asc')->first();
+        $first_order_date = $first_order_date->order_date;
+        $last_order = Orders::where('seller_id', $user_id)->where('customer_id', $request->customer_id)->orderBy('order_date', 'desc')->first();
+        $last_order_date = $last_order->order_date;
+
+        $response = [ 
+            'customer' => $customer,
+            'total_amount' => $total_amount,
+            'first_purchase_date' => $first_order_date,
+            'last_purchase' => $last_order->offer_name,
+            'last_purchase_date' => $last_order_date,
+            // 'customer_orders' => $this->getCustomerOrders($request->customer_id)
+        ];
+
+        return response()->json($response, 200);
+    }
+
+    public function getCustomerOrders($customer_id)
+    {
+        // $user_id = $request->user_id;
+        $user_id = 40;
+
         $orders_table = OrdersTable::where('customer_id', $customer_id)->where('seller_id', $user_id)->get();
         foreach($orders_table as $order_table)
         {
@@ -300,17 +344,20 @@ class AllegroController extends Controller
 
     public function getLastEvent(Request $request)
     {
-        $userData = UserData::where('id', $request->id)->get();
-        return $this->getLastEventRepo($userData[0]["access_token"]);
-    }
+        // $user_id = $request->user_id;
+        $user_id = 40;
+        $userDatas = UserData::where('user_id', $user_id)->get();
 
-    public static function getLastEventRepo($userData)
-    {
-        $response = Http::withHeaders([
-            "Accept" => "application/vnd.allegro.public.v1+json",
-            "Authorization" => "Bearer $userData"
-        ])->get("https://api.allegro.pl/order/event-stats");
-        return $response["latestEvent"];
+        $userData = UserData::where('id', $request->id)->get();
+        return $this->integrationRepo::lastEvent($userData[0]["access_token"]);
+        
+        foreach ($userDatas as $userData)
+        {
+            $lastEvent = $this->integrationRepo::lastEvent($userData["access_token"]);
+            $userData->last_event = $lastEvent;
+            $userData->save();
+        }
+        return 0;
     }
 
     public static function changeStatus($checkOutFormId, $token, $status)
@@ -340,11 +387,11 @@ class AllegroController extends Controller
         $user_id = $request->user_id;
 
         $oderBy = 'desc';
-        $limit = 50;
+        $limit = 200;
         $offerId = ['sing' => '!=', 'id' => ''];
         $canceled = 0;
         $from = date('2000-01-01');
-        $to = date('2022-01-01');
+        $to = date('2023-01-01');
 
         if(isset($request->oderBy))
         {
@@ -370,21 +417,21 @@ class AllegroController extends Controller
             }
         }
 
-        if(isset($request->offer_id))
-        {
-            $offerId['sing'] = '=';
-            $offerId['id'] = $request->offer_id;
-        }
+        // if(isset($request->offer_id))
+        // {
+        //     $offerId['sing'] = '=';
+        //     $offerId['id'] = $request->offer_id;
+        // }
 
-        if(isset($request->from))
-        {
-            $from = date($request->from);
-        }
+        // if(isset($request->from))
+        // {
+        //     $from = date($request->from);
+        // }
 
-        if(isset($request->to))
-        {
-            $to = date($request->to);
-        }
+        // if(isset($request->to))
+        // {
+        //     $to = date($request->to);
+        // }
 
         if(isset($request->canceled))
         {
@@ -395,9 +442,7 @@ class AllegroController extends Controller
             ->orderBy('order_date', $oderBy)
             ->limit($limit)
             ->get();
-        }
-        else
-        {
+        } else {
             $orders = Orders::where('seller_id', $user_id)
             ->where('offer_id', $offerId['sing'], $offerId['id'])
             ->whereBetween('order_date', [$from, $to])
@@ -410,50 +455,76 @@ class AllegroController extends Controller
         {
             foreach($orders as $order)
             {
+                $order->order_date = Carbon::parse($order->order_date)->addHour();
+
                 $sentMails = SentMail::where('order_id', $order->order_id)->get();
                 if (!isset($sentMails[0]))
                 {
                     $send_status = 'Sending';
                     $sent_date = 'Sending';
                     $codes[] = 'Sending';
-                }
-                else
-                {
+                } else {
                     foreach ($sentMails as $sentMail)
                     {
                         $send_status = 'Sent';
-                        $sent_date = $sentMail->created_at;
+                        $sent_date = explode("T", $sentMail->created_at);
+                        $sent_date[0] = Carbon::parse($sent_date[0])->addHour();
                         $code = Code::where('id', $sentMail->code_id)->first();
-                        $codes[] = $code->code;
+                        if(!isset($code->code)){
+                            $codes[] = "brak informacji";
+                        } else {
+                            $codes[] = $code->code;
+                        }
                     }
                 }
 
-                // $customer = Customer::where('customer_id', $order->customer_id)->first();
-                $res[] = [
-                    'order' => [ 
-                        $order, 
-                        'link' => "https://allegro.pl/oferta/$order->offer_id",
-                        'platform' => 'Allegro',
-                        'send_status' => $send_status,
-                        'ended' => 'null',
-                        'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
-                        'sent_date' => $sent_date, 
-                        'codes' => $codes
-                    ], 
-                    'customer' => [ 
-                        'name' => 'name_test', 
-                        'login' => 'login_test',
-                        'email' => 'email_test',
-                        // 'name' => $customer->first_name." ".$customer->last_name, 
-                        // 'login' => $customer->login,
-                        // 'email' => $customer->email,
-                    ]
-                ];
-
-                if($codes != 'Sending')
+                $customer = Customer::where('customer_id', $order->customer_id)->first();
+                if($customer == null)
                 {
-                    \array_splice($codes, 0, 1);
+                    $res[] = [
+                        'order' => [ 
+                            $order, 
+                            'link' => "https://allegro.pl/oferta/$order->offer_id",
+                            'platform' => 'Allegro',
+                            'send_status' => $send_status,
+                            'ended' => 'null',
+                            'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
+                            'sent_date' => $sent_date[0], 
+                            'codes' => $codes
+                        ], 
+                        'customer' => [ 
+                            // 'name' => 'name_test', 
+                            // 'login' => 'login_test',
+                            // 'email' => 'email_test',
+                            'name' => "", 
+                            'login' => "",
+                            'email' => "",
+                        ]
+                    ];
+                } else {
+                    $res[] = [
+                        'order' => [ 
+                            $order, 
+                            'link' => "https://allegro.pl/oferta/$order->offer_id",
+                            'platform' => 'Allegro',
+                            'send_status' => $send_status,
+                            'ended' => 'null',
+                            'date_PayU' => 'rrrr-mm-dd hh:mm:ss', 
+                            'sent_date' => $sent_date[0], 
+                            'codes' => $codes
+                        ], 
+                        'customer' => [ 
+                            // 'name' => 'name_test', 
+                            // 'login' => 'login_test',
+                            // 'email' => 'email_test',
+                            'name' => $customer->first_name." ".$customer->last_name." ".$customer->login, 
+                            'login' => $customer->login,
+                            'email' => $customer->email,
+                        ]
+                    ];
                 }
+
+                unset($codes);
             }
             return response()->json($res, 200);
         }

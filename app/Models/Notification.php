@@ -14,6 +14,7 @@ class Notification extends Model
     protected $fillable = [
         'user_id',
         'send_email_copy_code',
+        'email',
         'send_info_new_adv',
         'send_info_end_of_credit',
         'send_info_zero_credit',

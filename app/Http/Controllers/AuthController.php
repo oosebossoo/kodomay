@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notification;
 use App\Models\User;
+use App\Http\Controllers\AllegroController;
 use Validator;
 use Mail;
 
@@ -67,7 +68,10 @@ class AuthController extends Controller
 
         $this->sendActivationEmail($email, $name, $token);
 
-        Notification::create(['user_id' => $user->id]);
+        Notification::create(['user_id' => $user->id, "email" => $request->email]);
+
+        // słuchacz
+        AllegroController::monitoringOnAuto($user->id);
 
         return response()->json([
             'message' => 'User successfully registered',

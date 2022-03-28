@@ -50,6 +50,7 @@ Route::group([
     Route::get('/shortList', [ CodesController::class, 'shortList']);
     Route::get('/delete', [ CodesController::class, 'delete_db']);
     Route::get('/join', [ CodesController::class, 'join']);
+    Route::post('/edit', [ CodesController::class, 'edit']);
 });
 
 Route::group([
@@ -89,14 +90,20 @@ Route::group([
     Route::get('/refresh', [ AllegroController::class, 'refreshToken']);
     Route::get('/user/{user_id}/list', [ AllegroController::class, 'list']);
     // oferty
-    Route::get('/monitoring/on', [ AllegroController::class, 'monitoringOn']);
     Route::get('/get/offers', [ AllegroController::class, 'offers']);
     Route::get('/get/offers/off', [ AllegroController::class, 'offersOff']);
     Route::get('/get/offer', [ AllegroController::class, 'offer']);
+    // monitoring
+    Route::get('/monitoring/on', [ AllegroController::class, 'monitoringOn']);
+    Route::get('/getLastEvent', [ AllegroController::class, 'getLastEvent']);
     Route::post('/set/monitoring', [ AllegroController::class, 'setMonitoring']);
+    Route::post('/off/monitoring', [ AllegroController::class, 'offMonitoring']);
     Route::get('/get/monitoring/{set}', [ AllegroController::class, 'getMonitoring']);
-    //tranzakcje
+    // tranzakcje
     Route::get('/get/transaction', [ AllegroController::class, 'getOrders']);
+    // klienci
+    Route::get('/get/customers', [ AllegroController::class, 'getCustomers']);
+    Route::get('/get/customer', [ AllegroController::class, 'getCustomer']);
 
     // glowna funkcja
     Route::get('/main_function', [ AllegroController::class, 'mainFunction']);

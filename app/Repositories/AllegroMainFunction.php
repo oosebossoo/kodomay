@@ -34,9 +34,9 @@ class AllegroMainFunction
     static function mainFunction($user_id)
     {
         $userDatas = UserData::where('user_id', $user_id)->get();
+        // $userDatas = UserData::where('user_id', $user_id)->where('active', 1)->get();
 
         $user = User::where('id', $user_id)->first();
-
         if($user['credits'] == 10) {
             return response()->json('Credits are empty');
         }
@@ -69,10 +69,15 @@ class AllegroMainFunction
                 $lastEvent = $res[0]["id"];
 
                 if($res[0]["id"] != $userData->last_event) {
-                    $log[] = "Allegro user: $userData->id has new events: ".$res[0]["id"];
+                    $log[] = "user: $userData->id new events: ".$res[0]["id"];
+
+                    // $userData->last_event = $res[0]["id"];
+                    // $userData->save();
 
                     foreach ($res as $order) 
                     {
+                        $userData->last_event = $order["id"];
+                        $userData->save();
                         $existOrder = Orders::where('order_id', $order["id"])->get();
 
                         $detailsInfo = self::checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
@@ -95,9 +100,6 @@ class AllegroMainFunction
                             $orderModel->seller_id = $user_id;
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             $orderModel->save();
-
-                            $userData->last_event = $order["id"];
-                            $userData->save();
 
                             if(Customer::where('customer_id', $buyer["id"])->exists()) {
                                 Customer::where('customer_id', $buyer["id"])->update(['orders' => Orders::where('customer_id', $buyer["id"])->count()]);
@@ -143,6 +145,7 @@ class AllegroMainFunction
                                 $customer->last_name = $detailsInfo->buyer->lastName;
                                 $customer->adress = $detailsInfo->buyer->address->street;
                                 $customer->city = $detailsInfo->buyer->address->city;
+                                $customer->post_code = $detailsInfo->buyer->address->postCode;
                                 $customer->no_tel = $detailsInfo->buyer->phoneNumber;
                                 $customer->office = $detailsInfo->buyer->companyName;
                                 $customer->guest = $buyer["guest"];
@@ -150,7 +153,7 @@ class AllegroMainFunction
                                 $customer->save();
                             }
                             // wyślij maila
-                            MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $buyer["email"]);
+                            MailController::sendCode($order["id"], $detailsInfo->lineItems[0]->quantity, $userData->access_token);
                             
                             $user['credits'] -= $detailsInfo->lineItems[0]->quantity;
                             $user->save();
@@ -159,17 +162,17 @@ class AllegroMainFunction
                             $lastEvent = $order["id"];
                         } else {
                             $lastEvent = $order["id"];
-                            $log[] = "old order: ".$order["id"];
+                            $log[] = "old: ".$order["id"];
                         }
                     }
                 } else {
-                    $log[] = "last order: ".$lastEvent;
+                    $log[] = "last: ".$lastEvent;
                 }
                 // zmiana w badzie danych ostatniego eventu
                 // $userData->last_event = $lastEvent;
                 // $userData->save();
             } else {
-                $log[] = "Allegro user: $userData->id waiting for orders";
+                $log[] = "user: $userData->id waiting";
             }     
             unset($res);
         }

@@ -25,6 +25,8 @@ Route::get('/unauthorized', function () {
     return view('errors.403');
 });
 
+Route::get('/test_allegro', [AllegroController::class, 'testAllegro']);
+
 Route::get('/add_allegro_user', [AllegroController::class, 'addAllegroUser']);
 Route::get('/{user_id}/get_token', [AllegroController::class, 'getToken']);
 Route::get('/refresh_token', [AllegroController::class, 'refreshToken']); 
@@ -55,6 +57,7 @@ Route::get('/stat/quantity/transaction_per_month', [StatisticsController::class,
 Route::get('/stat/cash/transaction/value', [StatisticsController::class, 'transactionValue']);
 
 // Mail
+Route::get('/test_send',[MailController::class, 'testSend']);
 Route::get('/send_email_again',[MailController::class, 'sendEmailAgain']);
 Route::get('/test_mail',[MailController::class, 'testMail']);
 

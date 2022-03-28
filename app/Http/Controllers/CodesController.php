@@ -8,11 +8,11 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 
-
 use Response;
 use JWTAuth;
 use Exception;
 use App\Models\Code;
+use App\Models\Offers;
 use App\Models\SentMail;
 
 class CodesController extends Controller
@@ -80,54 +80,8 @@ class CodesController extends Controller
         $codes = $this->user->codes()->get();
         $dbsUnique = $codes->unique('db_id');
 
-        foreach ($codes as $code) 
-        {
-            if(isset($ids[$code->db_id])) {
-                $ids[$code->db_id] = $ids[$code->db_id] + 1;
-
-                if(isset($sold[$code->db_id])) {
-                    if($code->status == 0) {
-                        $sold[$code->db_id] ++;
-                    } else {
-                        $available[$code->db_id] ++;
-                    }
-                } else {
-                    if($code->status == 0) {
-                        $sold[$code->db_id] = 1;
-                    } else {
-                        $available[$code->db_id] = 1;
-                    }
-                }
-            } else {
-                $ids[$code->db_id] = 1;
-
-                if(isset($sold[$code->db_id])) {
-                    if($code->status == 0) {
-                        $sold[$code->db_id] ++;
-                    } else {
-                        $available[$code->db_id] ++;
-                    }
-                } else {
-                    if($code->status == 0) {
-                        $sold[$code->db_id] = 1;
-                    } else {
-                        $available[$code->db_id] = 1;
-                    }
-                }
-            }
-        }
         foreach ($dbsUnique as $dbUnique)
         {
-            if(!isset($sold[$dbUnique->db_id])) {
-                $sold[$dbUnique->db_id] = 0;
-            }
-
-            if(!isset($available[$dbUnique->db_id])) {
-                $available[$dbUnique->db_id] = 0;
-            }
-            // $dbUnique->created_at = substr($dbUnique->created_at, 0, strpos($dbUnique->created_at, "T"));
-            // $created_at = explode('T',$dbUnique->created_at);
-
             $created_at = strtok($dbUnique->created_at, 'T');
 
             if($dbUnique->db_type == 0) {
@@ -136,13 +90,27 @@ class CodesController extends Controller
                 $db_type = "Rekurencyjna";
             }
 
+            $quantity = Code::where("db_id", $dbUnique->db_id)->count();
+            if(Code::where("db_id", $dbUnique->db_id)->where("status", 1)->count() == 0) {
+                $offer = Offers::where('codes_id', $dbUnique->db_id)->first();
+                if($offer == null) {
+                    $available = 0;
+                } else {
+                    $available = 0 - SentMail::where('offer_id', $offer->offer_id)->where('resend', 1)->count();
+                }
+                
+            } else {
+                $available = Code::where("db_id", $dbUnique->db_id)->where("status", 1)->count();
+            }
+            $sold = Code::where("db_id", $dbUnique->db_id)->where("status", 0)->count();
+
             $response[] = [ 
                 'id' => $dbUnique->db_id, 
                 'name' => $dbUnique->db_name, 
                 'date' => $created_at,
-                'quantity' => $ids[$dbUnique->db_id],
-                'available' => $available[$dbUnique->db_id],
-                'sold' => $sold[$dbUnique->db_id],
+                'quantity' => $quantity,
+                'available' => $available,
+                'sold' => $sold,
                 'db_type' => $db_type,
             ];
         }
@@ -174,6 +142,17 @@ class CodesController extends Controller
             $codes = $request->codes_txt;
         }
 
+        $codes_unique = array_unique($codes);
+        $dupes = array_diff_key( $codes, $codes_unique );
+        $count_dupes = array_count_values($dupes);
+        if(count($count_dupes) > 0)
+        {
+            return response()->json([
+                "error" => "duplicates", 
+                "desc" => $count_dupes
+            ], 400);
+        }
+
         
 
         if($request->db_type == 0) {
@@ -182,6 +161,8 @@ class CodesController extends Controller
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
+            $db_id = Hash::make($db_id);
+            $db_id = substr($db_id, -8);
             foreach ($codes as $code)
             {
                 $cddb = new Code();
@@ -199,6 +180,8 @@ class CodesController extends Controller
             $dbType = $request->db_type;
             $offerId = $request->offer_id;
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
+            $db_id = Hash::make($db_id);
+            $db_id = substr($db_id, -8);
             foreach ($codes as $code)
             {
                 $cddb = new Code();
@@ -237,38 +220,69 @@ class CodesController extends Controller
         if(null !== $request->db_id || null !== $request->code) {
             $user_id = $this->user->id;
 
+            $codes = Code::where('db_id', $request->db_id)->get();
+            foreach($codes as $code)
+            {
+                foreach($request->code as $rcode)
+                {
+                    if($code->code == $rcode) {
+                        return response()->json([
+                            "error" => "duplicat",
+                            "code" => $rcode
+                        ], 400);
+                    }
+                }
+            }
+
             $db = Code::where('db_id', $request->db_id)->first();
             $dbName = $db->db_name;
             $dbType = $db->db_type;
             $offerId = $db->offer_id;
             $db_id = $request->db_id;
 
-            if($dbType == 0) {
-                // baza zwykła
-                $cddb = new Code();
-                $cddb->db_id = $db_id;
-                $cddb->db_type = $dbType;
-                $cddb->db_name = $dbName;
-                $cddb->code = $request->code;
-                $cddb->seller_id = $user_id;
-                $cddb->status = 1;
-                $cddb->save();
-            } elseif($db_type == 1) {
-                // baza rek
-                $cddb = new Code();
-                $cddb->db_id = $db_id;
-                $cddb->db_type = $dbType;
-                $cddb->db_name = $dbName;
-                $cddb->code = $request->code;
-                $cddb->seller_id = $user_id;
-                $cddb->status = 1;
-                $cddb->save();
-            } else {
-                return response()->json([
-                    'message' => 'something goes wrong',
-                    'db_id' => $request->db_id
-                ], 200);
+            foreach($request->code as $code)
+            {
+                if($dbType == 0) {
+                    // baza zwykła
+                    $cddb = new Code();
+                    $cddb->db_id = $db_id;
+                    $cddb->offer_id = $offerId;
+                    $cddb->db_type = $dbType;
+                    $cddb->db_name = $dbName;
+                    $cddb->code = $code;
+                    $cddb->seller_id = $user_id;
+                    $cddb->status = 1;
+                    $cddb->save();
+                } elseif($db_type == 1) {
+                    // baza rek
+                    $cddb = new Code();
+                    $cddb->db_id = $db_id;
+                    $cddb->offer_id = $offerId;
+                    $cddb->db_type = $dbType;
+                    $cddb->db_name = $dbName;
+                    $cddb->code = $code;
+                    $cddb->seller_id = $user_id;
+                    $cddb->status = 1;
+                    $cddb->save();
+                } else {
+                    return response()->json([
+                        'message' => 'something goes wrong',
+                        'db_id' => $request->db_id
+                    ], 200);
+                }
             }
+
+            // $oldOrders = SentMail::where('offer_id', $offerId)->orderBy('id','asc')->get();
+
+            // if($oldOrders != null)
+            // {
+            //     foreach ($oldOrders as $oldOrder)
+            //     {
+            //         $order = Orders::where('order_id', $oldOrder->order_id)->first();
+            //         MailController::sendOldMail($orderId, $quantity, $accessToken);
+            //     }
+            // }
+
             return response()->json([
                 'message' => 'new key added'
             ], 201);
@@ -278,9 +292,9 @@ class CodesController extends Controller
         ], 400);
     }
 
-    public function unused(Request $request)
+    static function unused($db_id)
     {
-        $codes = Code::where('db_id', $request->db_id)->where('status', 1)->get();
+        $codes = Code::where('db_id', $db_id)->where('status', 1)->get();
 
         if(!$codes->isEmpty()) {
             foreach ($codes as $code) 
@@ -290,41 +304,38 @@ class CodesController extends Controller
                     'key' => $code->code,
                 ];
             }
-            return response()->json($res, 200);
+            return $res;
         }
-        return response()->json([], 200);
+        return [];
     }
 
-    public function used(Request $request)
+    static function used($db_id)
     {
-        $codes = Code::where('db_id', $request->db_id)->where('status', 0)->get();
+        $codes = Code::where('db_id', $db_id)->where('status', 0)->get();
 
         if(!$codes->isEmpty()) {
             foreach ($codes as $code) 
             {
                 $res[] = [
+                    'id' => $code->id,
                     'key' => $code->code,
                 ];
             }
-            return response()->json($res, 200);
+            return $res;
         }
-        return response()->json([], 200);
+        return [];
     }
 
     public function delete_codes(Request $request)
     {
         $user_id = $this->user->id;
-        //dd($request->code_ids);
 
-        if(null !== $request->code_ids) {
-            // foreach($request->code_ids as $id)
-            // {
-                if(!Code::where('seller_id', $user_id)->where('id', $request->code_ids)->delete()) {
-                    return response()->json(['message' => "Can't delete code from database"], 500);
-                } else {
-                    return response()->json(['message' => "Codes deleted from database"], 200);
-                }
-            // }
+        if(null !== $request->code_id) {
+            if(!Code::where('seller_id', $user_id)->where('id', $request->code_id)->delete()) {
+                return response()->json(['message' => "Can't delete code from database"], 500);
+            } else {
+                return response()->json(['message' => "Codes deleted from database"], 200);
+            }
         }
 
         return response()->json(['message' => 'wrong values'], 400);
@@ -340,15 +351,37 @@ class CodesController extends Controller
                 'db_id' => $db->db_id,
                 'db_name' => $db->db_name,
                 'db_type' => "Zwykła",
+                'unused' => self::unused($db->db_id),
+                'used' => self::used($db->db_id)
             ];
         } else {
             $res = [
-                // 'db_id' => $db->db_id,
+                'db_id' => $db->db_id,
                 'db_name' => $db->db_name,
                 'db_type' => "Rekurencyjna",
+                'unused' => self::unused($db->db_id),
+                'used' => self::used($db->db_id)
             ];
         }
         return response()->json($res, 200);
+    }
+
+    public function edit(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'db_name' => 'required',
+        ]);
+        if($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $user_id = $this->user->id;
+
+        if(!Code::where('seller_id', $user_id)->where('db_id', $request->db_id)->update(["db_name" => $request->db_name]))
+        {
+            return response()->json("error", 500);
+        }
+        return response()->json([], 200);
     }
 
     public function find(Request $request)

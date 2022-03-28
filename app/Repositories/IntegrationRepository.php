@@ -18,7 +18,7 @@ class IntegrationRepository
         $authUrl = "https://allegro.pl/auth/oauth/authorize?"
             ."response_type=code&"
             ."client_id=$clientId&"
-            ."redirect_uri=https://kodomat.herokuapp.com/$user_id/get_token";
+            ."redirect_uri=http://api.cybersent.net/$user_id/get_token";
 
         return response()->json(['url' => $authUrl], 200);
     }
@@ -31,7 +31,7 @@ class IntegrationRepository
             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
             'Accept'          => 'application/vnd.allegro.public.v1+json',
             'Accept-Language' => 'pl-PL'
-        ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=https://kodomat.herokuapp.com/get_token");
+        ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=http://api.cybersent.net/get_token");
 
         if(!isset($response['error'])) {
             UserData::where('refresh_token', $refresh_token)->update([
@@ -61,9 +61,27 @@ class IntegrationRepository
             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
             'Accept'          => 'application/vnd.allegro.public.v1+json',
             'Accept-Language' => 'pl-PL'
-        ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://kodomat.herokuapp.com/$user_id/get_token"); 
+        ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=http://api.cybersent.net/$user_id/get_token"); 
 
         if(!isset($response["error"])) {
+            $user_datas = UserData::where('user_id', $user_id)->get();
+            foreach ($user_datas as $user_data)
+            {
+                $old = Http::withHeaders([
+                    "Accept" => "application/vnd.allegro.public.v1+json",
+                    "Authorization" => "Bearer $user_data->access_token"
+                ])->get("https://api.allegro.pl/me");
+                $old = json_decode($old);
+                $new = Http::withHeaders([
+                    "Accept" => "application/vnd.allegro.public.v1+json",
+                    "Authorization" => "Bearer ".$response['access_token']
+                ])->get("https://api.allegro.pl/me"); 
+                $new = json_decode($new);
+                if ($old->login == $new->login)
+                {
+                    return redirect()->away('http://cybersent.net/#/integrations/allegro');
+                }
+            }
             $userData = new UserData();
             $userData->ordinal_id = UserData::where('user_id', $user_id)->count() + 1;
             $userData->user_id = $user_id;
@@ -75,9 +93,10 @@ class IntegrationRepository
             $userData->allegro_api = $response['allegro_api'];
             $userData->jti = $response['jti'];
             $userData->refresh = 0;
+            $userData->last_event = self::lastEvent($response["access_token"]);
             $userData->save();
 
-            return redirect()->away('http://localhost:3000/integrations/allegro');
+            return redirect()->away('http://cybersent.net/#/integrations/allegro');
         }
 
         return response()->json([
@@ -133,5 +152,42 @@ class IntegrationRepository
             return response()->json([], 200);
         }
         return response()->json([], 200);
+    }
+
+    static function lastEvent($access_token)
+    {
+        $response = Http::withHeaders([
+            "Accept" => "application/vnd.allegro.public.v1+json",
+            "Authorization" => "Bearer $access_token"
+        ])->get("https://api.allegro.pl/order/event-stats");
+        $response = json_decode($response);
+
+        if($response->latestEvent != null)
+        {
+            return $response->latestEvent->id;
+        } else {
+            return 0;
+        }
+    }
+
+    static function addMail($access_token, $email = 'cybersent.noreply@gmail.com')
+    {
+        $response = Http::withHeaders([
+            "Accept" => "application/vnd.allegro.public.v1+json",
+            'Accept-Language' => 'pl-PL',
+            "Authorization" => "Bearer $access_token",
+            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+            ])
+        // ->withBody('{ "email" : "cybersent.noreply@gmail.com" }', 'vnd')
+        ->post("https://api.allegro.pl/account/additional-emails", ['email' => $email]);
+
+        //dd(json_decode($response));
+
+        if($response->successful())
+        {
+            return 0;
+        }
+
+        return 1;
     }
 }

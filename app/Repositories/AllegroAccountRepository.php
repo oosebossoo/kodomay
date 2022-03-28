@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Repositories\Allegro;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Http;
@@ -18,8 +20,10 @@ use App\Models\Code;
 
 class AllegroAccountRepository
 {
-    // protected $templ_id = null;
-    // protected $db_id = null;
+    static function testAllegro($ENV)
+    {
+        return Allegro::getCredenctial($ENV);
+    }
 
     static function offers($user_id)
     {
@@ -118,28 +122,36 @@ class AllegroAccountRepository
 
     static function setMonitoring($offer_id, $templ_id = null, $db_id = null)
     {
-        if($templ_id != null && $db_id !=null) {
+        if($templ_id != null || $db_id !=null) {
             if(
                 Code::where('db_id', $db_id)->update(['offer_id' => $offer_id]) &&
-                Offers::where('offer_id', $offer_id)->update(['mail_template' => $templ_id, 'is_active' => 'YES'])
+                Offers::where('offer_id', $offer_id)->update(['mail_template' => $templ_id, 'is_active' => 'YES', 'codes_id' => $db_id])
             ) {
                 return response()->json(['message' => 'set'], 200);
             }
             return response()->json(['message' => "Can't set, check offer id"], 400);
+        } else {
+            return response()->json(['message' => "Can't set"], 400);
         }
 
         $offer = Offers::where('offer_id', $offer_id)->first();
 
         if(!empty($offer)) {
-            if($offer->is_active == 'NO') {
-                Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'YES' ]);
-                return response()->json(['is_active' => 'YES'], 200);
-            }
+            Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'YES' ]);
+            return response()->json(['is_active' => 'YES'], 200);
+        } else {
+            return response()->json(['message' => "Can't set, check offer id"], 400);
+        }
+    }
 
-            if($offer->is_active == 'YES') {
-                Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'NO' ]);
-                return response()->json(['is_active' => 'NO'], 200);
-            }
+    static function offMonitoring($offer_id)
+    {
+        $offer = Offers::where('offer_id', $offer_id)->first();
+
+        if(!empty($offer)) {
+            Code::where('offer_id', $offer_id)->update(['offer_id' => '']);
+            Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'NO', 'mail_template' => '', 'codes_id' => '']);
+            return response()->json(['is_active' => 'NO'], 200);
         } else {
             return response()->json(['message' => "Can't set, check offer id"], 400);
         }
