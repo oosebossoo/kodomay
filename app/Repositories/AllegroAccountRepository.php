@@ -124,24 +124,23 @@ class AllegroAccountRepository
     {
         if($templ_id != null || $db_id !=null) {
             if(
-                Code::where('db_id', $db_id)->update(['offer_id' => $offer_id]) &&
                 Offers::where('offer_id', $offer_id)->update(['mail_template' => $templ_id, 'is_active' => 'YES', 'codes_id' => $db_id])
             ) {
                 return response()->json(['message' => 'set'], 200);
             }
             return response()->json(['message' => "Can't set, check offer id"], 400);
         } else {
-            return response()->json(['message' => "Can't set"], 400);
+            return response()->json(['message' => "Can't set, missing values"], 400);
         }
 
-        $offer = Offers::where('offer_id', $offer_id)->first();
+        // $offer = Offers::where('offer_id', $offer_id)->first();
 
-        if(!empty($offer)) {
-            Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'YES' ]);
-            return response()->json(['is_active' => 'YES'], 200);
-        } else {
-            return response()->json(['message' => "Can't set, check offer id"], 400);
-        }
+        // if(!empty($offer)) {
+        //     Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'YES' ]);
+        //     return response()->json(['is_active' => 'YES'], 200);
+        // } else {
+        //     return response()->json(['message' => "Can't set, check offer id"], 400);
+        // }
     }
 
     static function offMonitoring($offer_id)
@@ -149,9 +148,8 @@ class AllegroAccountRepository
         $offer = Offers::where('offer_id', $offer_id)->first();
 
         if(!empty($offer)) {
-            Code::where('offer_id', $offer_id)->update(['offer_id' => '']);
             Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'NO', 'mail_template' => '', 'codes_id' => '']);
-            return response()->json(['is_active' => 'NO'], 200);
+            return response()->json(['message' => 'set'], 200);
         } else {
             return response()->json(['message' => "Can't set, check offer id"], 400);
         }
