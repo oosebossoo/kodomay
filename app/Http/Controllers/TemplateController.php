@@ -95,7 +95,7 @@ class TemplateController extends Controller
             $validator = Validator::make($request->all(), [
                 'template_name' => 'required|unique:mail_template',
                 'template_subject' => 'required',
-                'email' => 'required',
+                'replay_email' => 'required',
                 'template' => 'required',
             ]);
     
