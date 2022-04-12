@@ -142,7 +142,13 @@ class CodesController extends Controller
             $codes = $request->codes_txt;
         }
 
-        $codes_unique = array_unique($codes);
+        foreach($codes as $code)
+        {
+            $parts = preg_split('/\s+/', $code);
+            $pregCodes[] = $parts[0].'  '.$parts[1];
+        }
+
+        $codes_unique = array_unique($pregCodes);
         $dupes = array_diff_key( $codes, $codes_unique );
         $count_dupes = array_count_values($dupes);
         if(count($count_dupes) > 0)
@@ -163,7 +169,8 @@ class CodesController extends Controller
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
             $db_id = Hash::make($db_id);
             $db_id = substr($db_id, -8);
-            foreach ($codes as $code)
+            $db_id = str_replace('/', 1, $db_id);
+            foreach ($pregCodes as $code)
             {
                 $cddb = new Code();
                 $cddb->db_id = $db_id;
@@ -182,7 +189,7 @@ class CodesController extends Controller
             $db_id = Hash::make($dbName)."".Hash::make($user_id)."".Hash::make($offerId);
             $db_id = Hash::make($db_id);
             $db_id = substr($db_id, -8);
-            foreach ($codes as $code)
+            foreach ($pregCodes as $code)
             {
                 $cddb = new Code();
                 $cddb->db_id = $db_id;
@@ -217,7 +224,7 @@ class CodesController extends Controller
 
     public function add_code(Request $request) 
     {
-        if(null !== $request->db_id || null !== $request->code) {
+        if(null !== $request->code) {
             $user_id = $this->user->id;
 
             $codes = Code::where('db_id', $request->db_id)->get();

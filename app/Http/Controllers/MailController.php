@@ -112,13 +112,13 @@ class MailController extends Controller
          ->setBody($html, 'text/html');
       });
 
-      \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
-         $message->to($customer->email)
-         ->replyTo($user->email, $user->login)
-         ->from($user->email, $user->login)
-         ->subject("$mail->template_subject")
-         ->setBody($html, 'text/html');
-      });
+      // \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
+      //    $message->to($customer->email)
+      //    ->replyTo($user->email, $user->login)
+      //    ->from($user->email, $user->login)
+      //    ->subject("$mail->template_subject")
+      //    ->setBody($html, 'text/html');
+      // });
 
       for ($i = 0; $i < $order->quantity; $i++)
       {
