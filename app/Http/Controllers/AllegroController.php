@@ -100,6 +100,10 @@ class AllegroController extends Controller
     {
         // $user_id = $request->user_id;
         $user_id = 40;
+        if(isset($request->update))
+        {
+            return $this->allegroAccountRepo::offers($user_id, $request->update);
+        }
         return $this->allegroAccountRepo::offers($user_id);
     }
 
