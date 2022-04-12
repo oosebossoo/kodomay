@@ -12,6 +12,7 @@ class Offers extends Model
     protected $table = "offers";
 
     protected $fillable = [
+        'ordinal_id',
         'offer_id',
         'offer_name',
         'stock_available',

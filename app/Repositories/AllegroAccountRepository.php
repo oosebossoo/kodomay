@@ -36,6 +36,7 @@ class AllegroAccountRepository
         if($update) {
             Offers::where('seller_id', $user_id)->delete();
         }
+        // Offers::where('seller_id', $user_id)->delete();
 
         foreach($userDatas as $userData)
         {
@@ -51,6 +52,7 @@ class AllegroAccountRepository
                     $existOffer = Offers::where('offer_id', $offer['id'])->get();
                     if(!isset($existOffer[0]["id"])) {
                         $offerDB = new Offers();
+                        $offerDB->ordinal_id = Offers::where('seller_id', $user_id)->count() + 1;
                         $offerDB->seller_id = $user_id;
                         $offerDB->offer_id = $offer['id'];
                         $offerDB->offer_name = $offer['name'];
@@ -101,7 +103,7 @@ class AllegroAccountRepository
                             $offerDB->endedAt = "Do wyczerpania zapasów";
                         }
                         
-                        $offerDB->is_active = 'YES';
+                        $offerDB->is_active = 'NO';
                         $offerDB->save();
                     }
                 }
