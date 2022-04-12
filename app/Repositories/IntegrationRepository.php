@@ -18,12 +18,12 @@ class IntegrationRepository
         $authUrl = "https://allegro.pl/auth/oauth/authorize?"
             ."response_type=code&"
             ."client_id=$clientId&"
-            ."redirect_uri=http://api.cybersent.net/$user_id/get_token";
+            ."redirect_uri=https://api.cybersent.net/$user_id/get_token";
 
         return response()->json(['url' => $authUrl], 200);
     }
 
-    static function refreshToken($refresh_token, $clientId, $clientSecret)
+    static function refreshToken($refresh_token, $clientId, $clientSecret, $user_id = null)
     {
         $response = Http::withHeaders([
             'User-Agent'      => 'Kodomat',
@@ -31,25 +31,19 @@ class IntegrationRepository
             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
             'Accept'          => 'application/vnd.allegro.public.v1+json',
             'Accept-Language' => 'pl-PL'
-        ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=http://api.cybersent.net/get_token");
+        ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=https://api.cybersent.net/get_token");
 
         if(!isset($response['error'])) {
             UserData::where('refresh_token', $refresh_token)->update([
+                'ordinal_id' => UserData::where('user_id', $user_id)->count(),
                 'access_token' => $response['access_token'], 
                 'refresh_token' => $response['refresh_token'],
                 'jti' => $response['jti'],
                 'refresh' => 0
             ]);
-
-            return response()->json([
-                'message' => 'updated',
-                $response
-            ], 200);
+            return json_decode($response);
         } else {
-            return response()->json([
-                'message' => 'error',
-                $response
-            ], 200);
+            return json_decode($response);
         }
     }
 
@@ -61,7 +55,7 @@ class IntegrationRepository
             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
             'Accept'          => 'application/vnd.allegro.public.v1+json',
             'Accept-Language' => 'pl-PL'
-        ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=http://api.cybersent.net/$user_id/get_token"); 
+        ])->post("http://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=$request->code&redirect_uri=https://api.cybersent.net/$user_id/get_token"); 
 
         if(!isset($response["error"])) {
             $user_datas = UserData::where('user_id', $user_id)->get();
@@ -77,7 +71,7 @@ class IntegrationRepository
                     "Authorization" => "Bearer ".$response['access_token']
                 ])->get("https://api.allegro.pl/me"); 
                 $new = json_decode($new);
-                if ($old->login == $new->login)
+                if ($old->login == $login['access_token'])
                 {
                     return redirect()->away('http://cybersent.net/#/integrations/allegro');
                 }
@@ -126,9 +120,27 @@ class IntegrationRepository
             {
                 $response = Http::withHeaders([
                     "Accept" => "application/vnd.allegro.public.v1+json",
-                    "Authorization" => "Bearer $userData->access_token"
+                    'Accept-Language' => 'pl-PL',
+                    "Authorization" => "Bearer $userData->access_token",
+                    'Content-Type'    => 'application/vnd.allegro.public.v1+json',
                 ])->get("https://api.allegro.pl/me"); 
-                if(!isset($response["error"])) {   
+                if(isset($response["error"])) {   
+                    $refreshed = self::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')->first()['refresh_token'], 'e27c3091a67a4edd8015191d4a26c66f', '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro', $user_id);
+                    $new = Http::withHeaders([
+                        "Accept" => "application/vnd.allegro.public.v1+json",
+                        'Accept-Language' => 'pl-PL',
+                        "Authorization" => "Bearer $refreshed->access_token",
+                        'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+                    ])->get("https://api.allegro.pl/me");
+                    $new = json_decode($new);
+                    $res[] = [
+                        'id' => $userData->id,
+                        'ordinal_id' => $userData->ordinal_id,
+                        'login' => $new->login,
+                        'created_at' => $userData->created_at,
+                        'updated_at' => $userData->updated_at
+                    ];
+                } else {
                     $response = json_decode($response);
                     $res[] = [
                         'id' => $userData->id,
@@ -136,14 +148,6 @@ class IntegrationRepository
                         'login' => $response->login,
                         'created_at' => $userData->created_at,
                         'updated_at' => $userData->updated_at
-                    ];
-                } else {
-                    UserData::where('user_id', $user_id)->update([
-                        'refresh' => 1
-                    ]);
-                    self::refreshToken(UserData::where('user_id', $user_id)->select('refresh_token')->first()['refresh_token'], 'e27c3091a67a4edd8015191d4a26c66f', '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro');
-                    $res = [
-                        'error' => $response['error']
                     ];
                 }  
             }

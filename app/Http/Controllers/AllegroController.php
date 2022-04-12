@@ -54,14 +54,14 @@ class AllegroController extends Controller
     
     public function test()
     {
+        $refresh_token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMDEwMjUxMDciLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnByb2ZpbGU6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOm9mZmVyczp3cml0ZSIsImFsbGVncm86YXBpOmJpbGxpbmc6cmVhZCIsImFsbGVncm86YXBpOmNhbXBhaWducyIsImFsbGVncm86YXBpOmRpc3B1dGVzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOmJpZHMiLCJhbGxlZ3JvOmFwaTpvcmRlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTphZHMiLCJhbGxlZ3JvOmFwaTpwYXltZW50czp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6d3JpdGUiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOnJlYWQiLCJhbGxlZ3JvOmFwaTpyYXRpbmdzIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczpyZWFkIiwiYWxsZWdybzphcGk6cGF5bWVudHM6cmVhZCIsImFsbGVncm86YXBpOm1lc3NhZ2luZyJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZSwiYXRpIjoiOTkxYjI3MzgtYmFiMy00ZjI1LTllZTQtY2IwNzg4Y2JjOTdlIiwiZXhwIjoxNjU3NTE4MDY3LCJqdGkiOiI5ZTZmODljMC0xOGNjLTQ2ZDktYTA3Ny1hYzdhNTNjY2U1ODAiLCJjbGllbnRfaWQiOiJlMjdjMzA5MWE2N2E0ZWRkODAxNTE5MWQ0YTI2YzY2ZiJ9.VcQi7vSMrRooZNejRZVTB-xSr_hxE2CHtnnxM3Ep8QowSd37dh4mxKnVCnaqkjjgo9pTXxEI4_91ioqZ27O1ZD3DKQUVDwr3tjZ67YE5lNtUi_-MnrNovdU4rxnEZfYZjc5VcprpctfvXMUNYNj0_wsyLGWHayz4oRDZ4j7ns1OwnT9ma9fTee64QEmm0WWdICSIyFW1kxiyjM1uuWzPs4UVxjF-eB0gdh4W5JZyoq-EcNPuOBB0e2O8gLehtmShcfWije_GzVc_VVLmtgAEaTlmzCvA5yq1Pr_n-EzHeMeUdVf4p1Z9x5a8ctbYaAZUR6BrkQKbTGxc6KgjujqGZA";
         $response = Http::withHeaders([
-            "Accept" => "application/vnd.allegro.public.v1+json",
-            'Accept-Language' => 'pl-PL',
-            "Authorization" => "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDYzOTU4MjMsInVzZXJfbmFtZSI6IjEwMTAyNTEwNyIsImp0aSI6ImQxMDA2M2VlLWE4OTMtNGU2Mi05MzgxLTE5MDdhN2Y0ZjAxNSIsImNsaWVudF9pZCI6ImUyN2MzMDkxYTY3YTRlZGQ4MDE1MTkxZDRhMjZjNjZmIiwic2NvcGUiOlsiYWxsZWdybzphcGk6b3JkZXJzOnJlYWQiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOndyaXRlIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTpiaWxsaW5nOnJlYWQiLCJhbGxlZ3JvOmFwaTpjYW1wYWlnbnMiLCJhbGxlZ3JvOmFwaTpkaXNwdXRlcyIsImFsbGVncm86YXBpOnNhbGU6b2ZmZXJzOnJlYWQiLCJhbGxlZ3JvOmFwaTpiaWRzIiwiYWxsZWdybzphcGk6b3JkZXJzOndyaXRlIiwiYWxsZWdybzphcGk6YWRzIiwiYWxsZWdybzphcGk6cGF5bWVudHM6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOnNldHRpbmdzOndyaXRlIiwiYWxsZWdybzphcGk6cHJvZmlsZTpyZWFkIiwiYWxsZWdybzphcGk6cmF0aW5ncyIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6cmVhZCIsImFsbGVncm86YXBpOnBheW1lbnRzOnJlYWQiLCJhbGxlZ3JvOmFwaTptZXNzYWdpbmciXSwiYWxsZWdyb19hcGkiOnRydWV9.xrjUIyFWZEMAMKmnd_4d3dIJuhqq666wPQPgwhDqSuVz2g16cecTAZvL-jzKi6FClKNtV-my9W31Ks9POAU8sp2zbXd3Wk8-gFwRmFEAo4GygR-VHewT1PWDd7h2mYKJ_4Z_GNbm54WsWfpFoMZLlkIrB58tVFh9kEMYl2L-rz0VDeMnvxXvkm6gjiJAXfTLg4kvphcyC467uJIHyRPxKTmHPUX7kDum3tQ_A8LVYq8QpYbDmBmthSLNFjszE9cJXRJEibXD5H7RjpSmC45FuYW_KEQRdUxGaQZkursR3W-vnhZRunFgjtcOFsAevg3RqrX2C00gSYMSUBF5HIVdfg",
+            'User-Agent'      => 'Kodomat',
+            'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-            ])
-        // ->withBody('{ "email" : "cybersent.noreply@gmail.com" }', 'vnd')
-        ->post("https://api.allegro.pl/account/additional-emails", ['email' => 'cybersent.noreply@gmail.com']);
+            'Accept'          => 'application/vnd.allegro.public.v1+json',
+            'Accept-Language' => 'pl-PL'
+        ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=https://api.cybersent.net/get_token");
 
         $response = json_decode($response);
 

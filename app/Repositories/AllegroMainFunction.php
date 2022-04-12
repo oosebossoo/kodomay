@@ -14,7 +14,7 @@ use App\Models\User;
 use App\Models\Orders;
 use App\Models\OrdersTable;
 use App\Models\Offers;
-// use App\Models\SentMail;
+use App\Models\SentMail;
 // use App\Models\Code;
 
 class AllegroMainFunction
@@ -22,13 +22,29 @@ class AllegroMainFunction
     protected static $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
     protected static $clientSecret = '3JuWoxfQmMLK9da7BvS40sCMACFCjbGXPCepOnD3R4V4k87whYLy3KPLBle9UMro';
 
-    static function checkOut($checkOutFormId, $token)
+    static function checkOut($token, $checkOutFormId)
     {
         $response = Http::withHeaders([
-            "Accept" => "application/vnd.allegro.public.v1+json",
-            "Authorization" => "Bearer $token"
+            'Accept' => 'application/vnd.allegro.public.v1+json',
+            'Authorization' => "Bearer $token"
         ])->get("https://api.allegro.pl/order/checkout-forms/$checkOutFormId");
         return json_decode($response);
+    }
+
+    static function changeStatus($token, $checkOutFormId, $status = 'SENT')
+    {
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer $token",
+            'Accept'          => 'application/vnd.allegro.public.v1+json',
+            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+        ])->put("https://api.allegro.pl/order/checkout-forms/$checkoutFormId/fulfillment", ['status' => $status]);
+        
+        $response = json_decode($response);
+        if(isset($response['error']))
+        {
+            return $response;
+        }
+        return 0;
     }
 
     static function mainFunction($user_id)
@@ -80,7 +96,7 @@ class AllegroMainFunction
                         $userData->save();
                         $existOrder = Orders::where('order_id', $order["id"])->get();
 
-                        $detailsInfo = self::checkOut($order["order"]["checkoutForm"]["id"], $userData->access_token);
+                        $detailsInfo = self::checkOut($userData->access_token, $order["order"]["checkoutForm"]["id"]);
                         
                         $isActive = Offers::where('offer_id', $detailsInfo->lineItems[0]->offer->id)->first()['is_active'];
 
@@ -160,6 +176,12 @@ class AllegroMainFunction
 
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];
+                            if(SentMail::where('order_id', $order["id"])->where('resend', 0)->count() == $detailsInfo->lineItems[0]->quantity) {
+                                $changeStatus = changeStatus($userData->access_token, $order["order"]["checkoutForm"]["id"]);
+                                if($changeStatus != 0) {
+                                    $log[] = $changeStatus["error_description"];
+                                }
+                            }
                         } else {
                             $lastEvent = $order["id"];
                             $log[] = "old: ".$order["id"];
@@ -168,7 +190,7 @@ class AllegroMainFunction
                 } else {
                     $log[] = "last: ".$lastEvent;
                 }
-                // zmiana w badzie danych ostatniego eventu
+                // zmiana w badzie danych ostatniego eventu DO ZMIANY 
                 // $userData->last_event = $lastEvent;
                 // $userData->save();
             } else {

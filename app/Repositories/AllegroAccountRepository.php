@@ -33,6 +33,7 @@ class AllegroAccountRepository
         }
 
         $userDatas = UserData::where('user_id', $user_id)->get();
+        Offers::where('seller_id', $user_id)->delete();
 
         foreach($userDatas as $userData)
         {
