@@ -228,11 +228,15 @@ class CodesController extends Controller
             $user_id = $this->user->id;
 
             $codes = Code::where('db_id', $request->db_id)->get();
+            
             foreach($codes as $code)
             {
+                $parts = preg_split('/\s+/', $code->code);
+                $pregCode = $parts[0].'  '.$parts[1];
+
                 foreach($request->code as $rcode)
                 {
-                    if($code->code == $rcode) {
+                    if($pregCode == $rcode) {
                         return response()->json([
                             "error" => "duplicat",
                             "code" => $rcode
@@ -279,16 +283,16 @@ class CodesController extends Controller
                 }
             }
 
-            // $oldOrders = SentMail::where('offer_id', $offerId)->orderBy('id','asc')->get();
+            $oldOrders = SentMail::where('resend', 1)->orderBy('id','asc')->get();
 
-            // if($oldOrders != null)
-            // {
-            //     foreach ($oldOrders as $oldOrder)
-            //     {
-            //         $order = Orders::where('order_id', $oldOrder->order_id)->first();
-            //         MailController::sendOldMail($orderId, $quantity, $accessToken);
-            //     }
-            // }
+            if($oldOrders != null)
+            {
+                foreach ($oldOrders as $oldOrder)
+                {
+                    $order = Orders::where('order_id', $oldOrder->order_id)->first();
+                    MailController::sendOldMail($orderId, $quantity, $accessToken);
+                }
+            }
 
             return response()->json([
                 'message' => 'new key added'

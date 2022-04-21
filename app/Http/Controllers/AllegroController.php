@@ -139,9 +139,10 @@ class AllegroController extends Controller
         return $response;
     }
 
-    public static function monitoringOn(Request $request)
+    public function monitoringOn(Request $request)
     {
         $user = User::where('email', $request->email)->first();
+        $this->integrationRepo::lastEvent($user->id);
         $response = Http::withHeaders([
             "Authorization" => "{jwtAuth::getToken()}"
             ])
@@ -344,24 +345,6 @@ class AllegroController extends Controller
             "Authorization" => "Bearer $token"
         ])->get("https://api.allegro.pl/sale/offers?offer.id=$offerId");
         return json_decode($response);
-    }
-
-    public function getLastEvent(Request $request)
-    {
-        // $user_id = $request->user_id;
-        $user_id = 40;
-        $userDatas = UserData::where('user_id', $user_id)->get();
-
-        $userData = UserData::where('id', $request->id)->get();
-        return $this->integrationRepo::lastEvent($userData[0]["access_token"]);
-        
-        foreach ($userDatas as $userData)
-        {
-            $lastEvent = $this->integrationRepo::lastEvent($userData["access_token"]);
-            $userData->last_event = $lastEvent;
-            $userData->save();
-        }
-        return 0;
     }
 
     public static function changeStatus($checkOutFormId, $token, $status)

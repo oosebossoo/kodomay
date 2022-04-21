@@ -158,20 +158,26 @@ class IntegrationRepository
         return response()->json([], 200);
     }
 
-    static function lastEvent($access_token)
+    static function lastEvent($user_id)
     {
-        $response = Http::withHeaders([
-            "Accept" => "application/vnd.allegro.public.v1+json",
-            "Authorization" => "Bearer $access_token"
-        ])->get("https://api.allegro.pl/order/event-stats");
-        $response = json_decode($response);
-
-        if($response->latestEvent != null)
+        $userDatas = UserData::where('user_id', $user_id)->get();
+        
+        foreach ($userDatas as $userData)
         {
-            return $response->latestEvent->id;
-        } else {
-            return 0;
+            $response = Http::withHeaders([
+                "Accept" => "application/vnd.allegro.public.v1+json",
+                "Authorization" => "Bearer ".$userData["access_token"]
+            ])->get("https://api.allegro.pl/order/event-stats");
+            $response = json_decode($response);
+
+            if($response->latestEvent != null)
+            {
+                $userData->last_event = $response->latestEvent->id;
+                $userData->save();
+            }
         }
+        return 0;
+
     }
 
     static function addMail($access_token, $email = 'cybersent.noreply@gmail.com')
