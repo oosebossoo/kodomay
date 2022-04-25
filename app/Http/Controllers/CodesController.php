@@ -13,7 +13,9 @@ use JWTAuth;
 use Exception;
 use App\Models\Code;
 use App\Models\Offers;
+use App\Models\Orders;
 use App\Models\SentMail;
+use App\Models\UserData;
 
 class CodesController extends Controller
 {
@@ -92,11 +94,15 @@ class CodesController extends Controller
 
             $quantity = Code::where("db_id", $dbUnique->db_id)->count();
             if(Code::where("db_id", $dbUnique->db_id)->where("status", 1)->count() == 0) {
-                $offer = Offers::where('codes_id', $dbUnique->db_id)->first();
-                if($offer == null) {
+                $offers = Offers::where('codes_id', $dbUnique->db_id)->get();
+                $available = 0;
+                if($offers == null) {
                     $available = 0;
                 } else {
-                    $available = 0 - SentMail::where('offer_id', $offer->offer_id)->where('resend', 1)->count();
+                    foreach ($offers as $offer)
+                    {
+                        $available = $available - SentMail::where('offer_id', $offer->offer_id)->where('resend', 1)->count();
+                    }
                 }
                 
             } else {
@@ -231,16 +237,33 @@ class CodesController extends Controller
             
             foreach($codes as $code)
             {
+                $pregCode = '';
                 $parts = preg_split('/\s+/', $code->code);
-                $pregCode = $parts[0].'  '.$parts[1];
-
-                foreach($request->code as $rcode)
+                foreach ($parts as $part)
                 {
-                    if($pregCode == $rcode) {
-                        return response()->json([
-                            "error" => "duplicat",
-                            "code" => $rcode
-                        ], 400);
+                    $pregCode .= $part.'   ';
+                }
+
+                if(isset($pregCode))
+                {
+                    foreach($request->code as $rcode)
+                    {
+                        if($pregCode == $rcode) {
+                            return response()->json([
+                                "error" => "duplicat",
+                                "code" => $rcode
+                            ], 400);
+                        }
+                    }
+                } else {
+                    foreach($request->code as $rcode)
+                    {
+                        if($code->code == $rcode) {
+                            return response()->json([
+                                "error" => "duplicat",
+                                "code" => $rcode
+                            ], 400);
+                        }
                     }
                 }
             }
@@ -248,7 +271,6 @@ class CodesController extends Controller
             $db = Code::where('db_id', $request->db_id)->first();
             $dbName = $db->db_name;
             $dbType = $db->db_type;
-            $offerId = $db->offer_id;
             $db_id = $request->db_id;
 
             foreach($request->code as $code)
@@ -257,7 +279,6 @@ class CodesController extends Controller
                     // baza zwykła
                     $cddb = new Code();
                     $cddb->db_id = $db_id;
-                    $cddb->offer_id = $offerId;
                     $cddb->db_type = $dbType;
                     $cddb->db_name = $dbName;
                     $cddb->code = $code;
@@ -268,7 +289,6 @@ class CodesController extends Controller
                     // baza rek
                     $cddb = new Code();
                     $cddb->db_id = $db_id;
-                    $cddb->offer_id = $offerId;
                     $cddb->db_type = $dbType;
                     $cddb->db_name = $dbName;
                     $cddb->code = $code;
@@ -289,8 +309,12 @@ class CodesController extends Controller
             {
                 foreach ($oldOrders as $oldOrder)
                 {
-                    $order = Orders::where('order_id', $oldOrder->order_id)->first();
-                    MailController::sendOldMail($orderId, $quantity, $accessToken);
+                    if(Offers::where('offer_id', $oldOrder->offer_id)->where('codes_id', $db_id)->exists() && Code::where('db_id', $db_id)->where('status', 1)->exists())
+                    {
+                        $order = Orders::where('order_id', $oldOrder->order_id)->first();
+                        $code = Code::where('db_id', Offers::where('offer_id', $oldOrder->offer_id)->first()['codes_id'])->where('status', 1)->first();
+                        MailController::sendOldMail($oldOrder->order_id, $oldOrder->id, $code->id, UserData::where('id', $order->allegro_user_id)->first()['access_token']);
+                    }
                 }
             }
 

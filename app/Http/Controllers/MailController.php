@@ -132,6 +132,85 @@ class MailController extends Controller
       }
    }
 
+   public static function sendOldMail($order_id, $mail_id, $code_id, $access_token) 
+   {
+      $code = Code::where('id', $code_id)->first();
+
+      $response = Http::withHeaders([
+         "Accept" => "application/vnd.allegro.public.v1+json",
+         "Authorization" => "Bearer $access_token"
+      ])->get("https://api.allegro.pl/me"); 
+      if(!isset($response["error"])) {   
+         $user = json_decode($response);
+      } else {
+         $user = '';
+      }
+
+      // $data = "";
+      $email = 'sebek.kasprzak.kodomat@gmail.com';
+
+      $order = Orders::where('order_id', $order_id)->first();
+      $offer = Offers::where('offer_id', $order->offer_id)->first();
+      $customer = Customer::where('customer_id', $order->customer_id)->first();
+      $mail = MailTemplate::where('id', $offer->mail_template)->first();
+      $html = $mail->template;
+
+      // $data = $code->code;
+      $code->status = 0;
+      $code->save();
+
+      if (strpos($html,'(NAZWA_SPRZEDAJACEGO)') !== false) {
+         $html = str_replace('(NAZWA_SPRZEDAJACEGO)', $user->login, $html);
+      }
+
+      if (strpos($html,'(ALLEGRO_LOGIN)') !== false) {
+         $html = str_replace('(ALLEGRO_LOGIN)', $customer->login, $html);
+      }
+
+      if (strpos($html,'(KOD)') !== false) {
+         $html = str_replace('(KOD)', $code->code, $html);
+      }
+
+      if (strpos($html,'(EMAIL)') !== false) {
+         $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
+         $html = str_replace('(EMAIL)', $email->email, $html);
+      }
+
+      if (strpos($html,'(NAZWA_AUKCJI)') !== false) {
+         $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
+         $html = str_replace('(NAZWA_AUKCJI)', $offer->offer_name, $html);
+      }
+
+      if (strpos($html,'(ILOSC)') !== false) {
+         $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
+         $html = str_replace('(ILOSC)', $order->quantity, $html);
+      }
+
+      // ------------
+
+      \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
+         $message->to('sebek.kasprzak.kodomat@gmail.com')
+         ->replyTo($user->email, $user->login)
+         ->from($user->email, $user->login)
+         ->subject("$mail->template_subject")
+         ->setBody($html, 'text/html');
+      });
+
+      $sent = SentMail::where('id', $mail_id)->first();
+      $sent->resend = 0;
+      $sent->code_id = $code_id;
+      $sent->save();
+
+      // \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
+      //    $message->to($customer->email)
+      //    ->replyTo($user->email, $user->login)
+      //    ->from($user->email, $user->login)
+      //    ->subject("$mail->template_subject")
+      //    ->setBody($html, 'text/html');
+      // });
+
+   }
+
    public function testMail(Request $request)
    {
       $response = Http::withHeaders([

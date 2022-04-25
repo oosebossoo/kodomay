@@ -114,6 +114,7 @@ class AllegroMainFunction
                             $orderModel->order_currency = $detailsInfo->lineItems[0]->price->currency;
                             $orderModel->customer_id = $buyer["id"];
                             $orderModel->seller_id = $user_id;
+                            $orderModel->allegro_user_id = $userData->id;
                             $orderModel->order_date = $detailsInfo->lineItems[0]->boughtAt;
                             $orderModel->save();
 
