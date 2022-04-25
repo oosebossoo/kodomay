@@ -151,7 +151,12 @@ class CodesController extends Controller
         foreach($codes as $code)
         {
             $parts = preg_split('/\s+/', $code);
-            $pregCodes[] = $parts[0].'  '.$parts[1];
+            $result = "";
+            foreach ($parts as $part)
+            {
+                $result = sprintf("%s %s", $result, $part);
+            }
+            $pregCodes[] = $result;
         }
 
         $codes_unique = array_unique($pregCodes);

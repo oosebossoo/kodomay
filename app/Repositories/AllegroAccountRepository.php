@@ -15,7 +15,7 @@ use App\Models\UserData;
 use App\Models\Orders;
 // use App\Models\OrdersTable;
 use App\Models\Offers;
-// use App\Models\SentMail;
+use App\Models\SentMail;
 use App\Models\Code;
 
 class AllegroAccountRepository
@@ -129,7 +129,7 @@ class AllegroAccountRepository
     {
         if($templ_id != null || $db_id !=null) {
             if(
-                Offers::where('offer_id', $offer_id)->update(['mail_template' => $templ_id, 'is_active' => 'YES', 'codes_id' => $db_id])
+                Offers::where('offer_id', $offer_id)->update(['mail_template' => $templ_id, 'is_active' => 'YES', 'codes_id' => $db_id]) && SentMail::where('offer_id', $offer_id)->update(['resend' => 0])
             ) {
                 return response()->json(['message' => 'set'], 200);
             }
