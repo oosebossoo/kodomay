@@ -33,18 +33,18 @@ class AllegroMainFunction
 
     static function changeStatus($token, $checkOutFormId, $status = 'SENT')
     {
-        // $response = Http::withHeaders([
-        //     'Authorization' => "Bearer $token",
-        //     'Accept'          => 'application/vnd.allegro.public.v1+json',
-        //     'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-        // ])->put("https://api.allegro.pl/order/checkout-forms/$checkoutFormId/fulfillment", ['status' => $status]);
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer $token",
+            'Accept'          => 'application/vnd.allegro.public.v1+json',
+            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
+        ])->put("https://api.allegro.pl/order/checkout-forms/$checkoutFormId/fulfillment", ['status' => $status]);
         
-        // $response = json_decode($response);
-        // if(isset($response['error']))
-        // {
-        //     return $response;
-        // }
-        // return 0;
+        $response = json_decode($response);
+        if(isset($response['error']))
+        {
+            return $response;
+        }
+        return 0;
     }
 
     static function mainFunction($user_id)

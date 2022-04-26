@@ -52,21 +52,9 @@ class AllegroController extends Controller
     //     return $credenctial['secret'];
     // }
     
-    public function test()
+    public function getLastEvent()
     {
-        $refresh_token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMDEwMjUxMDciLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnByb2ZpbGU6d3JpdGUiLCJhbGxlZ3JvOmFwaTpzYWxlOm9mZmVyczp3cml0ZSIsImFsbGVncm86YXBpOmJpbGxpbmc6cmVhZCIsImFsbGVncm86YXBpOmNhbXBhaWducyIsImFsbGVncm86YXBpOmRpc3B1dGVzIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOmJpZHMiLCJhbGxlZ3JvOmFwaTpvcmRlcnM6d3JpdGUiLCJhbGxlZ3JvOmFwaTphZHMiLCJhbGxlZ3JvOmFwaTpwYXltZW50czp3cml0ZSIsImFsbGVncm86YXBpOnNhbGU6c2V0dGluZ3M6d3JpdGUiLCJhbGxlZ3JvOmFwaTpwcm9maWxlOnJlYWQiLCJhbGxlZ3JvOmFwaTpyYXRpbmdzIiwiYWxsZWdybzphcGk6c2FsZTpzZXR0aW5nczpyZWFkIiwiYWxsZWdybzphcGk6cGF5bWVudHM6cmVhZCIsImFsbGVncm86YXBpOm1lc3NhZ2luZyJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZSwiYXRpIjoiOTkxYjI3MzgtYmFiMy00ZjI1LTllZTQtY2IwNzg4Y2JjOTdlIiwiZXhwIjoxNjU3NTE4MDY3LCJqdGkiOiI5ZTZmODljMC0xOGNjLTQ2ZDktYTA3Ny1hYzdhNTNjY2U1ODAiLCJjbGllbnRfaWQiOiJlMjdjMzA5MWE2N2E0ZWRkODAxNTE5MWQ0YTI2YzY2ZiJ9.VcQi7vSMrRooZNejRZVTB-xSr_hxE2CHtnnxM3Ep8QowSd37dh4mxKnVCnaqkjjgo9pTXxEI4_91ioqZ27O1ZD3DKQUVDwr3tjZ67YE5lNtUi_-MnrNovdU4rxnEZfYZjc5VcprpctfvXMUNYNj0_wsyLGWHayz4oRDZ4j7ns1OwnT9ma9fTee64QEmm0WWdICSIyFW1kxiyjM1uuWzPs4UVxjF-eB0gdh4W5JZyoq-EcNPuOBB0e2O8gLehtmShcfWije_GzVc_VVLmtgAEaTlmzCvA5yq1Pr_n-EzHeMeUdVf4p1Z9x5a8ctbYaAZUR6BrkQKbTGxc6KgjujqGZA";
-        $response = Http::withHeaders([
-            'User-Agent'      => 'Kodomat',
-            'Authorization'   => 'Basic ' . base64_encode($clientId.":".$clientSecret),
-            'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-            'Accept'          => 'application/vnd.allegro.public.v1+json',
-            'Accept-Language' => 'pl-PL'
-        ])->post("http://allegro.pl/auth/oauth/token?grant_type=refresh_token&refresh_token=$refresh_token&redirect_uri=https://api.cybersent.net/get_token");
-
-        $response = json_decode($response);
-
-
-        return response()->json($response, 200);
+        return $this->integrationRepo::lastEvent(40);
     }
 
     public function add(Request $request, $user_id)

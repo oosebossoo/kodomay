@@ -71,7 +71,7 @@ class IntegrationRepository
                     "Authorization" => "Bearer ".$response['access_token']
                 ])->get("https://api.allegro.pl/me"); 
                 $new = json_decode($new);
-                if ($old->login == $login['access_token'])
+                if ($old->id == $new->id)
                 {
                     return redirect()->away('http://cybersent.net/#/integrations/allegro');
                 }
@@ -177,7 +177,6 @@ class IntegrationRepository
             }
         }
         return 0;
-
     }
 
     static function addMail($access_token, $email = 'cybersent.noreply@gmail.com')
