@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Http;
 
 use App\Http\Controllers\MailController;
 
+use App\Repositories\IntegrationRepository;
+
 // use App\Models\Customer;
 use App\Models\UserData;
 use App\Models\Orders;
@@ -131,7 +133,9 @@ class AllegroAccountRepository
             if(
                 Offers::where('offer_id', $offer_id)->update(['mail_template' => $templ_id, 'is_active' => 'YES', 'codes_id' => $db_id]) && SentMail::where('offer_id', $offer_id)->update(['resend' => 0])
             ) {
-                return response()->json(['message' => 'set'], 200);
+                $offer = Offers::where('offer_id', $offer_id)->first();
+                $last_event_update_status = IntegrationRepository::lastEvent($offer->seller_id);
+                return response()->json(['message' => 'set', 'last_event_update_status' => $last_event_update_status], 200);
             }
             return response()->json(['message' => "Can't set, check offer id"], 400);
         } else {
