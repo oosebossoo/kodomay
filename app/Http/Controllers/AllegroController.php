@@ -443,7 +443,7 @@ class AllegroController extends Controller
                     {
                         $send_status = 'Sent';
                         $sent_date = explode("T", $sentMail->created_at);
-                        $sent_date[0] = Carbon::parse($sent_date[0])->addHour();
+                        $sent_date[0] = Carbon::parse($sent_date[0])->addHour(TimeController::repairTime());
                         $code = Code::where('id', $sentMail->code_id)->first();
                         if(!isset($code->code)){
                             $codes[] = "brak informacji";

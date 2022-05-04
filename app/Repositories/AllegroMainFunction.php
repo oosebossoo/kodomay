@@ -37,7 +37,7 @@ class AllegroMainFunction
             'Authorization' => "Bearer $token",
             'Accept'          => 'application/vnd.allegro.public.v1+json',
             'Content-Type'    => 'application/vnd.allegro.public.v1+json',
-        ])->put("https://api.allegro.pl/order/checkout-forms/$checkoutFormId/fulfillment", ['status' => $status]);
+        ])->put("https://api.allegro.pl/order/checkout-forms/$checkOutFormId/fulfillment", ['status' => $status]);
         
         $response = json_decode($response);
         if(isset($response['error']))
@@ -178,7 +178,7 @@ class AllegroMainFunction
                             // zmień status zamówienia !!!!
                             $lastEvent = $order["id"];
                             if(SentMail::where('order_id', $order["id"])->where('resend', 0)->count() == $detailsInfo->lineItems[0]->quantity) {
-                                $changeStatus = changeStatus($userData->access_token, $order["order"]["checkoutForm"]["id"]);
+                                $changeStatus = self::changeStatus($userData->access_token, $order["order"]["checkoutForm"]["id"]);
                                 if($changeStatus != 0) {
                                     $log[] = $changeStatus["error_description"];
                                 }

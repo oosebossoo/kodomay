@@ -13,6 +13,7 @@ use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TimeController;
 
 
 use App\Http\Controllers\AdminController;
@@ -155,4 +156,12 @@ Route::group([
     Route::get('/test', [AdminController::class, 'test']);
     Route::get('/dash', [AdminController::class, 'dash']);
     // Route::get('/history', [PaymentController::class, 'history']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'time'
+
+], function ($router) {
+    Route::get('/repair_time', [ TimeController::class, 'repairTime']);
 });
