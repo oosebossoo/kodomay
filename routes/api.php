@@ -98,7 +98,7 @@ Route::group([
     Route::get('/monitoring/on', [ AllegroController::class, 'monitoringOn']);
     Route::get('/getLastEvent', [ AllegroController::class, 'getLastEvent']);
     Route::post('/set/monitoring', [ AllegroController::class, 'setMonitoring']);
-    Route::post('/off/monitoring', [ AllegroController::class, 'offMonitoring']);
+    Route::post('/monitoring/off', [ AllegroController::class, 'monitoringOff']);
     Route::get('/get/monitoring/{set}', [ AllegroController::class, 'getMonitoring']);
     // tranzakcje
     Route::get('/get/transaction', [ AllegroController::class, 'getOrders']);

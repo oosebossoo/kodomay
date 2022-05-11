@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Http;
 
 use App\Models\UserData;
 
+use App\Http\Controllers\TimeController;
+use Carbon\Carbon;
+
 class IntegrationRepository
 {
     protected $clientId = 'e27c3091a67a4edd8015191d4a26c66f';
@@ -137,8 +140,9 @@ class IntegrationRepository
                         'id' => $userData->id,
                         'ordinal_id' => $userData->ordinal_id,
                         'login' => $new->login,
-                        'created_at' => $userData->created_at,
-                        'updated_at' => $userData->updated_at
+                        // Carbon::parse($userData->updated_at)->addHour(TimeController::repairTime());
+                        'created_at' => Carbon::parse($userData->created_at)->addHour(TimeController::repairTime()),
+                        'updated_at' => Carbon::parse($userData->updated_at)->addHour(TimeController::repairTime())
                     ];
                 } else {
                     $response = json_decode($response);
@@ -146,8 +150,8 @@ class IntegrationRepository
                         'id' => $userData->id,
                         'ordinal_id' => $userData->ordinal_id,
                         'login' => $response->login,
-                        'created_at' => $userData->created_at,
-                        'updated_at' => $userData->updated_at
+                        'created_at' => Carbon::parse($userData->created_at)->addHour(TimeController::repairTime()),
+                        'updated_at' => Carbon::parse($userData->updated_at)->addHour(TimeController::repairTime())
                     ];
                 }  
             }

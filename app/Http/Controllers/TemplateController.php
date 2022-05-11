@@ -93,7 +93,7 @@ class TemplateController extends Controller
 
         if(isset($request->new)) {
             $validator = Validator::make($request->all(), [
-                'template_name' => 'required|unique:mail_template',
+                // 'template_name' => 'required|unique:mail_template',
                 'template_subject' => 'required',
                 'replay_email' => 'required',
                 'template' => 'required',
@@ -106,7 +106,7 @@ class TemplateController extends Controller
             $template = new MailTemplate();
             $template->template_name = $request->template_name;
             $template->template_subject = $request->template_subject;
-            $template->replay_email = $request->email;
+            $template->replay_email = $request->replay_email;
             $template->template = $request->template;
             $template->user_id = $user_id;
             $template->save();

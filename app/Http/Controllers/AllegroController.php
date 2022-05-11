@@ -13,6 +13,7 @@ use App\Repositories\AllegroAccountRepository;
 use App\Repositories\AllegroMainFunction;
 
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\TimeController;
 
 use App\Models\Customer;
 use App\Models\UserData;
@@ -130,26 +131,29 @@ class AllegroController extends Controller
     public function monitoringOn(Request $request)
     {
         $user = User::where('email', $request->email)->first();
-        $this->integrationRepo::lastEvent($user->id);
-        $response = Http::withHeaders([
-            "Authorization" => "{jwtAuth::getToken()}"
-            ])
-            ->withBody(json_encode([
-                'user_id' => $user->id
-            ]), 'json')
-            ->post("http://localhost:3000/listening", );
+        $response = Http::asForm()->post('http://localhost:3000/listening', [
+            'user_id' => $user->id,
+            'opt' => 'start',
+            'interval_id' => $user->interval_id
+        ]);
         return $response;
     }
 
     public function monitoringOff(Request $request)
     {
         $response = Http::withHeaders([
-            "Accept" => "application/vnd.allegro.public.v1+json",
-        ])->get("http://localhost:3000/listening/off?user_id=$user_id");
+                "Authorization" => "{jwtAuth::getToken()}"
+            ])->withBody(json_encode([
+                // 'user_id' => $user->id,
+                'opt' => 'end'
+            ]), 'json')
+            ->post("http://localhost:3000/listening");
     }
 
     public function mainFunction(Request $request)
     {
+        $user = User::where('id', $request->user_id)->first();
+        
         // $user_id = $this->user->id;
         return $this->allegroMainFunction::mainFunction($request->user_id);
     }
