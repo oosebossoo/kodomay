@@ -51,6 +51,7 @@ class MailController extends Controller
 
       for ($i = 0; $i < $quantity; $i++)
       {
+         $codes = array();
          $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->first();
          if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 11)
          {
@@ -73,6 +74,7 @@ class MailController extends Controller
          $data .= $code->code." ";
          $code->status = 0;
          $code->save();
+         array_push($codes, $code->id);
       }
 
       if (strpos($html,'(NAZWA_SPRZEDAJACEGO)') !== false) {
@@ -121,12 +123,13 @@ class MailController extends Controller
       });
 
       for ($i = 0; $i < $order->quantity; $i++)
+      foreach($codes as $code)
       {
          $sentMail = new SentMail();
          $sentMail->customer_id = $order->customer_id;
          $sentMail->order_id = $order->order_id;
          $sentMail->offer_id = $order->offer_id;
-         $sentMail->code_id = $code->id;
+         $sentMail->code_id = $code;
          $sentMail->resend = 0;
          $sentMail->save();
       }
@@ -201,13 +204,13 @@ class MailController extends Controller
       $sent->code_id = $code_id;
       $sent->save();
 
-      // \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
-      //    $message->to($customer->email)
-      //    ->replyTo($user->email, $user->login)
-      //    ->from($user->email, $user->login)
-      //    ->subject("$mail->template_subject")
-      //    ->setBody($html, 'text/html');
-      // });
+      \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
+         $message->to($customer->email)
+         ->replyTo($user->email, $user->login)
+         ->from($user->email, $user->login)
+         ->subject("$mail->template_subject")
+         ->setBody($html, 'text/html');
+      });
 
    }
 

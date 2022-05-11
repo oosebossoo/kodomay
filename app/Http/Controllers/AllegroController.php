@@ -434,6 +434,7 @@ class AllegroController extends Controller
         {
             foreach($orders as $order)
             {
+                $codes = array();
                 $order->order_date = Carbon::parse($order->order_date)->addHour();
 
                 $sentMails = SentMail::where('order_id', $order->order_id)->get();
@@ -441,7 +442,8 @@ class AllegroController extends Controller
                 {
                     $send_status = 'Sending';
                     $sent_date = 'Sending';
-                    $codes[] = 'Sending';
+                    array_push($codes, "Sending");
+                    // $codes[] = 'Sending';
                 } else {
                     foreach ($sentMails as $sentMail)
                     {
@@ -449,10 +451,13 @@ class AllegroController extends Controller
                         $sent_date = explode("T", $sentMail->created_at);
                         $sent_date[0] = Carbon::parse($sent_date[0])->addHour(TimeController::repairTime());
                         $code = Code::where('id', $sentMail->code_id)->first();
+                        
                         if(!isset($code->code)){
-                            $codes[] = "brak informacji";
+                            array_push($codes, "brak informacji");
+                            // $codes[] = "brak informacji";
                         } else {
-                            $codes[] = $code->code;
+                            array_push($codes, $code->code);
+                            // $codes[] = $code->code;
                         }
                     }
                 }
