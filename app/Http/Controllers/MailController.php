@@ -71,7 +71,7 @@ class MailController extends Controller
 
             return 1;
          }
-         $data .= $code->code." ";
+         $data .= $code->code."\n";
          $code->status = 0;
          $code->save();
          array_push($codes, $code->id);
@@ -122,7 +122,7 @@ class MailController extends Controller
          ->setBody($html, 'text/html');
       });
 
-      for ($i = 0; $i < $order->quantity; $i++)
+      // for ($i = 0; $i < $order->quantity; $i++)
       foreach($codes as $code)
       {
          $sentMail = new SentMail();
@@ -237,6 +237,7 @@ class MailController extends Controller
 
       for ($i = 0; $i < $request->quantity; $i++)
       {
+         $codes = array();
          $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->first();
          if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 11)
          {
@@ -256,9 +257,10 @@ class MailController extends Controller
 
             return response()->json(['message' => 'baza danych pusta'], 200);
          }
-         $data .= $code->code." ";
+         $data .= $code->code."<br>";
          // $code->status = 0;
-         $code->save();
+         // $code->save();
+         array_push($codes, $code->id);
       }
 
       if (strpos($html,'(NAZWA_SPRZEDAJACEGO)') !== false) {

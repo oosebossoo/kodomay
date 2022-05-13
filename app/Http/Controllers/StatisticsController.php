@@ -77,20 +77,23 @@ class StatisticsController extends Controller
     {
         $userDatas = UserData::where('user_id', $this->user->id)->get();
         $value = 0;
+        $oneMonthBack = date( \DateTime::ISO8601, strtotime('-1 month' ));
+        return $oneMonthBack;
 
         foreach ($userDatas as $userData)
         {
             $response = Http::withHeaders([
                 "Accept" => "application/vnd.allegro.public.v1+json",
                 "Authorization" => "Bearer $userData->access_token"
-            ])->get("https://api.allegro.pl/payments/payment-operations");
+            ])->get('https://api.allegro.pl/payments/payment-operations?occurredAt.gte='.$oneMonthBack);
+            return $response['errors'];
 
             if(isset($response['paymentOperations'][0]['wallet']['balance']['amount'])) {
                 $value += $response['paymentOperations'][0]['wallet']['balance']['amount'];
             }
         }
 
-        return$value;
+        return $value;
         return response()->json($value);
     }
 
