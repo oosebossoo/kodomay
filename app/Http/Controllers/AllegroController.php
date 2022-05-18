@@ -366,32 +366,32 @@ class AllegroController extends Controller
         $user_id = $request->user_id;
 
         $oderBy = 'desc';
-        $limit = 200;
+        $limit = 10;
+        $skip = 0;
         $offerId = ['sing' => '!=', 'id' => ''];
         $canceled = 0;
         $from = date('2000-01-01');
         $to = date('2023-01-01');
 
-        if(isset($request->oderBy))
-        {
-            if($request->oderBy == 'desc')
-            {
-                $oderBy = 'desc';
-            }
-            elseif($request->oderBy == 'asc')
-            {
+        if(isset($request->oderBy)) {
+            if($request->oderBy == 'desc') {
+                $oderBy = 'desc'; } elseif($request->oderBy == 'asc') {
                 $oderBy = 'asc';
             }
         }
 
-        if(isset($request->limit))
-        {
-            if(is_numeric($request->limit))
-            {
+        if(isset($request->limit)) {
+            if(is_numeric($request->limit)) {
                 $limit = $request->limit;
+            } else {
+                return ['error' => 'wrong number... :('];
             }
-            else
-            {
+        }
+
+        if(isset($request->skip)) {
+            if(is_numeric($request->skip)) {
+                $skip = $request->skip;
+            } else {
                 return ['error' => 'wrong number... :('];
             }
         }
@@ -419,6 +419,7 @@ class AllegroController extends Controller
             ->where('isCanceled', 1)
             ->whereBetween('order_date', [$from, $to])
             ->orderBy('order_date', $oderBy)
+            ->skip($skip)
             ->limit($limit)
             ->get();
         } else {
@@ -426,6 +427,7 @@ class AllegroController extends Controller
             ->where('offer_id', $offerId['sing'], $offerId['id'])
             ->whereBetween('order_date', [$from, $to])
             ->orderBy('order_date', $oderBy)
+            ->skip($skip)
             ->limit($limit)
             ->get();
         }
@@ -434,8 +436,9 @@ class AllegroController extends Controller
         {
             foreach($orders as $order)
             {
+                $order->created_at = Carbon::parse($order->created_at)->addHour(TimeController::repairTime());
                 $codes = array();
-                $order->order_date = Carbon::parse($order->order_date)->addHour();
+                $order->order_date = Carbon::parse($order->order_date)->addHour(TimeController::repairTime());
 
                 $sentMails = SentMail::where('order_id', $order->order_id)->get();
                 if (!isset($sentMails[0]))

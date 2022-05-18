@@ -11,6 +11,7 @@ use App\Http\Controllers\CodesController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\AllegroController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\ServicesStatisticsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TimeController;
@@ -164,4 +165,13 @@ Route::group([
 
 ], function ($router) {
     Route::get('/repair_time', [ TimeController::class, 'repairTime']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'services_statistics'
+
+], function ($router) {
+    Route::get('/get_order_time_to_sent_mail', [ ServicesStatisticsController::class, 'getOrderTimeToSentMail']);
+    Route::get('/make_order_time_to_sent_mail', [ ServicesStatisticsController::class, 'makeOrderTimeToSentMail']);
 });
