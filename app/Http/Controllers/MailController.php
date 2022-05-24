@@ -227,72 +227,81 @@ class MailController extends Controller
 
       $data = "";
       $email = 'sebek.kasprzak.kodomat@gmail.com';
+      $html = "<h1>To tylko test<h1/>";
 
       $order = Orders::where('order_id', $request->order_id)->first();
       $offer = Offers::where('offer_id', $order->offer_id)->first();
       $customer = Customer::where('customer_id', $order->customer_id)->first();
-      $mail = MailTemplate::where('id', $offer->mail_template)->first();
-      $html = $mail->template;
-      $codes = array();
+      // $mail = MailTemplate::where('id', $offer->mail_template)->first();
+      // $html = $mail->template;
+      // $codes = array();
 
-      for ($i = 0; $i < $request->quantity; $i++)
-      {
-         $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->first();
-         // if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 11) {
-         //    NotificationController::last_codes($offer->offer_id, $order->seller_id);
-         // }
-         // if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 1) {
-         //    $sentMail = new SentMail();
-         //    $sentMail->customer_id = $order->customer_id;
-         //    $sentMail->order_id = $order->order_id;
-         //    $sentMail->offer_id = $order->offer_id;
-         //    $sentMail->code_id = '';
-         //    $sentMail->resend = 1;
-         //    $sentMail->save();
+      // for ($i = 0; $i < $request->quantity; $i++)
+      // {
+      //    $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->first();
+      //    // if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 11) {
+      //    //    NotificationController::last_codes($offer->offer_id, $order->seller_id);
+      //    // }
+      //    // if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 1) {
+      //    //    $sentMail = new SentMail();
+      //    //    $sentMail->customer_id = $order->customer_id;
+      //    //    $sentMail->order_id = $order->order_id;
+      //    //    $sentMail->offer_id = $order->offer_id;
+      //    //    $sentMail->code_id = '';
+      //    //    $sentMail->resend = 1;
+      //    //    $sentMail->save();
 
-         //    NotificationController::empty_code($offer->offer_id, $order->seller_id);
+      //    //    NotificationController::empty_code($offer->offer_id, $order->seller_id);
 
-         //    return response()->json(['message' => 'baza danych pusta'], 200);
-         // }
-         $data .= $code->code."<br>";
-         // $code->status = 0;
-         // $code->save();
-         array_push($codes, $code->id);
-      }
+      //    //    return response()->json(['message' => 'baza danych pusta'], 200);
+      //    // }
+      //    $data .= $code->code."<br>";
+      //    // $code->status = 0;
+      //    // $code->save();
+      //    array_push($codes, $code->id);
+      // }
 
-      if (strpos($html,'(NAZWA_SPRZEDAJACEGO)') !== false) {
-         $html = str_replace('(NAZWA_SPRZEDAJACEGO)', $user->login, $html);
-      }
+      // if (strpos($html,'(NAZWA_SPRZEDAJACEGO)') !== false) {
+      //    $html = str_replace('(NAZWA_SPRZEDAJACEGO)', $user->login, $html);
+      // }
 
-      if (strpos($html,'(ALLEGRO_LOGIN)') !== false) {
-         $html = str_replace('(ALLEGRO_LOGIN)', $customer->login, $html);
-      }
+      // if (strpos($html,'(ALLEGRO_LOGIN)') !== false) {
+      //    $html = str_replace('(ALLEGRO_LOGIN)', $customer->login, $html);
+      // }
 
-      if (strpos($html,'(KOD)') !== false) {
-         $html = str_replace('(KOD)', $data, $html);
-      }
+      // if (strpos($html,'(KOD)') !== false) {
+      //    $html = str_replace('(KOD)', $data, $html);
+      // }
 
-      if (strpos($html,'(EMAIL)') !== false) {
-         $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
-         $html = str_replace('(EMAIL)', $email->email, $html);
-      }
+      // if (strpos($html,'(EMAIL)') !== false) {
+      //    $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
+      //    $html = str_replace('(EMAIL)', $email->email, $html);
+      // }
 
-      if (strpos($html,'(NAZWA_AUKCJI)') !== false) {
-         $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
-         $html = str_replace('(NAZWA_AUKCJI)', $offer->offer_name, $html);
-      }
+      // if (strpos($html,'(NAZWA_AUKCJI)') !== false) {
+      //    $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
+      //    $html = str_replace('(NAZWA_AUKCJI)', $offer->offer_name, $html);
+      // }
 
-      if (strpos($html,'(ILOSC)') !== false) {
-         $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
-         $html = str_replace('(ILOSC)', $order->quantity, $html);
-      }
+      // if (strpos($html,'(ILOSC)') !== false) {
+      //    $email = Customer::select('email')->where('customer_id', $order->customer_id)->first();
+      //    $html = str_replace('(ILOSC)', $order->quantity, $html);
+      // }
 
-      \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
-            $message->to('sebek.kasprzak.kodomat@gmail.com')
-            ->replyTo($user->email, $user->login)
-            ->from($user->email, $user->login)
-            ->subject("TEST || $mail->template_subject $order->order_id")
-            ->setBody($html, 'text/html');
+      // \Mail::send([], [], function ($message) use ($html, $user) {
+      //       $message->to($user->email)
+      //       ->replyTo('sebek.kasprzak@gmail.com', 'kodomat')
+      //       ->from('sebek.kasprzak.kodomat@gmail.com', 'kodomat')
+      //       ->subject("TEST")
+      //       ->setBody($html, 'text/html');
+      // });
+
+      \Mail::send([], [], function ($message) use ($order, $email, $html, $user, $customer) {
+         $message->to("17mrd507lf+23cfea7f0@allegromail.pl")
+         ->replyTo($user->email, $user->login)
+         ->from($user->email, $user->login)
+         ->subject("TEST || ". '$mail->template_subject'." $order->order_id")
+         ->setBody($html, 'text/html');
       });
 
       // foreach($codes as $code)

@@ -56,7 +56,7 @@ class PaymentController extends Controller
         {
             $session_id = "99";
             $merchantId = 147909;
-            $amount = 1000;
+            $amount = 2500;
             $currency = "PLN";
             $crc = "6e90910d3ed81115";
 
@@ -82,8 +82,8 @@ class PaymentController extends Controller
                     "client" => "Sebastian Kasprzak",
                     "country" => "PL",
                     "language" => "pl",
-                    "urlReturn" => "https://kodomat.herokuapp.com/api/payment/pay-return",
-                    "urlStatus" => "https://kodomat.herokuapp.com/api/payment/pay-return",
+                    "urlReturn" => "https://api.cybersent.net/api/payment/pay-return",
+                    "urlStatus" => "https://api.cybersent.net/api/payment/pay-return",
                     "waitForResult" => false,
                     "sign" => $sign,
                 ]);

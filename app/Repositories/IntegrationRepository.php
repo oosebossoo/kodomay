@@ -93,6 +93,8 @@ class IntegrationRepository
             $userData->last_event = self::lastEvent($response["access_token"]);
             $userData->save();
 
+            self::addMail($response['access_token']);
+
             return redirect()->away('http://cybersent.net/#/integrations/allegro');
         }
 
@@ -183,7 +185,7 @@ class IntegrationRepository
         return 0;
     }
 
-    static function addMail($access_token, $email = 'cybersent.noreply@gmail.com')
+    static function addMail($access_token, $email = 'smtp@freshmail.com')
     {
         $response = Http::withHeaders([
             "Accept" => "application/vnd.allegro.public.v1+json",
