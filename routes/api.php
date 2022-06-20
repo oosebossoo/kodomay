@@ -99,6 +99,7 @@ Route::group([
     Route::get('/monitoring/on', [ AllegroController::class, 'monitoringOn']);
     Route::get('/getLastEvent', [ AllegroController::class, 'getLastEvent']);
     Route::post('/set/monitoring', [ AllegroController::class, 'setMonitoring']);
+    Route::post('/off/monitoring', [ AllegroController::class, 'offMonitoring']);
     Route::post('/monitoring/off', [ AllegroController::class, 'monitoringOff']);
     Route::get('/get/monitoring/{set}', [ AllegroController::class, 'getMonitoring']);
     // tranzakcje
@@ -143,8 +144,9 @@ Route::group([
 ], function ($router) {
     // płatności
     Route::get('/history', [PaymentController::class, 'history']);
-    Route::post('/pay', [PaymentController::class, 'pay']);
-    Route::post('/pay-return/{token}', [PaymentController::class, 'payReturn']);
+    Route::get('/pay', [PaymentController::class, 'pay']);
+    Route::get('/pay-return', [PaymentController::class, 'payReturn']);
+    Route::post('/pay-status/{payment_key}', [PaymentController::class, 'payStatus']);
     Route::get('/testAPI', [PaymentController::class, 'testAPI']);
 });
 

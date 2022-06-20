@@ -109,7 +109,7 @@ class MailController extends Controller
       \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
          $message->to('sebek.kasprzak.kodomat@gmail.com')
          ->replyTo($user->email, $user->login)
-         ->from($user->email, $user->login)
+         ->from("office@accounts4life.com", $user->login)
          ->subject("$mail->template_subject")
          ->setBody($html, 'text/html');
       });
@@ -117,7 +117,7 @@ class MailController extends Controller
       \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
          $message->to($customer->email)
          ->replyTo($user->email, $user->login)
-         ->from($user->email, $user->login)
+         ->from("office@accounts4life.com", $user->login)
          ->subject("$mail->template_subject")
          ->setBody($html, 'text/html');
       });
@@ -297,12 +297,24 @@ class MailController extends Controller
       // });
 
       \Mail::send([], [], function ($message) use ($order, $email, $html, $user, $customer) {
-         $message->to("17mrd507lf+23cfea7f0@allegromail.pl")
+         $message->to($customer->email, $customer->login)
          ->replyTo($user->email, $user->login)
-         ->from($user->email, $user->login)
+         ->from("office@accounts4life.com", $user->login)
          ->subject("TEST || ". '$mail->template_subject'." $order->order_id")
          ->setBody($html, 'text/html');
       });
+
+      if( count(Mail::failures()) > 0 ) {
+
+         echo "There was one or more failures. They were: <br />";
+      
+         foreach(Mail::failures() as $email_address) {
+             echo " - $email_address <br />";
+          }
+      
+      } else {
+          echo "No errors, all sent successfully!";
+      }
 
       // foreach($codes as $code)
       // {

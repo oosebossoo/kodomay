@@ -3,13 +3,15 @@
 namespace App\Repositories;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Http;
 
 use App\Models\UserData;
 
 use App\Http\Controllers\TimeController;
+
 use Carbon\Carbon;
+
+use App\Repositories\AllegroAccountRepository;
 
 class IntegrationRepository
 {
@@ -44,6 +46,7 @@ class IntegrationRepository
                 'jti' => $response['jti'],
                 'refresh' => 0
             ]);
+            AllegroAccountRepository::updateOffers($user_id);
             return json_decode($response);
         } else {
             return json_decode($response);
@@ -94,6 +97,7 @@ class IntegrationRepository
             $userData->save();
 
             self::addMail($response['access_token']);
+            AllegroAccountRepository::updateOffers($user_id);
 
             return redirect()->away('http://cybersent.net/#/integrations/allegro');
         }
@@ -185,7 +189,7 @@ class IntegrationRepository
         return 0;
     }
 
-    static function addMail($access_token, $email = 'smtp@freshmail.com')
+    static function addMail($access_token, $email = 'office@accounts4life.com')
     {
         $response = Http::withHeaders([
             "Accept" => "application/vnd.allegro.public.v1+json",

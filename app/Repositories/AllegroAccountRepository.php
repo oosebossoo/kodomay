@@ -27,7 +27,7 @@ class AllegroAccountRepository
         return Allegro::getCredenctial($ENV);
     }
 
-    static function offers($user_id, $update = 0)
+    static function updateOffers($user_id)
     {
         $limit = 100;
         if(isset($request->limit)) {
@@ -35,10 +35,7 @@ class AllegroAccountRepository
         }
 
         $userDatas = UserData::where('user_id', $user_id)->get();
-        if($update) {
-            Offers::where('seller_id', $user_id)->delete();
-        }
-        // Offers::where('seller_id', $user_id)->delete();
+        Offers::where('seller_id', $user_id)->delete();
 
         foreach($userDatas as $userData)
         {
@@ -111,7 +108,10 @@ class AllegroAccountRepository
                 }
             }
         }
-        // dd(response()->json(Offers::where('seller_id', $user_id)->get()));
+    }
+
+    static function offers($user_id)
+    {
         return response()->json(Offers::where('seller_id', $user_id)->where('is_active', 'YES')->get());
     }
 

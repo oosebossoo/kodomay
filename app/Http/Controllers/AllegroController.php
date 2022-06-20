@@ -302,32 +302,23 @@ class AllegroController extends Controller
         return Orders::where('order_id', $request->order_id)->update(['isCanceled' => 1]);
     }
 
-    public function tst(Request $request)
+    public function test(Request $request)
     {
         // 1621513352164979
-        $userDatas = UserData::where('user_id', $request->user_id)->get();
+        $userDatas = UserData::where('user_id', $request->user_id)->first();
 
-        foreach ($userDatas as $userData)
-        {
-            if($request->func == "event")
-            {
-                $response = Http::withHeaders([
-                    "Accept" => "application/vnd.allegro.public.v1+json",
-                    "Authorization" => "Bearer $userData->access_token"
-                ])->get("https://api.allegro.pl/order/events?type=READY_FOR_PROCESSING&from=$userData->last_event");
+        // $response = Http::withHeaders([
+        //     "Accept" => "application/vnd.allegro.public.v1+json",
+        //     "Authorization" => "Bearer $userDatas->access_token"
+        // ])->get("https://api.allegro.pl/order/events?from=1654574289759338");
 
-                return $response;
-            }
+        // return response()->json($response['events']);
 
-            if($request->func == "chechout")
-            {
-                $response = Http::withHeaders([
-                    "Accept" => "application/vnd.allegro.public.v1+json",
-                    "Authorization" => "Bearer $userData->access_token"
-                ])->get("https://api.allegro.pl/order/checkout-forms/$checkOutFormId");
-                return json_decode($response);
-            }
-        }
+        $response = Http::withHeaders([
+            'Accept' => 'application/vnd.allegro.public.v1+json',
+            'Authorization' => "Bearer $userDatas->access_token"
+        ])->get("https://api.allegro.pl/order/checkout-forms/f5b36a71-e624-11ec-8e2b-c71b173b5eed");
+        return json_decode($response);
     }
      
     public static function getOfferLink($offerId, $token)

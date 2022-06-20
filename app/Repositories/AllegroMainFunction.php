@@ -185,15 +185,12 @@ class AllegroMainFunction
                             }
                         } else {
                             $lastEvent = $order["id"];
-                            $log[] = "old: ".$order["id"];
+                            $log[] = "old event: ".$order["id"]."or other auction: ".$order['order']['lineItems'][0]['offer']['id'];
                         }
                     }
                 } else {
                     $log[] = "last: ".$lastEvent;
                 }
-                // zmiana w badzie danych ostatniego eventu DO ZMIANY 
-                // $userData->last_event = $lastEvent;
-                // $userData->save();
             } else {
                 $log[] = "user: $userData->id waiting";
             }     
