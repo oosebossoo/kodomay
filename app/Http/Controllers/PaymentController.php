@@ -18,13 +18,29 @@ use JWTAuth;
 
 class PaymentController extends Controller
 {
-    protected $user;
+    protected $env = "s";
+    protected $userId;
+    protected $shopId = 147909;
+    protected $secretId;
+    protected $url;
+    protected $CRC;
  
     public function __construct()
     {
+        if ($this->env == "s")
+        {
+            $this->url = "https://secure.przelewy24.pl/api/v1";
+            $this->CRC = "32034bd511449842";
+            $this->secretId = "5464044bea689c4c58d741fa5275286e";
+        } else {
+            $this->url = "https://sandbox.przelewy24.pl";
+            $this->CRC = "d60b4bc1690aad81";
+            $this->secretId = "27c0faf8dafc7c1324d9adad921ffb3a";
+        }
+
         try {
             // $this->user = JWTAuth::parseToken()->authenticate();
-            $this->user = 40;
+            $this->userId = 40;
         } catch (TokenInvalidException $e) {
             header("Location: /unauthorized"); 
             die;
@@ -44,22 +60,25 @@ class PaymentController extends Controller
             'payment_service' => 'required',
         ]);
 
+        $user = User::where('id', $this->userId)->first();
+
         $sessionId = 0;
-
         $date = getdate();
-
         $chars = str_split($date['year'].'-'.$date['mon'].'-'.$date['mday'].' '.$date['hours'].':'.$date['minutes'].':'.$date['seconds']."test_login");
 
         foreach ($chars as $char)
         {
             $char = dechex(ord(strtolower($char)));
-
             $sessionId .= strval($char);
         }
 
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
+
+        $tmp = new DebugInfo();
+        $tmp->data = "sessionId(p24) - " . $sessionId;
+        $tmp->save();
 
         $data = [
             'date' => $date['year'].'-'.$date['mon'].'-'.$date['mday'].' '.$date['hours'].':'.$date['minutes'].':'.$date['seconds'],
@@ -71,31 +90,30 @@ class PaymentController extends Controller
         $payment = self::add($data);
         if($payment[0])
         {
-            $merchantId = 147909;
+            $merchantId = $this->shopId;
             $amount = $data['amount'];
             $currency = "PLN";
-            $crc = "d60b4bc1690aad81";
 
             $data = [
                 'sessionId' => $sessionId,
-                'merchantId' => $merchantId,
+                'merchantId' => $this->shopId,
                 'amount' => $amount,
                 'currency' => $currency,
-                'crc' => $crc
+                'crc' => $this->CRC
             ];
 
             $sign = hash('sha384', json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-            $response = Http::withBasicAuth(147909, "27c0faf8dafc7c1324d9adad921ffb3a")
-                ->post('https://sandbox.przelewy24.pl/api/v1/transaction/register', [
+            $response = Http::withBasicAuth($this->shopId, $this->secretId)
+                ->post("$this->url/api/v1/transaction/register", [
                     "merchantId" => $merchantId,
                     "posId"=> $merchantId,
                     "sessionId" => $sessionId,
                     "amount" => $amount,
                     "currency" => $currency,
-                    "description" => "testowa tranzakcja",
-                    "email" => "sebek.kasprzak@gmail.com",
-                    "client" => "Sebastian Kasprzak",
+                    "description" => $sessionId . " - " . $amount . " - " . $request->quantity,
+                    "email" => $user->email,
+                    "client" => $user->name,
                     "country" => "PL",
                     "language" => "pl",
                     "urlReturn" => "https://api.cybersent.net/api/payment/pay-return",
@@ -104,18 +122,35 @@ class PaymentController extends Controller
                     "sign" => $sign,
                 ]);
 
+            $tmp = new DebugInfo();
+            $tmp->data = 
+                "merchantId ".$merchantId.
+                " posId ". $merchantId.
+                " sessionId ".$sessionId.
+                " amount ".$amount.
+                " currency ".$currency.
+                " description ".$sessionId . " - " . $amount . " - " . $request->quantity.
+                " email ".$user->email.
+                " client ".$user->name.
+                " country PL".
+                " language pl".
+                " urlReturn https://api.cybersent.net/api/payment/pay-return".
+                " urlStatus https://api.cybersent.net/api/payment/pay-status/".$payment[1]['payment_key'].
+                " waitForResult".false.
+                " sign ".$sign
+            ;
+            $tmp->save();
+
             $response = json_decode($response);
 
             $token = $response->data->token;
-            return redirect("https://sandbox.przelewy24.pl/trnRequest/$token");
+            return redirect("$this->url/trnRequest/$token");
         }
-
-        return response()->json(['url' => "https://www.google.com", 'crd' => $request->credits, 'payment_svc'=> $request->payment_service], 200);
     }
 
     public function payReturn(Request $request)
     {
-        return redirect('https://cybersent.net/#/payments/history');
+        return redirect('https://cybersent.net/#/dashboard');
     }
 
     public function payStatus(Request $request, $payment_key)
@@ -142,20 +177,19 @@ class PaymentController extends Controller
         $merchantId = $request->merchantId;
         $amount = $request->amount;
         $currency = $request->currency;
-        $crc = "d60b4bc1690aad81";
 
         $data = [
             'sessionId' => $request->sessionId,
             "orderId" => $request->orderId,
             'amount' => $request->amount,
             'currency' => $request->currency,
-            'crc' => $crc
+            'crc' => $this->CRC
         ];
 
         $sign = hash('sha384', json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-        $response = Http::withBasicAuth($request->merchantId, "27c0faf8dafc7c1324d9adad921ffb3a")
-            ->put('https://sandbox.przelewy24.pl/api/v1/transaction/verify', [
+        $response = Http::withBasicAuth($this->shopId, $this->secretId)
+            ->put("$this->url/api/v1/transaction/verify", [
                 "merchantId" => $request->merchantId,
                 "posId"=> $request->posId,
                 "sessionId" => $request->sessionId,
@@ -168,7 +202,30 @@ class PaymentController extends Controller
         if($response['data']['status'] == "success")
         {
             $payment = Payment::where('payment_key', $payment_key)->first();
+
+            $tmp = new DebugInfo();
+            $tmp->data = $request->orderId ." - success";
+            $tmp->save();
+
+            MailController::payment('comfirm');
+
             return self::addCredits($payment->credits);
+        }
+        if($response['code'] == 400)
+        {
+            $tmp = new DebugInfo();
+            $tmp->data = $request->orderId ." - Invalid input data";
+            $tmp->save();
+
+            return redirect('https://cybersent.net/#/dashboard');
+        }
+        if($response['code'] == 401)
+        {
+            $tmp = new DebugInfo();
+            $tmp->data = $request->orderId ." - Incorrect authentication";
+            $tmp->save();
+
+            return redirect('https://cybersent.net/#/dashboard');
         }
         return 2;
     }
@@ -188,15 +245,15 @@ class PaymentController extends Controller
 
     public function testAPI()
     {
-        $response = Http::withBasicAuth('147909', '27c0faf8dafc7c1324d9adad921ffb3a')->get('https://sandbox.przelewy24.pl/api/v1/testAccess');
+        $response = Http::withBasicAuth($this->shopId, $this->secretId)->get('https://sandbox.przelewy24.pl/api/v1/testAccess');
         return response()->json(json_decode($response));
     }
 
     function add($data)
     {
         $payment = new Payment();
-        $payment->ordinal_id = Payment::where('user_id', $this->user)->count() + 1;
-        $payment->user_id = $this->user;
+        $payment->ordinal_id = Payment::where('user_id', $this->userId)->count() + 1;
+        $payment->user_id = $this->userId;
         $payment->payment_key = rand(10000000, 99999999);
         $payment->date = $data['date'];
         $payment->amount = $data['amount'];
