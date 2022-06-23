@@ -34,7 +34,7 @@ class MailController extends Controller
 
    public function testSend(Request $request)
    {
-      self::sendCode($request->order_id, $request->quantity, $request->access_token);
+      return $this->sendCodesMails::sendCode($request->order_id, $request->quantity, $request->access_token);
    }
 
    public static function sendCode($order_id, $quantity, $access_token) 
@@ -142,7 +142,7 @@ class MailController extends Controller
          $sentMail->save();
       }
 
-      return $this->sendCodesMails::sendCode($order_id, $quantity, $access_token);
+      $this->sendCodesMails::sendCode($order_id, $quantity, $access_token);
    }
 
    public static function sendOldMail($order_id, $mail_id, $code_id, $access_token) 
