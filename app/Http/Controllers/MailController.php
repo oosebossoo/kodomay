@@ -123,13 +123,37 @@ class MailController extends Controller
       //    ->setBody($html, 'text/html');
       // });
 
-      \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
-         $message->to($customer->email)
-         ->replyTo($user->email, $user->login)
-         ->from("office@accounts4life.com", $user->login)
-         ->subject("$mail->template_subject")
-         ->setBody($html, 'text/html');
-      });
+      try {
+         \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
+            $message->to($customer->email)
+            ->replyTo($user->email, $user->login)
+            ->from("office@accounts4life.com", $user->login)
+            ->subject("$mail->template_subject")
+            ->setBody($html, 'text/html');
+         });
+      }
+      catch(\Exception $e) {
+         echo $e->getMessage()." <br />";
+         try {
+            \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
+               $message->to($customer->email)
+               ->replyTo($user->email, $user->login)
+               ->from("office@accounts4life.com", $user->login)
+               ->subject("$mail->template_subject")
+               ->setBody($html, 'text/html');
+            });
+         }
+         catch(\Exception $e) {
+            echo $e->getMessage()." <br />";
+            \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
+               $message->to($customer->email)
+               ->replyTo($user->email, $user->login)
+               ->from("office@accounts4life.com", $user->login)
+               ->subject("$mail->template_subject")
+               ->setBody($html, 'text/html');
+            });
+         }
+      }
 
       foreach($codes as $code)
       {
