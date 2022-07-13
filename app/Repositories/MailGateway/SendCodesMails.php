@@ -11,6 +11,7 @@ use App\Http\Controllers\CodesController;
 use App\Http\Controllers\NotificationController;
 
 use App\Models\Code;
+use App\Models\DebugInfo;
 use App\Models\Orders;
 use App\Models\Customer;
 use App\Models\Offers;
@@ -39,28 +40,30 @@ class SendCodesMails
         $order = Orders::where('order_id', $request->order_id)->first();
         $offer = Offers::where('offer_id', $order->offer_id)->first();
         $customer = Customer::where('customer_id', $order->customer_id)->first();
-        // $mail = MailTemplate::where('id', $offer->mail_template)->first();
-        // $html = $mail->template;
-        // $codes = array();
+        $mail = MailTemplate::where('id', $offer->mail_template)->first();
+        $html = $mail->template;
+        $codes = array();
+
+        if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < $request->quantity)
+        {
+            for($i = 0; $i < $request->quantity; $i++)
+            {
+               $sentMail = new SentMail();
+               $sentMail->customer_id = $order->customer_id;
+               $sentMail->order_id = $order->order_id;
+               $sentMail->offer_id = $order->offer_id;
+               $sentMail->code_id = "";
+               $sentMail->send = 0;
+               $sentMail->save();
+            }
+
+            return 1;
+        }
 
         // for ($i = 0; $i < $request->quantity; $i++)
         // {
-        //    $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->first();
         //    // if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 11) {
         //    //    NotificationController::last_codes($offer->offer_id, $order->seller_id);
-        //    // }
-        //    // if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 1) {
-        //    //    $sentMail = new SentMail();
-        //    //    $sentMail->customer_id = $order->customer_id;
-        //    //    $sentMail->order_id = $order->order_id;
-        //    //    $sentMail->offer_id = $order->offer_id;
-        //    //    $sentMail->code_id = '';
-        //    //    $sentMail->resend = 1;
-        //    //    $sentMail->save();
-
-        //    //    NotificationController::empty_code($offer->offer_id, $order->seller_id);
-
-        //    //    return response()->json(['message' => 'baza danych pusta'], 200);
         //    // }
         //    $data .= $code->code."<br>";
         //    // $code->status = 0;
@@ -113,7 +116,11 @@ class SendCodesMails
             });
         }
         catch(\Exception $e) {
-            echo $e->getMessage();
+            $di = new DebugInfo();
+            $di->data = $e->getMessage();
+            $date = getdate();
+            $di->data1 = $date['hours'].":".$date['minutes'].":".$date['seconds']." ".$date['mday']."-".$date['mon']."-".$date['year'];
+            $di->save();
             try {
                 Mail::send([], [], function ($message) use ($order, $email, $html, $customer) {
                     $message->to($customer->email, $customer->login)
@@ -124,7 +131,11 @@ class SendCodesMails
                 });
             }
             catch(\Exception $e) {
-                echo $e->getMessage();
+                $di = new DebugInfo();
+                $di->data = $e->getMessage();
+                $date = getdate();
+                $di->data1 = $date['hours'].":".$date['minutes'].":".$date['seconds']." ".$date['mday']."-".$date['mon']."-".$date['year'];
+                $di->save();
                 Mail::send([], [], function ($message) use ($order, $email, $html, $user, $customer) {
                     $message->to($customer->email, $customer->login)
                     ->replyTo($user->email, $user->login)

@@ -152,8 +152,6 @@ class AllegroController extends Controller
 
     public function mainFunction(Request $request)
     {
-        $user = User::where('id', $request->user_id)->first();
-        
         // $user_id = $this->user->id;
         return $this->allegroMainFunction::mainFunction($request->user_id);
     }

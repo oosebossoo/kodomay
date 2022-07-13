@@ -35,7 +35,7 @@ class AllegroAccountRepository
         }
 
         $userDatas = UserData::where('user_id', $user_id)->get();
-        Offers::where('seller_id', $user_id)->delete();
+        Offers::where('seller_id', $user_id)->where('is_active', 'NO')->delete();
 
         foreach($userDatas as $userData)
         {
@@ -110,8 +110,12 @@ class AllegroAccountRepository
         }
     }
 
-    static function offers($user_id)
+    static function offers($user_id, $update = NULL)
     {
+        if($update != NULL)
+        {
+            self::updateOffers($user_id);
+        }
         return response()->json(Offers::where('seller_id', $user_id)->where('is_active', 'YES')->get());
     }
 
@@ -141,15 +145,6 @@ class AllegroAccountRepository
         } else {
             return response()->json(['message' => "Can't set, missing values"], 400);
         }
-
-        // $offer = Offers::where('offer_id', $offer_id)->first();
-
-        // if(!empty($offer)) {
-        //     Offers::where('offer_id', $offer_id)->update([ 'is_active' => 'YES' ]);
-        //     return response()->json(['is_active' => 'YES'], 200);
-        // } else {
-        //     return response()->json(['message' => "Can't set, check offer id"], 400);
-        // }
     }
 
     static function offMonitoring($offer_id)

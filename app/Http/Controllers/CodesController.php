@@ -308,9 +308,9 @@ class CodesController extends Controller
                 }
             }
 
-            $oldOrders = SentMail::where('resend', 1)->orderBy('id','asc')->get();
+            $oldOrders = SentMail::where('resend', 0)->orderBy('id','asc')->get();
 
-            if($oldOrders != null)
+            if($oldOrders != [])
             {
                 foreach ($oldOrders as $oldOrder)
                 {
@@ -318,7 +318,7 @@ class CodesController extends Controller
                     {
                         $order = Orders::where('order_id', $oldOrder->order_id)->first();
                         $code = Code::where('db_id', Offers::where('offer_id', $oldOrder->offer_id)->first()['codes_id'])->where('status', 1)->first();
-                        MailController::sendOldMail($oldOrder->order_id, $oldOrder->id, $code->id, UserData::where('id', $order->allegro_user_id)->first()['access_token']);
+                        MailController::sendOldMail($oldOrder->order_id, $oldOrder->id, $code, UserData::where('id', $order->allegro_user_id)->first()['access_token']);
                     }
                 }
             }

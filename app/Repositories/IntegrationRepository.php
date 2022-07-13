@@ -93,7 +93,8 @@ class IntegrationRepository
             $userData->allegro_api = $response['allegro_api'];
             $userData->jti = $response['jti'];
             $userData->refresh = 0;
-            $userData->last_event = self::lastEvent($response["access_token"]);
+            $userData->last_event_b = self::lastEvent($response["access_token"]);
+            $userData->last_event_rtp = self::lastEvent($response["access_token"]);
             $userData->save();
 
             self::addMail($response['access_token']);
@@ -182,7 +183,8 @@ class IntegrationRepository
 
             if($response->latestEvent != null)
             {
-                $userData->last_event = $response->latestEvent->id;
+                $userData->last_event_b = $response->latestEvent->id;
+                $userData->last_event_rtp = $response->latestEvent->id;
                 $userData->save();
             }
         }

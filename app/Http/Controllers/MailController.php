@@ -17,11 +17,12 @@ use App\Repositories\MailGateway\PaymentMails;
 use App\Repositories\MailGateway\SendCodesMails;
 
 use App\Models\Code;
-use App\Models\Orders;
 use App\Models\Customer;
+use App\Models\DebugInfo;
+use App\Models\MailTemplate;
+use App\Models\Orders;
 use App\Models\Offers;
 use App\Models\SentMail;
-use App\Models\MailTemplate;
 use App\Models\UserData;
 
 class MailController extends Controller
@@ -59,26 +60,26 @@ class MailController extends Controller
       $html = $mail->template;
       $codes = array();
 
+      if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < $request->quantity) {
+         for($i = 0; $i < $request->quantity; $i++)
+         {
+            $sentMail = new SentMail();
+            $sentMail->customer_id = $order->customer_id;
+            $sentMail->order_id = $order->order_id;
+            $sentMail->offer_id = $order->offer_id;
+            $sentMail->code_id = "";
+            $sentMail->send = 0;
+            $sentMail->save();
+         }
+         return 1;
+      }
+
       for ($i = 0; $i < $quantity; $i++)
       {
          $code = Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->first();
          if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 11)
          {
             NotificationController::last_codes($offer->offer_id, $order->seller_id);
-         }
-         if(Code::where('status', 1)->where('seller_id', $order->seller_id)->where('db_id', $offer->codes_id)->count() < 1)
-         {
-            $sentMail = new SentMail();
-            $sentMail->customer_id = $order->customer_id;
-            $sentMail->order_id = $order->order_id;
-            $sentMail->offer_id = $order->offer_id;
-            $sentMail->code_id = '';
-            $sentMail->resend = 1;
-            $sentMail->save();
-
-            NotificationController::empty_code($order->offer_id, $order->seller_id);
-
-            return 1;
          }
          $data .= $code->code."<br>";
          $code->status = 0;
@@ -133,7 +134,10 @@ class MailController extends Controller
          });
       }
       catch(\Exception $e) {
-         echo $e->getMessage()." <br />";
+         $di = new DebugInfo();
+         $di->data = $e->getMessage();
+         $di->data1 = getdata();
+         $di->save();
          try {
             \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
                $message->to($customer->email)
@@ -144,7 +148,10 @@ class MailController extends Controller
             });
          }
          catch(\Exception $e) {
-            echo $e->getMessage()." <br />";
+            $di = new DebugInfo();
+            $di->data = $e->getMessage();
+            $di->data1 = getdata();
+            $di->save();
             \Mail::send([], [], function ($message) use ($order, $email, $html, $mail, $user, $customer) {
                $message->to($customer->email)
                ->replyTo($user->email, $user->login)
@@ -155,24 +162,19 @@ class MailController extends Controller
          }
       }
 
-      foreach($codes as $code)
-      {
-         $sentMail = new SentMail();
-         $sentMail->customer_id = $order->customer_id;
-         $sentMail->order_id = $order->order_id;
-         $sentMail->offer_id = $order->offer_id;
-         $sentMail->code_id = $code;
-         $sentMail->resend = 0;
-         $sentMail->save();
+      if(count(Mail::failures()) > 0) {    
+         // jest error
+      } else {
+         // nie ma erroru
       }
+
+      
 
       $this->sendCodesMails::sendCode($order_id, $quantity, $access_token);
    }
 
-   public static function sendOldMail($order_id, $mail_id, $code_id, $access_token) 
+   public static function sendOldMail($order_id, $mail_id, $code, $access_token) 
    {
-      $code = Code::where('id', $code_id)->first();
-
       $response = Http::withHeaders([
          "Accept" => "application/vnd.allegro.public.v1+json",
          "Authorization" => "Bearer $access_token"
@@ -234,7 +236,7 @@ class MailController extends Controller
       });
 
       $sent = SentMail::where('id', $mail_id)->first();
-      $sent->resend = 0;
+      $sent->resend = 1;
       $sent->code_id = $code_id;
       $sent->save();
 
