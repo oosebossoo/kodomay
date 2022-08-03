@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "ba858886-f462-476f-91da-ff71788aa6ac",
+		"name": "Payment API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/payment/history",
+			"id": "9293203f-ebff-4ae5-98ec-e62b90317a0d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNzc0ODAwOSwiZXhwIjoxNjM3NzUxNjA5LCJuYmYiOjE2Mzc3NDgwMDksImp0aSI6Im5ydFFDbzE3MEhQQjU5RUIiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.cEk90dH_azigaHSPo55RHDJNsNAtuVoMuWcUroP8gZc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/payment/history",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"payment",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/payment/pay",
+			"id": "7dd08234-8734-4ac8-8190-cd4c23b0a2d5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODI4MDUxOCwiZXhwIjoxNjM4Mjg0MTE4LCJuYmYiOjE2MzgyODA1MTgsImp0aSI6IktrVFlSdGhnQWhyYlFHZUEiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7dykvvaPvc8CGIBbdUhP-DpKnH_YFUWK-73tOXyQ7vM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "quantity",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "payment_service",
+							"value": "p24",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/payment/pay",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"payment",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/payment/pay-status",
+			"id": "55b59c4c-488b-4c1b-94b9-a1d98d7f7d74",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODI4MDUxOCwiZXhwIjoxNjM4Mjg0MTE4LCJuYmYiOjE2MzgyODA1MTgsImp0aSI6IktrVFlSdGhnQWhyYlFHZUEiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7dykvvaPvc8CGIBbdUhP-DpKnH_YFUWK-73tOXyQ7vM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "quantity",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "payment_service",
+							"value": "p24",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/payment/pay",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"payment",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/payment/pay-return",
+			"id": "4cb4bdd8-bafd-4e9c-b832-c0a1cf16b684",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODI4MDUxOCwiZXhwIjoxNjM4Mjg0MTE4LCJuYmYiOjE2MzgyODA1MTgsImp0aSI6IktrVFlSdGhnQWhyYlFHZUEiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7dykvvaPvc8CGIBbdUhP-DpKnH_YFUWK-73tOXyQ7vM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "quantity",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "payment_service",
+							"value": "p24",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/payment/pay",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"payment",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

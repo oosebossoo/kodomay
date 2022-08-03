@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "efa7f909-9213-42ac-8f7b-cde00e7cac60",
+		"name": "SERVER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "off monitoring",
+			"id": "d2786865-4274-4af5-b513-5869f4d6c6bd",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/allegro/monitoring/off?email=sebek.kasprzak@gmail.com",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"allegro",
+						"monitoring",
+						"off"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "sebek.kasprzak@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

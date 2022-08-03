@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "0957ec4d-706f-42f9-aeb6-bc2919aa9eea",
+		"name": "Statistic API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api/stat/credits",
+			"id": "6c23e912-6d27-4900-89bb-76711a9443dd",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNTUwNjkxNSwiZXhwIjoxNjM1NTEwNTE1LCJuYmYiOjE2MzU1MDY5MTUsImp0aSI6IjVqcTRrRTFNRGZtdnpyWGQiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.9yBleE44TagafHZlV0ty2mFtWNjmRNfQawllNDEzJG8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/stat/credits",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"stat",
+						"credits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "stat/cash/transaction/value",
+			"id": "e949b181-b79a-4894-80cc-297532b72f66",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzY1NzAzMzcsImV4cCI6MTYzNjU3MzkzNywibmJmIjoxNjM2NTcwMzM3LCJqdGkiOiJ2UktGZWRmTm90UHEwcDFaIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.aZb8yjc4LH3lPKnm9DuSIw2THNWiWAWJg5CWYjKNp98",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/stat/cash/transaction/value",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"stat",
+						"cash",
+						"transaction",
+						"value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/stat/cash",
+			"id": "edd92cf7-da85-4666-8fb9-4416610f7d6d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzY1NzAzMzcsImV4cCI6MTYzNjU3MzkzNywibmJmIjoxNjM2NTcwMzM3LCJqdGkiOiJ2UktGZWRmTm90UHEwcDFaIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.aZb8yjc4LH3lPKnm9DuSIw2THNWiWAWJg5CWYjKNp98",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/stat/cash",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"stat",
+						"cash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/stat/dashboard",
+			"id": "10ee2022-97a5-4bb1-8c78-048b3b3412d5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzgzNDg4NDUsImV4cCI6MTYzODM1MjQ0NSwibmJmIjoxNjM4MzQ4ODQ1LCJqdGkiOiI3ZXlaZDB6NFZaY1o5azByIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.W0_4ZnfMXTCw0jsHovm818HVPYGq8LKzhe1jLfzidBE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/stat/dashboard",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"stat",
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

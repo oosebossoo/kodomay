@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "f7ea493c-bf05-47b0-965a-9b6e7339bd49",
+		"name": "Notification API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/settings/getNotifications",
+			"id": "4333eec2-5867-49c4-8e59-c21905309f54",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODQ0NzY1NywiZXhwIjoxNjM4NDUxMjU3LCJuYmYiOjE2Mzg0NDc2NTcsImp0aSI6Im1PQmhpOWpZcTJ1cEdsbjUiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Z2-9zMzyTpPM7lwK8n42H18wZjnISPkXIshelVmcfSA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/settings/getNotifications",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"settings",
+						"getNotifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/settings/saveNotifications",
+			"id": "e052d1e2-4e81-445a-b448-a3369b2de5be",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODM1NjA4NiwiZXhwIjoxNjM4MzU5Njg2LCJuYmYiOjE2MzgzNTYwODYsImp0aSI6IjNhZ3Nhb1pKcVpmeHJkbDAiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.cvrMzuRZfzwq99L1ZrmdFCnGmB6Dx5truFQFnmYTNBc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "40",
+							"type": "text"
+						},
+						{
+							"key": "copy_email",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "new_adv",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "end_of_credit",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "empty_credit",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "empty_code",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/settings/saveNotifications",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"settings",
+						"saveNotifications"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

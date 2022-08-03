@@ -1,0 +1,634 @@
+{
+	"info": {
+		"_postman_id": "6441673c-6696-4e2e-b785-8e437fab0b09",
+		"name": "Allegro API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api/allegro/test",
+			"id": "0404cef9-0c5c-408e-aa17-bd50a5b9838e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDI5NTExNiwiZXhwIjoxNjM0Mjk4NzE2LCJuYmYiOjE2MzQyOTUxMTYsImp0aSI6InRFWktaeEw1bWpJYmlCMWIiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.APGSCLWcWNPQIkTaInr-_RQ_v4HcW5DaAYs49Bamink",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/allegro/test",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/get/transaction",
+			"id": "4b700b48-54e8-43c2-ad8d-197f93c9900d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDI5NTExNiwiZXhwIjoxNjM0Mjk4NzE2LCJuYmYiOjE2MzQyOTUxMTYsImp0aSI6InRFWktaeEw1bWpJYmlCMWIiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.APGSCLWcWNPQIkTaInr-_RQ_v4HcW5DaAYs49Bamink",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local}}/api/allegro/get/transaction?user_id=14",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"get",
+						"transaction"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "14"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/refresh",
+			"id": "b63d1ab0-6c50-41a9-bd02-7629f9acaf6c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDI5NTExNiwiZXhwIjoxNjM0Mjk4NzE2LCJuYmYiOjE2MzQyOTUxMTYsImp0aSI6InRFWktaeEw1bWpJYmlCMWIiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.APGSCLWcWNPQIkTaInr-_RQ_v4HcW5DaAYs49Bamink",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/allegro/test",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/add",
+			"id": "fcd521dc-6964-4730-aa02-14e6401e858a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDI5NTExNiwiZXhwIjoxNjM0Mjk4NzE2LCJuYmYiOjE2MzQyOTUxMTYsImp0aSI6InRFWktaeEw1bWpJYmlCMWIiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.APGSCLWcWNPQIkTaInr-_RQ_v4HcW5DaAYs49Bamink",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/allegro/add",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/delete",
+			"id": "1c784353-b3c6-4450-9fb7-1d9b8d28e254",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDI5NTExNiwiZXhwIjoxNjM0Mjk4NzE2LCJuYmYiOjE2MzQyOTUxMTYsImp0aSI6InRFWktaeEw1bWpJYmlCMWIiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.APGSCLWcWNPQIkTaInr-_RQ_v4HcW5DaAYs49Bamink",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/allegro/delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/get/info",
+			"id": "75b2af1f-92c4-43e9-9521-1589ced9ae25",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDI5NTExNiwiZXhwIjoxNjM0Mjk4NzE2LCJuYmYiOjE2MzQyOTUxMTYsImp0aSI6InRFWktaeEw1bWpJYmlCMWIiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.APGSCLWcWNPQIkTaInr-_RQ_v4HcW5DaAYs49Bamink",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/allegro/get/info",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"get",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/get/offer",
+			"id": "74ad245f-9bb5-4714-b699-cd2d70cf2f8a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDEzMTgxNDUsImV4cCI6MTY0MTMyMTc0NSwibmJmIjoxNjQxMzE4MTQ1LCJqdGkiOiJYVTdwSXNXSkRYMHlUZjdGIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9._6Qn1Umwz4RQ1UgBFAgFSfOL53aqG_2jpmEHc52qe-0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host2}}/api/allegro/get/offer",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"get",
+						"offer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/get/offers",
+			"id": "3a10b5ef-ba30-4dae-bc91-3420087ca019",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDEzMTgxNDUsImV4cCI6MTY0MTMyMTc0NSwibmJmIjoxNjQxMzE4MTQ1LCJqdGkiOiJYVTdwSXNXSkRYMHlUZjdGIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9._6Qn1Umwz4RQ1UgBFAgFSfOL53aqG_2jpmEHc52qe-0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host2}}/api/allegro/get/offers",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"get",
+						"offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/get/offers/off",
+			"id": "64152286-0905-4ef3-a352-91a0e9a697d8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDEzMTgxNDUsImV4cCI6MTY0MTMyMTc0NSwibmJmIjoxNjQxMzE4MTQ1LCJqdGkiOiJYVTdwSXNXSkRYMHlUZjdGIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9._6Qn1Umwz4RQ1UgBFAgFSfOL53aqG_2jpmEHc52qe-0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host2}}/api/allegro/get/offers/off",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"get",
+						"offers",
+						"off"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/get/customers",
+			"id": "5c20725e-a5d3-4c1a-b234-fadc8b5427bc",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDEzMTgxNDUsImV4cCI6MTY0MTMyMTc0NSwibmJmIjoxNjQxMzE4MTQ1LCJqdGkiOiJYVTdwSXNXSkRYMHlUZjdGIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9._6Qn1Umwz4RQ1UgBFAgFSfOL53aqG_2jpmEHc52qe-0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host2}}/api/allegro/get/customers",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"get",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/get/customer",
+			"id": "a1db9e50-804d-4b35-8e64-eec982d85fdb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDEzMTgxNDUsImV4cCI6MTY0MTMyMTc0NSwibmJmIjoxNjQxMzE4MTQ1LCJqdGkiOiJYVTdwSXNXSkRYMHlUZjdGIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9._6Qn1Umwz4RQ1UgBFAgFSfOL53aqG_2jpmEHc52qe-0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host2}}/api/allegro/get/customer?customer_id=103096561",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"get",
+						"customer"
+					],
+					"query": [
+						{
+							"key": "customer_id",
+							"value": "103096561",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/set/monitoring",
+			"id": "da22e6af-8496-4adb-946b-0515bb0d06fb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY0OTY3MzgyNSwiZXhwIjoxNjQ5Njc3NDI1LCJuYmYiOjE2NDk2NzM4MjUsImp0aSI6IkZGV29OdnlNNDV6M1BHVHAiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.T748siV-OMFsm0QL8ipN42saGNlB1Hi4t3XqXjOzvZs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "offer_id",
+							"value": "10106222172",
+							"type": "text"
+						},
+						{
+							"key": "template",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "codeBase",
+							"value": "XkegkTuq",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{local}}/api/allegro/set/monitoring",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"set",
+						"monitoring"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/off/monitoring",
+			"id": "63dfbec2-5307-4c6e-827c-011dcb583556",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDI5NTExNiwiZXhwIjoxNjM0Mjk4NzE2LCJuYmYiOjE2MzQyOTUxMTYsImp0aSI6InRFWktaeEw1bWpJYmlCMWIiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.APGSCLWcWNPQIkTaInr-_RQ_v4HcW5DaAYs49Bamink",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{local}}/api/allegro/off/monitoring?offer_id=10106222172",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"off",
+						"monitoring"
+					],
+					"query": [
+						{
+							"key": "offer_id",
+							"value": "10106222172"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/monitoring/on",
+			"id": "7eb48966-b0f4-4097-be8f-f29e5ac35b3e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host2}}/api/allegro/monitoring/on?email=sebek.kasprzak@gmail.com",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"monitoring",
+						"on"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "sebek.kasprzak@gmail.com",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/allegro/getLastEvent",
+			"id": "b76fff1a-919c-4b37-9fae-91c6f5ac0794",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host2}}/api/allegro/getLastEvent",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"getLastEvent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/allegro/main_function",
+			"id": "615d8d44-dbc4-42d8-bf1b-6459afbfa746",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvcmVmcmVzaCIsImlhdCI6MTYzNDgyNzc2MywiZXhwIjoxNjM0ODMyNDI4LCJuYmYiOjE2MzQ4Mjg4MjgsImp0aSI6IkJRTFB1azVMRXFjM2xaYkwiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.iH_JG95wQU4WLS-ivDmIMNJGar3kxBNYP_ikZSGPw88",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/allegro/main_function?user_id=40",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"main_function"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "40",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/allegro/list",
+			"id": "85f1467f-51b7-4693-b973-beba64f4fbe8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDI0OTY2MTksImV4cCI6MTY0MjUwMDIxOSwibmJmIjoxNjQyNDk2NjE5LCJqdGkiOiJUSXJsWlJaa3VoYkRDSEFLIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.S-VwLd86F6_VYEFoGp7_jhk3TU9kVUlSpguR1wNtxig",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host2}}/api/allegro/user/40/list",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"allegro",
+						"user",
+						"40",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,461 @@
+{
+	"info": {
+		"_postman_id": "0350f6a1-516b-432b-8b0f-e9e7bdde7750",
+		"name": "Keys API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/dbs/add",
+			"id": "81c3a5b4-fc92-41c6-93e7-5229fb63006d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY0NjIyMjIxOCwiZXhwIjoxNjQ2MjI1ODE4LCJuYmYiOjE2NDYyMjIyMTgsImp0aSI6IkhrdFQ4VU5YZ0RSc05vYnkiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.NdIUSC-LG7dZcidS4Ah1CAE5vElW7umoHSNcQr7PKjU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"db_name\": \"duplikaty\",\r\n    \"db_type\": 0,\r\n    \"offer_id\": 1,\r\n    \"codes_txt\": [\r\n        \"qweqwerty\", \r\n        \"qweqwerty\", \r\n        \"qweqwerty\", \r\n        \"uiotyuert\",\r\n        \"uiotyuert\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local}}/api/dbs/add",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"api",
+						"dbs",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/dbs/list",
+			"id": "00a8c06d-9448-4be9-b837-40c0a8958247",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDE5MTc4NiwiZXhwIjoxNjM0MTk1Mzg2LCJuYmYiOjE2MzQxOTE3ODYsImp0aSI6InZ2ZHdHNGRZQXljcllzUmEiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.lfbzOZBfcNRKiIjVkxS33ID3nU1JKVSYzD3EkOT5-VI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/dbs/list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"dbs",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/dbs/join",
+			"id": "070f0c80-477e-494b-96f4-91b9184fc710",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDE5MTc4NiwiZXhwIjoxNjM0MTk1Mzg2LCJuYmYiOjE2MzQxOTE3ODYsImp0aSI6InZ2ZHdHNGRZQXljcllzUmEiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.lfbzOZBfcNRKiIjVkxS33ID3nU1JKVSYzD3EkOT5-VI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/dbs/join",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"dbs",
+						"join"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/dbs/delete",
+			"id": "a4158f9b-63f0-4661-bebd-d2f1bb49630a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY0NjIyODM5MCwiZXhwIjoxNjQ2MjMxOTkwLCJuYmYiOjE2NDYyMjgzOTAsImp0aSI6IldtcFBNSjhGNGVFQzJZN3UiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.hdR6KpLG_5Dbo7RYtUE974mUUTU658qoFLzru6UJxow",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{local}}/api/dbs/delete?db_id=r3MpEbhG",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"api",
+						"dbs",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "db_id",
+							"value": "r3MpEbhG"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/db/add",
+			"id": "e602bae3-7174-4536-a0e5-0be68e9d5555",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmN5YmVyc2VudC5uZXRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NTA1MzcwNjYsImV4cCI6MTY1MDU0MDY2NiwibmJmIjoxNjUwNTM3MDY2LCJqdGkiOiJGVHZQMnpzRHZaeEpib1JQIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.9S1Q8CCzyYU28TzFnL0VuiTj22cHxhkGcV5p8BtRUcM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"db_id\": \"Y2nMqsHq\",\r\n    \"code\": [\r\n        \"123123123123123\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host2}}/api/db/add",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"db",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/db/unused",
+			"id": "c84ec026-bc0a-4966-a144-c5fe14a5b345",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDk3NTQ2MjUsImV4cCI6MTY0OTc1ODIyNSwibmJmIjoxNjQ5NzU0NjI1LCJqdGkiOiJPdjFLdFBqU29QV2VKUkhsIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.x69BoWGBoq7h-HtEHPxl3XcH8asGB2y3joqC29wtfzw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"db_id\": \"fVNdvTIW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host2}}/api/db/unused",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"db",
+						"unused"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/db/used",
+			"id": "c61bafa5-e0a4-4004-af64-399301d6a565",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzI4MjYzODMsImV4cCI6MTYzMjgyOTk4MywibmJmIjoxNjMyODI2MzgzLCJqdGkiOiJoRkgzWHo2Z0diUUMxWlo4Iiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.5Rn2Xb6iVhyzNbcSjLxfdov7zrw8H2wqxMvY7HRHrd0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"db_id\": \"$2y$10$.ADvZoioen8Lrq97LeaBFe/DEpwL4weriG2AFGDPRGD1CryOZE1V.$2y$10$WQ4K4cbhinMFlo6y7Oqb1eckBA.fQoaDotOBO6.KDxIt2bgJ8slju$2y$10$V5ZRaXBJPLxH9DhE083TmelBU7C9kJkKQwVwwKQBI3uE11bZ/Cloy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/db/used",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"db",
+						"used"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/db/find",
+			"id": "b2508484-cea5-49b2-b4fc-c7490aee3e0f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzI4MjYzODMsImV4cCI6MTYzMjgyOTk4MywibmJmIjoxNjMyODI2MzgzLCJqdGkiOiJoRkgzWHo2Z0diUUMxWlo4Iiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.5Rn2Xb6iVhyzNbcSjLxfdov7zrw8H2wqxMvY7HRHrd0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"qweqwerty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/db/find",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"db",
+						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/db/info",
+			"id": "83e172c5-3b2e-4605-b9c6-dd71624fc839",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmN5YmVyc2VudC5uZXRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDk3NTQ5NTQsImV4cCI6MTY0OTc1ODU1NCwibmJmIjoxNjQ5NzU0OTU0LCJqdGkiOiJyRlVKU3BVWFZpMVRhbHJDIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.JPg88Ch214qkFgf-pKCT2HdIin4JzTLyZeYJ7LnXov",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host2}}/api/db/info?db_id=fVNdvTIW",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"db",
+						"info"
+					],
+					"query": [
+						{
+							"key": "db_id",
+							"value": "fVNdvTIW",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/db/edit",
+			"id": "7ec1c34e-c853-43fc-87f6-a950ae776db2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzI4MjYzODMsImV4cCI6MTYzMjgyOTk4MywibmJmIjoxNjMyODI2MzgzLCJqdGkiOiJoRkgzWHo2Z0diUUMxWlo4Iiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.5Rn2Xb6iVhyzNbcSjLxfdov7zrw8H2wqxMvY7HRHrd0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"db_id\": \"$2y$10$.ADvZoioen8Lrq97LeaBFe/DEpwL4weriG2AFGDPRGD1CryOZE1V.$2y$10$WQ4K4cbhinMFlo6y7Oqb1eckBA.fQoaDotOBO6.KDxIt2bgJ8slju$2y$10$V5ZRaXBJPLxH9DhE083TmelBU7C9kJkKQwVwwKQBI3uE11bZ/Cloy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/db/info",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"db",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/db/delete",
+			"id": "c44c0678-1482-4aab-831a-3f05180c82cf",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzNDIwNzM1MCwiZXhwIjoxNjM0MjEwOTUwLCJuYmYiOjE2MzQyMDczNTAsImp0aSI6IkYwNUNoSmVSZ01wbUFXak8iLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MgjC-6NIXRCIQzgTblpWvwUQxJ_FS8jLNs3B70m8Pt0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "code_ids",
+							"value": "160",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/db/delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"db",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "e2a9c7ee-f75f-4926-814e-0a6f96ae7761",
+		"name": "Account API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/auth/register",
+			"id": "b48dc9fc-afd3-4469-97e8-98264ae0f2d4",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "sebek",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "sebek.kasprzak.sk@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Tralala123",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "Tralala123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host2}}/api/auth/register",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/login",
+			"id": "187fb6ee-d237-459c-9fed-6c62bb396aaa",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "{{EmailS}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{PassS}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host2}}/api/auth/login",
+					"host": [
+						"{{host2}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/user-profile",
+			"id": "1dfe5dbf-a0c6-4a14-9577-8f2dfa0a7b57",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzAwNDkxNTIsImV4cCI6MTYzMDA1Mjc1MiwibmJmIjoxNjMwMDQ5MTUyLCJqdGkiOiJSVkFuUlpkZ0FTd1ZHd2FZIiwic3ViIjo0MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.Ety2a7xxbSI4CetSpNp9nrRMw8Ejt-5wbrEs1B7LR7o",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/auth/user-profile",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"user-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/refresh",
+			"id": "2bc288e7-d803-48fc-b076-5543c438c275",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MjkxMDQ5ODgsImV4cCI6MTYyOTEwODU4OCwibmJmIjoxNjI5MTA0OTg4LCJqdGkiOiJUbFlHbUhudFpHSGs2OTh3Iiwic3ViIjoxNiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.tzRPf0yLMCjBKWas_HI79zhW2o1_erm-iyR-eb4vprY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/auth/refresh",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/logout",
+			"id": "1c04ae5d-ecd3-4562-a9fe-d14bbde575e9",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzAwNDkxMDMsImV4cCI6MTYzMDA1MjcwMywibmJmIjoxNjMwMDQ5MTAzLCJqdGkiOiJkaHZaNGUwMUNHemRpaE9FIiwic3ViIjo0MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.mbCZQDFzBKh8wuJeCjlKudcY79IvOio5sTsLTA1onJs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/auth/logout",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/activation",
+			"id": "ce1ef60b-ed5f-4c88-ab5c-02b7f19a8f19",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "jakiś_token_który_przesyłem_na_maila",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/activation",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"activation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/reset_password",
+			"id": "b87c7751-9e7e-44db-8f47-db88b7b33676",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "$2y$10$6WNhm3KnbxVQAGZx0FGNjOZ0Ldgc0qKESrzPNBuFC3xbwRyKpDOZS",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "zaq1@WSX",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "zaq1@WSX",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/reset_password",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"reset_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/reset_password_mail",
+			"id": "19498052-d7ba-41d2-88b0-594aec2a0db9",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "sebek.kasprzak@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/reset_password_mail",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"reset_password_mail"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

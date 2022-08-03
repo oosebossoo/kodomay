@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "046de6fb-3271-477c-aeaf-6f15afdcf9ca",
+		"name": "Template API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/templates/list",
+			"id": "910bfb33-5ac7-47e7-8627-bcdb006b6639",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDEzMTgxNDUsImV4cCI6MTY0MTMyMTc0NSwibmJmIjoxNjQxMzE4MTQ1LCJqdGkiOiJYVTdwSXNXSkRYMHlUZjdGIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9._6Qn1Umwz4RQ1UgBFAgFSfOL53aqG_2jpmEHc52qe-0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{dev}}/api/templates/list",
+					"host": [
+						"{{dev}}"
+					],
+					"path": [
+						"api",
+						"templates",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/templates/get",
+			"id": "29cf8c7b-6fed-4542-9c87-335604c55300",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzQwMjkwMDYsImV4cCI6MTYzNDAzMjYwNiwibmJmIjoxNjM0MDI5MDA2LCJqdGkiOiIzUDZTc2o1Q2ZTa1hObEl0Iiwic3ViIjo0MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.TSpByPGL1KwFp-ceCL_VYl1PGVGB-ZgNPaCN38g4270",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/templates/get?id=10",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"templates",
+						"get"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/templates/join",
+			"id": "b88960ea-f828-4c0c-9f35-e05b4cdad058",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzQwMjkwMDYsImV4cCI6MTYzNDAzMjYwNiwibmJmIjoxNjM0MDI5MDA2LCJqdGkiOiIzUDZTc2o1Q2ZTa1hObEl0Iiwic3ViIjo0MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.TSpByPGL1KwFp-ceCL_VYl1PGVGB-ZgNPaCN38g4270",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/templates/join?offer_id=1&templ_id=2",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"templates",
+						"join"
+					],
+					"query": [
+						{
+							"key": "offer_id",
+							"value": "1"
+						},
+						{
+							"key": "templ_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/templates/save",
+			"id": "e1aa2516-e646-4971-93c9-9a9525279936",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzMzM0ODU4MiwiZXhwIjoxNjMzMzUyMTgyLCJuYmYiOjE2MzMzNDg1ODIsImp0aSI6IkVPRUhNaEdiU29XTUgyZzMiLCJzdWIiOjQwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.AlBRjU0WxXN0VBwkw2XIlDUBWMiwvH0FcZ1F-rh8iNs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "new",
+							"value": "123",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "template_name",
+							"value": "TEST 696",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "Test",
+							"type": "text"
+						},
+						{
+							"key": "body",
+							"value": "<p>UPDATE to tylko test nr. 3 : {code}</p>",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "sebek.kasprzak@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/templates/save",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"templates",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/templates/delete",
+			"id": "bd8c8389-c710-42d1-9c22-a73ee3151ad8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9rb2RvbWF0Lmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzMyNjA3ODYsImV4cCI6MTYzMzI2NDM4NiwibmJmIjoxNjMzMjYwNzg2LCJqdGkiOiJvcUNxckJrODJjQjRKbGdiIiwic3ViIjo0MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.4ISmWUml2YVTOxK3jS1W-CVGIuP7d2l5ndE8K18ma8g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/templates/delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"templates",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
